@@ -11,19 +11,35 @@ export default function LandingPage() {
       {/* Hero */}
       <div className="flex-1 flex flex-col justify-center gap-10">
         <div className="text-center">
-          <h1
-            className="font-title"
-            style={{
-              fontSize: '4rem',
-              fontWeight: 900,
-              lineHeight: 1,
-              color: '#9b1c31',
-              textShadow: '0 2px 24px rgba(155,28,49,0.25)',
-              letterSpacing: '-0.03em',
-            }}
-          >
-            Spyhunt
-          </h1>
+          <div className="relative inline-block">
+            <h1
+              className="font-title"
+              style={{
+                fontSize: '4rem',
+                fontWeight: 900,
+                lineHeight: 1,
+                color: '#9b1c31',
+                textShadow: '0 1px 8px rgba(155,28,49,0.18)',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              Spyhunt
+            </h1>
+            {/* Spy hat over the "t" — positioned at ~82% across the title */}
+            <img
+              src="/icon.svg"
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                width: '28px',
+                height: '28px',
+                top: '-22px',
+                right: '18%',
+                pointerEvents: 'none',
+              }}
+            />
+          </div>
           <p className="mt-3 text-base" style={{ color: 'var(--fg-muted)' }}>
             Intel is in. There&apos;s a spy among you.
           </p>

@@ -52,40 +52,45 @@ export default function RevealPage() {
           const bg = hasSeen
             ? 'var(--bg-card)'
             : theme === 'dark' ? '#3c0a17' : '#fff0f3'
-          const border = hasSeen ? 'var(--border)' : '#666666'
+          const flapBg = hasSeen
+            ? (theme === 'dark' ? '#1e1215' : '#e2e2e2')
+            : (theme === 'dark' ? '#5a1525' : '#f0bcc8')
           return (
             <button
               key={player.id}
               onClick={() => setActivePlayer(player)}
-              className="relative overflow-hidden border transition-all flex flex-col items-center justify-center text-center gap-1 active:scale-95"
+              className="relative overflow-hidden transition-all flex flex-col items-center justify-center text-center active:scale-95"
               style={{
-                minHeight: '96px',
-                borderColor: border,
-                borderWidth: '1.5px',
+                minHeight: '100px',
                 background: bg,
                 color: hasSeen ? 'var(--fg-subtle)' : 'var(--fg)',
-                borderRadius: '4px',
-                boxShadow: hasSeen ? 'none' : '0 2px 12px rgba(155,28,49,0.18)',
+                borderRadius: '6px',
+                border: hasSeen
+                  ? '1px solid var(--border)'
+                  : `1.5px solid ${theme === 'dark' ? '#7a1a30' : '#c06070'}`,
+                boxShadow: hasSeen
+                  ? 'none'
+                  : theme === 'dark'
+                    ? '0 4px 20px rgba(155,28,49,0.3), inset 0 1px 0 rgba(255,255,255,0.05)'
+                    : '0 4px 16px rgba(155,28,49,0.15)',
               }}
             >
               {/* Envelope flap */}
               <div
                 className="absolute top-0 left-0 w-full"
                 style={{
-                  height: '36%',
-                  background: hasSeen
-                    ? (theme === 'dark' ? '#251c1e' : '#e8e8e8')
-                    : (theme === 'dark' ? '#5c1a2a' : '#f5c8d0'),
+                  height: '38%',
+                  background: flapBg,
                   clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
                 }}
               />
-              <div className="relative flex flex-col items-center gap-1 mt-6">
-                <span className={`font-bold truncate w-full px-3 ${hasSeen ? 'text-xl' : 'text-2xl'}`}>
+              <div className="relative flex flex-col items-center gap-0.5 mt-7 px-2">
+                <span className={`font-spy truncate w-full ${hasSeen ? 'text-base' : 'text-lg'}`}>
                   {player.name}
                 </span>
                 {hasSeen
-                  ? <span className="text-green-500 text-sm font-bold">✓ Ready</span>
-                  : <span className="text-sm font-bold" style={{ color: 'var(--fg-subtle)' }}>Tap to open</span>
+                  ? <span className="text-green-500 text-xs font-bold tracking-wide">✓ READY</span>
+                  : <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--fg-subtle)' }}>Open</span>
                 }
               </div>
             </button>
@@ -110,7 +115,7 @@ export default function RevealPage() {
               <p className="text-2xl font-bold">{state.selectedCategory}</p>
             </div>
             {activePlayer.isImpostor ? (
-              <div className="rounded-xl p-4 space-y-2" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
+              <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
                 <p className="text-3xl font-bold" style={{ color: '#e8385a' }}>You are a Spy!</p>
                 <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Blend in. Don&apos;t reveal yourself.</p>
                 {spyPartners(activePlayer).length > 0 && (
@@ -121,10 +126,10 @@ export default function RevealPage() {
                 )}
               </div>
             ) : (
-              <div className="rounded-xl p-4 space-y-1" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
+              <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
                 <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Codeword</p>
-                <p className="text-4xl font-bold" style={{ color: theme === 'dark' ? '#ffffff' : 'var(--fg)' }}>{state.secretWord}</p>
-                <p className="text-sm mt-1" style={{ color: 'var(--fg-subtle)' }}>You are an Operative. Protect the codeword.</p>
+                <p className="text-3xl font-bold" style={{ color: theme === 'dark' ? '#ffffff' : 'var(--fg)' }}>{state.secretWord}</p>
+                <p className="text-sm mt-2" style={{ color: 'var(--fg-subtle)' }}>You are an Operative. Protect the codeword.</p>
               </div>
             )}
             <Button fullWidth size="lg" onClick={handleGotIt}>Understood</Button>

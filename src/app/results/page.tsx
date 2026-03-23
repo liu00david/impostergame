@@ -26,6 +26,25 @@ export default function ResultsPage() {
   const spies = state.players.filter(p => p.isImpostor)
   const playerMap = new Map(state.players.map(p => [p.id, p]))
 
+  // Compute eliminated set: top impostorCount by votes, only if no tie at the cutoff
+  const eliminatedIds = new Set<string>()
+  const cutoff = state.impostorCount
+  if (results.length > cutoff) {
+    const lastIn = results[cutoff - 1].votes
+    const firstOut = results[cutoff].votes
+    if (lastIn > firstOut) {
+      results.slice(0, cutoff).forEach(r => eliminatedIds.add(r.playerId))
+    }
+  } else if (results.length === cutoff) {
+    // everyone is in the top N, highlight all
+    results.forEach(r => eliminatedIds.add(r.playerId))
+  }
+
+  const eliminatedNames = [...eliminatedIds]
+    .map(id => playerMap.get(id)?.name)
+    .filter(Boolean)
+    .join(', ') || 'No One'
+
   function handleReset() {
     router.push('/setup')
     dispatch({ type: 'RESET_GAME' })
@@ -55,7 +74,7 @@ export default function ResultsPage() {
           }}
         >
           {wordRevealed ? (
-            <span className="text-5xl font-bold" style={{ color: theme === 'dark' ? '#ffffff' : '#000000' }}>{state.secretWord}</span>
+            <span className="text-4xl font-bold" style={{ color: theme === 'dark' ? '#ffffff' : '#000000' }}>{state.secretWord}</span>
           ) : (
             <span className="text-lg font-semibold" style={{ color: 'var(--fg-muted)' }}>Tap to reveal</span>
           )}
@@ -63,25 +82,27 @@ export default function ResultsPage() {
       </div>
 
       {spiesCaught ? (
-        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(34, 245, 111, 0.23)' : 'rgba(145, 255, 185, 0.39)', border: '1px solid rgba(0, 147, 54, 0.68)' }}>
-          <p className="font-title text-4xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Identified!</p>
+        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(34, 245, 111, 0.23)' : 'rgba(145, 255, 185, 0.39)', border: '3px solid rgba(0, 147, 54, 0.68)', boxShadow: '0 0 0 1px rgba(0,147,54,0.15)' }}>
+          <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Identified!</p>
           <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
             One last chance for spies to guess the codeword to steal the win!
           </p>
           <p className="text-lg mt-2" style={{ color: 'var(--fg-muted)' }}>
-            Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>
-              {spies.map(p => p.name).join(', ')}
-            </span>
+            Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
+          </p>
+          <p className="text-lg mt-1" style={{ color: 'var(--fg-muted)' }}>
+            Eliminated: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
           </p>
         </div>
       ) : (
-        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(236, 34, 81, 0.41)' : 'rgba(235, 146, 158, 0.32)', border: '1px solid rgba(255, 37, 37, 0.54)' }}>
-          <p className="font-title text-4xl font-bold mb-1" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
+        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(180, 30, 60, 0.35)' : 'rgba(220, 100, 120, 0.18)', border: `3px solid ${theme === 'dark' ? 'rgba(200, 60, 80, 0.65)' : 'rgba(180, 60, 80, 0.55)'}`, boxShadow: `0 0 0 1px ${theme === 'dark' ? 'rgba(200,60,80,0.15)' : 'rgba(180,60,80,0.1)'}` }}>
+          <p className="font-title text-3xl font-bold mb-1" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
           <p className="text-lg mb-2" style={{ color: 'var(--fg-muted)' }}>The spies blended in perfectly.</p>
+          <p className="text-lg mb-1" style={{ color: 'var(--fg-muted)' }}>
+            They were: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
+          </p>
           <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
-            They were: <span className="font-bold" style={{ color: 'var(--fg)' }}>
-              {spies.map(p => p.name).join(', ')}
-            </span>
+            Eliminated: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
           </p>
         </div>
       )}
@@ -93,11 +114,12 @@ export default function ResultsPage() {
         {results.map((result, rank) => {
           const player = playerMap.get(result.playerId)
           if (!player) return null
+          const isEliminated = eliminatedIds.has(result.playerId)
           return (
             <div
               key={result.playerId}
               className="flex items-center justify-between rounded-xl border px-4 py-3"
-              style={player.isImpostor
+              style={isEliminated
                 ? { borderColor: 'rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.08)' }
                 : { borderColor: 'var(--border)', background: 'var(--bg-card)' }
               }
