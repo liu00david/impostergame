@@ -7,6 +7,7 @@ import { ImpostorToggle } from '@/components/setup/ImpostorToggle'
 import { CategoryGrid } from '@/components/setup/CategoryGrid'
 import { Button } from '@/components/ui/Button'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import Link from 'next/link'
 
 export default function SetupPage() {
   const { state, dispatch } = useGame()
@@ -26,6 +27,9 @@ export default function SetupPage() {
       <header className="mb-8 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-violet-500">SusOut</h1>
         <p className="mt-1 text-sm" style={{ color: 'var(--fg-muted)' }}>There's someone sus among us.</p>
+        <Link href="/rules" className="inline-block mt-2 text-sm font-medium text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors">
+          How to play
+        </Link>
       </header>
 
       <div className="flex flex-col gap-6 flex-1">

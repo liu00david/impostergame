@@ -40,7 +40,7 @@ export default function ResultsPage() {
       </header>
 
       <div className="text-center mb-6">
-        <p className="text-sm font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>Word</p>
+        <p className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--fg-subtle)' }}>Word</p>
         <button
           onClick={() => setWordRevealed(r => !r)}
           className="w-full rounded-xl transition-all active:scale-95 flex items-center justify-center min-h-[72px] border-2"
