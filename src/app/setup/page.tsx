@@ -26,7 +26,7 @@ export default function SetupPage() {
       <header className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold font-title" style={{ color: 'var(--fg)' }}>Mission Setup</h1>
-          <p className="text-sm mt-0.5" style={{ color: 'var(--fg-muted)' }}>Configure your operatives and domain</p>
+          <p className="text-sm mt-0.5" style={{ color: 'var(--fg-muted)' }}>Configure your agents and domain</p>
         </div>
         <Link href="/" className="text-xl min-h-[36px] px-2 flex items-center transition-colors" style={{ color: 'var(--fg-muted)' }} aria-label="Back">←</Link>
       </header>
@@ -50,7 +50,7 @@ export default function SetupPage() {
         <div className="mt-auto pt-4">
           {state.players.length < minPlayers && (
             <p className="text-center text-sm mb-3" style={{ color: 'var(--fg-muted)' }}>
-              Need at least {minPlayers} players for {state.impostorCount} spy{state.impostorCount > 1 ? 's' : ''}
+              Need at least {minPlayers} agents for {state.impostorCount} spy{state.impostorCount > 1 ? 's' : ''}
             </p>
           )}
           <Button fullWidth size="lg" onClick={handleStart} disabled={!canStart}>

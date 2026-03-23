@@ -51,7 +51,7 @@ export default function LandingPage() {
           <div className="space-y-2 text-sm" style={{ color: 'var(--fg-muted)' }}>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>1</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Assignment</strong> — Each player secretly learns if they&apos;re an Operative or a Spy. Operatives see the codeword. Spies don&apos;t.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Assignment</strong> — Each agent secretly learns their role. Operatives see the codeword. Spies don&apos;t.</span>
             </div>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>2</span>
@@ -88,7 +88,7 @@ export default function LandingPage() {
 
         {/* Credits */}
         <p className="text-center text-xs" style={{ color: 'var(--fg-subtle)' }}>
-          A pass-and-play party game for 3–12 players
+          A pass-and-play party game for 3–12 agents
         </p>
       </div>
     </div>

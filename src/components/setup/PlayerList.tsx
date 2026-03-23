@@ -39,13 +39,13 @@ export function PlayerList() {
   return (
     <div className="space-y-3">
       <h2 className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--fg-subtle)' }}>
-        Players ({state.players.length}/12)
+        Agents ({state.players.length}/12)
       </h2>
       <div className="flex gap-2">
         <input
           className="flex-1 rounded-xl border px-4 py-3 focus:outline-none focus:border-rose-800 transition-colors"
           style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg)' }}
-          placeholder="Enter player name"
+          placeholder="Enter agent name"
           value={input}
           onChange={e => { setInput(e.target.value); if (errorTimer.current) clearTimeout(errorTimer.current); setError('') }}
           onKeyDown={handleKeyDown}

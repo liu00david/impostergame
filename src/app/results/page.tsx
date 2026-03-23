@@ -26,24 +26,22 @@ export default function ResultsPage() {
   const spies = state.players.filter(p => p.isImpostor)
   const playerMap = new Map(state.players.map(p => [p.id, p]))
 
-  // Compute eliminated set: top impostorCount by votes, only if no tie at the cutoff
+  // Compute eliminated set: include rank i only if results[i].votes > results[i+1].votes
+  // i.e. stop adding as soon as the next person outside ties with the current rank
   const eliminatedIds = new Set<string>()
-  const cutoff = state.impostorCount
-  if (results.length > cutoff) {
-    const lastIn = results[cutoff - 1].votes
-    const firstOut = results[cutoff].votes
-    if (lastIn > firstOut) {
-      results.slice(0, cutoff).forEach(r => eliminatedIds.add(r.playerId))
+  for (let i = 0; i < state.impostorCount && i < results.length; i++) {
+    const nextVotes = results[i + 1]?.votes ?? -1
+    if (results[i].votes > nextVotes) {
+      eliminatedIds.add(results[i].playerId)
+    } else {
+      break
     }
-  } else if (results.length === cutoff) {
-    // everyone is in the top N, highlight all
-    results.forEach(r => eliminatedIds.add(r.playerId))
   }
 
   const eliminatedNames = [...eliminatedIds]
     .map(id => playerMap.get(id)?.name)
     .filter(Boolean)
-    .join(', ') || 'No One'
+    .join(', ') || 'Nobody'
 
   function handleReset() {
     router.push('/setup')
@@ -83,7 +81,7 @@ export default function ResultsPage() {
 
       {spiesCaught ? (
         <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(34, 245, 111, 0.23)' : 'rgba(145, 255, 185, 0.39)', border: '3px solid rgba(0, 147, 54, 0.68)', boxShadow: '0 0 0 1px rgba(0,147,54,0.15)' }}>
-          <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Identified!</p>
+          <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Caught!</p>
           <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
             One last chance for spies to guess the codeword to steal the win!
           </p>
@@ -91,18 +89,18 @@ export default function ResultsPage() {
             Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
           </p>
           <p className="text-lg mt-1" style={{ color: 'var(--fg-muted)' }}>
-            Eliminated: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
+            Identified: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
           </p>
         </div>
       ) : (
-        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(180, 30, 60, 0.35)' : 'rgba(220, 100, 120, 0.18)', border: `3px solid ${theme === 'dark' ? 'rgba(200, 60, 80, 0.65)' : 'rgba(180, 60, 80, 0.55)'}`, boxShadow: `0 0 0 1px ${theme === 'dark' ? 'rgba(200,60,80,0.15)' : 'rgba(180,60,80,0.1)'}` }}>
-          <p className="font-title text-3xl font-bold mb-1" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
-          <p className="text-lg mb-2" style={{ color: 'var(--fg-muted)' }}>The spies blended in perfectly.</p>
+        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(180, 30, 60, 0.35)' : 'rgba(230, 165, 176, 0.18)', border: `3px solid ${theme === 'dark' ? 'rgba(200, 60, 80, 0.65)' : 'rgba(180, 60, 80, 0.55)'}`, boxShadow: `0 0 0 1px ${theme === 'dark' ? 'rgba(200,60,80,0.15)' : 'rgba(180,60,80,0.1)'}` }}>
+          <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
+          <p className="text-lg mb-2" style={{ color: 'var(--fg-muted)' }}>The spies were not eliminated.</p>
           <p className="text-lg mb-1" style={{ color: 'var(--fg-muted)' }}>
             They were: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
           </p>
           <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
-            Eliminated: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
+            Identified: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
           </p>
         </div>
       )}
@@ -128,7 +126,7 @@ export default function ResultsPage() {
                 <span className="text-base w-5" style={{ color: 'var(--fg-subtle)' }}>{rank + 1}.</span>
                 <span className="font-medium text-base">{player.name}</span>
                 {player.isImpostor && (
-                  <span className="text-sm font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.18)', color: 'rgba(0,0,0,0.8)' }}>
+                  <span className="text-sm font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(161, 10, 10, 0.93)', color: 'rgba(255, 255, 255, 0.9)' }}>
                     SPY
                   </span>
                 )}

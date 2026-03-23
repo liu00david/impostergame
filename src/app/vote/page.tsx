@@ -62,7 +62,7 @@ export default function VotePage() {
           <DomainLabel category={state.selectedCategory} />
           <h1 className="text-2xl font-bold">Voting</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--fg-muted)' }}>
-            Each operative casts a private vote.
+            Each agent taps their name to cast a private vote.
           </p>
           <p className="text-sm mt-0.5" style={{ color: 'var(--fg-muted)' }}>
             Voted: {voted.size}/{state.players.length}
@@ -135,7 +135,7 @@ export default function VotePage() {
           <div className="space-y-4">
             <div className="text-center">
               <p className="text-sm font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-muted)' }}>
-                {activeVoter.name}&apos;s ruling
+                Agent {activeVoter.name}&apos;s ruling
               </p>
               <p className="text-sm" style={{ color: 'var(--fg-subtle)' }}>
                 Identify up to {state.impostorCount} spy{state.impostorCount > 1 ? 's' : ''} (or skip)

@@ -40,7 +40,7 @@ export default function RevealPage() {
           <DomainLabel category={state.selectedCategory} />
           <h1 className="text-2xl font-bold">Assignment</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--fg-muted)' }}>
-            Each operative taps their name privately to receive their role
+            Each agent taps their name privately to receive their role
           </p>
         </div>
         <ExitButton />
