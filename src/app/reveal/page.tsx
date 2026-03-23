@@ -21,7 +21,7 @@ export default function RevealPage() {
 
   const allRevealed = state.players.every(p => p.hasSeenRole)
 
-  const impostorPartners = (player: Player) =>
+  const spyPartners = (player: Player) =>
     state.players.filter(p => p.isImpostor && p.id !== player.id).map(p => p.name)
 
   function handleGotIt() {
@@ -35,11 +35,11 @@ export default function RevealPage() {
       <header className="mb-6 flex items-start justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>
-            Category: <span className="text-violet-500">{state.selectedCategory}</span>
+            Domain: <span className="text-rose-800">{state.selectedCategory}</span>
           </p>
-          <h1 className="text-2xl font-bold">Role Reveal</h1>
+          <h1 className="text-2xl font-bold">Assignment</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--fg-muted)' }}>
-            Each player taps their name privately to see their role
+            Each operative taps their name privately to receive their assignment
           </p>
         </div>
         <ExitButton />
@@ -60,18 +60,18 @@ export default function RevealPage() {
                 color: 'var(--fg-subtle)',
               } : {
                 minHeight: '88px', padding: '20px',
-                borderColor: '#7c3aed',
-                background: 'rgba(124,58,237,0.12)',
+                borderColor: '#9b1c31',
+                background: 'rgba(155,28,49,0.12)',
                 color: 'var(--fg)',
-                boxShadow: '0 4px 24px rgba(124,58,237,0.15)',
+                boxShadow: '0 4px 24px rgba(155,28,49,0.15)',
               }}
             >
-              <span className={`font-semibold truncate w-full ${hasSeen ? 'text-base' : 'text-lg'}`}>
+              <span className={`font-bold truncate w-full ${hasSeen ? 'text-xl' : 'text-2xl'}`}>
                 {player.name}
               </span>
               {hasSeen
-                ? <span className="text-green-500 text-sm">✓ Done</span>
-                : <span className="text-violet-400 text-xs">Tap to reveal</span>
+                ? <span className="text-green-500 text-sm font-bold">✓ Ready</span>
+                : <span className="text-sm font-bold" style={{ color: 'var(--fg-subtle)' }}>Tap to receive</span>
               }
             </button>
           )
@@ -80,7 +80,7 @@ export default function RevealPage() {
 
       <div className="mt-6">
         <Button fullWidth size="lg" disabled={!allRevealed} onClick={() => router.push('/game')}>
-          {allRevealed ? 'Start Round' : `Waiting (${state.players.filter(p => p.hasSeenRole).length}/${state.players.length} ready)`}
+          {allRevealed ? 'Begin Signal Phase' : `Waiting (${state.players.filter(p => p.hasSeenRole).length}/${state.players.length} ready)`}
         </Button>
       </div>
 
@@ -91,26 +91,28 @@ export default function RevealPage() {
               {activePlayer.name}
             </p>
             <div className="border-t pt-4" style={{ borderColor: 'var(--border)' }}>
-              <p className="text-sm mb-1" style={{ color: 'var(--fg-muted)' }}>Category</p>
+              <p className="text-sm mb-1" style={{ color: 'var(--fg-muted)' }}>Domain</p>
               <p className="text-2xl font-bold">{state.selectedCategory}</p>
             </div>
             {activePlayer.isImpostor ? (
-              <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-4 space-y-2">
-                <p className="text-red-500 text-2xl font-bold">You are the Impostor!</p>
-                {impostorPartners(activePlayer).length > 0 && (
-                  <p className="text-red-400 text-sm">
-                    {impostorPartners(activePlayer).length === 1 ? 'Partner' : 'Partners'}:{' '}
-                    <span className="font-bold">{impostorPartners(activePlayer).join(', ')}</span>
+              <div className="rounded-xl p-4 space-y-2" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
+                <p className="text-2xl font-bold" style={{ color: 'var(--fg)' }}>You are a Spy!</p>
+                <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Blend in. Don&apos;t reveal yourself.</p>
+                {spyPartners(activePlayer).length > 0 && (
+                  <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>
+                    {spyPartners(activePlayer).length === 1 ? 'Partner' : 'Partners'}:{' '}
+                    <span className="font-bold" style={{ color: 'var(--fg)' }}>{spyPartners(activePlayer).join(', ')}</span>
                   </p>
                 )}
               </div>
             ) : (
-              <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4">
-                <p className="text-sm mb-1" style={{ color: 'var(--fg-muted)' }}>Secret Word</p>
-                <p className="text-4xl font-bold text-violet-500">{state.secretWord}</p>
+              <div className="rounded-xl p-4 space-y-1" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
+                <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Codeword</p>
+                <p className="text-4xl font-bold" style={{ color: '#9b1c31' }}>{state.secretWord}</p>
+                <p className="text-xs mt-1" style={{ color: 'var(--fg-subtle)' }}>You are an Operative. Protect the codeword.</p>
               </div>
             )}
-            <Button fullWidth size="lg" onClick={handleGotIt}>Got it!</Button>
+            <Button fullWidth size="lg" onClick={handleGotIt}>Understood</Button>
           </div>
         )}
       </Modal>

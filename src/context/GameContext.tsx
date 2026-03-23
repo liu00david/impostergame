@@ -142,16 +142,16 @@ function reducer(state: GameState, action: Action): GameState {
       return { ...state, players: [], impostorCount: 1 }
     }
     case 'RESET_GAME': {
-      // Keep player names and settings; clear all in-game state
+      // Keep player names and settings; clear all in-game state.
+      // Re-sort by insertion order so assignRoles always shuffles from a consistent baseline.
+      const resetPlayers = [...state.players]
+        .sort((a, b) => a.order - b.order)
+        .map(p => ({ ...p, isImpostor: false, hasSeenRole: false }))
       return {
         ...initialState,
         impostorCount: state.impostorCount,
         selectedCategory: state.selectedCategory,
-        players: state.players.map(p => ({
-          ...p,
-          isImpostor: false,
-          hasSeenRole: false,
-        })),
+        players: resetPlayers,
       }
     }
     default:

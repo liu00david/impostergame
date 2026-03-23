@@ -21,10 +21,10 @@ export function Button({
     'inline-flex items-center justify-center rounded-xl font-semibold transition-all active:scale-95 disabled:opacity-40 disabled:pointer-events-none select-none'
 
   const variantClass = {
-    primary: 'bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-900/40',
+    primary: 'bg-rose-800 hover:bg-rose-900 text-white shadow-lg shadow-rose-900/40',
     secondary: 'border font-semibold',
     danger: 'bg-red-600 hover:bg-red-700 text-white',
-    ghost: 'text-violet-500 hover:text-violet-400',
+    ghost: 'text-rose-800 hover:text-rose-600',
   }[variant]
 
   const variantStyle =

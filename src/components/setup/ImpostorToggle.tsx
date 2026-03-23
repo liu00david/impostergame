@@ -14,7 +14,7 @@ export function ImpostorToggle() {
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--fg-subtle)' }}>
-        Impostors
+        Spies
       </h2>
       <div className="flex rounded-xl overflow-hidden border" style={{ borderColor: 'var(--border)', background: 'var(--bg-card)' }}>
         {OPTIONS.map(({ count, minPlayers }) => {
@@ -27,14 +27,14 @@ export function ImpostorToggle() {
               disabled={isDisabled}
               className="flex-1 py-3 text-base font-semibold transition-all min-h-[44px] flex flex-col items-center justify-center gap-0.5"
               style={isSelected
-                ? { background: '#7c3aed', color: '#fff' }
+                ? { background: '#9b1c31', color: '#fff' }
                 : isDisabled
                 ? { color: 'var(--fg-subtle)', opacity: 0.4, cursor: 'not-allowed' }
                 : { color: 'var(--fg-muted)', background: 'transparent' }
               }
             >
               <span>{count}</span>
-              <span className="text-xs font-normal" style={{ color: isSelected ? '#ddd6fe' : 'var(--fg-subtle)' }}>
+              <span className="text-xs font-normal" style={{ color: isSelected ? '#fecdd3' : 'var(--fg-subtle)' }}>
                 {minPlayers}+ players
               </span>
             </button>

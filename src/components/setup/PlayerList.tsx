@@ -43,7 +43,7 @@ export function PlayerList() {
       </h2>
       <div className="flex gap-2">
         <input
-          className="flex-1 rounded-xl border px-4 py-3 focus:outline-none focus:border-violet-500 transition-colors"
+          className="flex-1 rounded-xl border px-4 py-3 focus:outline-none focus:border-rose-800 transition-colors"
           style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg)' }}
           placeholder="Enter player name"
           value={input}
@@ -71,8 +71,8 @@ export function PlayerList() {
             className="flex items-center justify-between rounded-xl border px-4 py-3"
             style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}
           >
-            <span style={{ color: 'var(--fg)' }}>
-              <span className="mr-2" style={{ color: 'var(--fg-subtle)' }}>{i + 1}.</span>
+            <span className="text-lg" style={{ color: 'var(--fg)' }}>
+              <span className="mr-2 text-base" style={{ color: 'var(--fg-subtle)' }}>{i + 1}.</span>
               {player.name}
             </span>
             <button

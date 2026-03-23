@@ -25,8 +25,8 @@ export function CategoryGrid() {
   }
 
   const selectedStyle = {
-    borderColor: '#7c3aed',
-    background: 'rgba(124,58,237,0.15)',
+    borderColor: '#9b1c31',
+    background: 'rgba(155,28,49,0.15)',
     color: 'var(--fg)',
     fontWeight: 700,
   }

@@ -2,26 +2,26 @@
 
 /* ── Dark theme (default) ── */
 :root {
-  --bg:          #0f0f13;
-  --bg-card:     #1a1a24;
-  --bg-elevated: #24243a;
+  --bg:          #0f0d0e;
+  --bg-card:     #1a1517;
+  --bg-elevated: #251c1e;
   --fg:          #f9fafb;
-  --fg-muted:    #e5e7eb;   /* gray-200 — brighter */
-  --fg-subtle:   #c4c8d0;   /* gray-350 — brighter */
+  --fg-muted:    #e5e7eb;
+  --fg-subtle:   #c4c8d0;
   --border:      rgba(255,255,255,0.10);
   --border-hover:rgba(255,255,255,0.20);
 }
 
 /* ── Light theme ── */
 .light {
-  --bg:          #f5f5f7;
+  --bg:          #fdf5f6;
   --bg-card:     #ffffff;
-  --bg-elevated: #e8e8f0;
-  --fg:          #111118;
-  --fg-muted:    #1f2937;
-  --fg-subtle:   #4b5563;
-  --border:      rgba(0,0,0,0.10);
-  --border-hover:rgba(0,0,0,0.20);
+  --bg-elevated: #f5e8ea;
+  --fg:          #1a0a0d;
+  --fg-muted:    #3b1a20;
+  --fg-subtle:   #7c3040;
+  --border:      rgba(155,28,49,0.15);
+  --border-hover:rgba(155,28,49,0.30);
 }
 
 body {
@@ -34,4 +34,13 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+/* ── Title font ── */
+@layer utilities {
+  .font-title {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    letter-spacing: -0.02em;
+    font-style: italic;
+  }
 }

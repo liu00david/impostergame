@@ -57,11 +57,11 @@ export default function VotePage() {
       <header className="mb-6 flex items-start justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>
-            Category: <span className="text-violet-500">{state.selectedCategory}</span>
+            Domain: <span className="text-rose-800">{state.selectedCategory}</span>
           </p>
-          <h1 className="text-2xl font-bold">Secret Ballot</h1>
+          <h1 className="text-2xl font-bold">Voting</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--fg-muted)' }}>
-            Each player taps their name to vote privately
+            Each operative taps their name to cast a private vote
           </p>
           <p className="text-sm mt-0.5" style={{ color: 'var(--fg-muted)' }}>
             Voted: {voted.size}/{state.players.length}
@@ -86,18 +86,18 @@ export default function VotePage() {
                 color: 'var(--fg-subtle)',
               } : {
                 minHeight: '88px', padding: '20px',
-                borderColor: '#7c3aed',
-                background: 'rgba(124,58,237,0.12)',
+                borderColor: '#9b1c31',
+                background: 'rgba(155,28,49,0.12)',
                 color: 'var(--fg)',
-                boxShadow: '0 4px 24px rgba(124,58,237,0.15)',
+                boxShadow: '0 4px 24px rgba(155,28,49,0.15)',
               }}
             >
-              <span className={`font-semibold truncate w-full ${hasVoted ? 'text-base' : 'text-lg'}`}>
+              <span className={`font-bold truncate w-full ${hasVoted ? 'text-lg' : 'text-xl'}`}>
                 {player.name}
               </span>
               {hasVoted
-                ? <span className="text-green-500 text-sm">✓ Voted</span>
-                : <span className="text-violet-400 text-xs">Tap to vote</span>
+                ? <span className="text-green-500 text-sm font-bold">✓ Voted</span>
+                : <span className="text-sm font-bold" style={{ color: 'var(--fg-subtle)' }}>Tap to vote</span>
               }
             </button>
           )
@@ -106,7 +106,7 @@ export default function VotePage() {
 
       <div className="mt-6">
         <Button fullWidth size="lg" disabled={!allVoted} onClick={() => router.push('/results')}>
-          {allVoted ? 'See Results' : `Waiting (${voted.size}/${state.players.length} voted)`}
+          {allVoted ? 'See Verdict' : `Waiting (${voted.size}/${state.players.length} voted)`}
         </Button>
       </div>
 
@@ -115,10 +115,10 @@ export default function VotePage() {
           <div className="space-y-4">
             <div className="text-center">
               <p className="text-sm font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-muted)' }}>
-                {activeVoter.name}&apos;s vote
+                {activeVoter.name}&apos;s ruling
               </p>
               <p className="text-xs" style={{ color: 'var(--fg-subtle)' }}>
-                Select up to {state.impostorCount} suspect{state.impostorCount > 1 ? 's' : ''} (or skip)
+                Identify up to {state.impostorCount} spy{state.impostorCount > 1 ? 's' : ''} (or skip)
               </p>
             </div>
             <div className="space-y-2">
@@ -151,7 +151,7 @@ export default function VotePage() {
               })}
             </div>
             <Button fullWidth size="lg" onClick={handleConfirm}>
-              {selected.size === 0 ? 'Skip (No Vote)' : `Vote for ${selected.size}`}
+              {selected.size === 0 ? 'Abstain' : `Flag ${selected.size} as spy${selected.size > 1 ? 's' : ''}`}
             </Button>
           </div>
         )}

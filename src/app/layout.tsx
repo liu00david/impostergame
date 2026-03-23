@@ -4,8 +4,8 @@ import { GameProvider } from '@/context/GameContext'
 import { ThemeProvider } from '@/context/ThemeContext'
 
 export const metadata: Metadata = {
-  title: 'SusOut',
-  description: 'Pass-and-play word deduction party game',
+  title: 'Spyhunt',
+  description: 'A covert word deduction party game',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

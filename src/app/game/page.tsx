@@ -36,7 +36,7 @@ export default function GamePage() {
 
   function handleEndRound() {
     if (intervalRef.current) clearInterval(intervalRef.current)
-    router.push('/vote')
+    router.push('/debrief')
   }
 
   return (
@@ -44,12 +44,12 @@ export default function GamePage() {
       <header className="mb-8 flex items-start justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>
-            Category: <span className="text-violet-500">{state.selectedCategory}</span>
+            Domain: <span className="text-rose-800">{state.selectedCategory}</span>
           </p>
-          <h1 className="text-2xl font-bold">Give Clues</h1>
+          <h1 className="text-2xl font-bold">Signal</h1>
         </div>
         <div className="flex items-center gap-3">
-          <p className="text-3xl font-mono font-bold text-violet-500">
+          <p className="text-3xl font-mono font-bold text-rose-800">
             {formatTime(state.elapsedSeconds)}
           </p>
           <ExitButton />
@@ -58,11 +58,11 @@ export default function GamePage() {
 
       <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2">
         <p className="text-lg leading-relaxed font-medium" style={{ color: 'var(--fg)' }}>
-          Go around in a circle. Everyone say a clue without revealing the word!
+          Go around in a circle. Each operative gives one signal — without revealing the codeword!
         </p>
         <div className="space-y-2 w-full">
-          <p className="text-base" style={{ color: 'var(--fg-muted)' }}>Starting with</p>
-          <div className="rounded-2xl border px-8 py-6 w-full" style={{ background: 'var(--bg-card)', borderColor: 'rgba(124,58,237,0.4)' }}>
+          <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>Starting with</p>
+          <div className="rounded-2xl border px-8 py-6 w-full" style={{ background: 'var(--bg-card)', borderColor: 'rgba(155,28,49,0.4)' }}>
             <p className="text-5xl font-bold">{firstPlayer?.name}</p>
           </div>
         </div>
@@ -70,7 +70,7 @@ export default function GamePage() {
 
       <div className="mt-8">
         <Button fullWidth size="lg" onClick={handleEndRound}>
-          Complete, go to Voting
+          Signals complete — Debrief
         </Button>
       </div>
     </div>

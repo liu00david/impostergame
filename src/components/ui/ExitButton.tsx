@@ -12,7 +12,7 @@ export function ExitButton() {
   const router = useRouter()
 
   function handleConfirm() {
-    router.replace('/')
+    router.replace('/setup')
     dispatch({ type: 'RESET_GAME' })
   }
 
@@ -29,14 +29,14 @@ export function ExitButton() {
 
       <Modal open={confirming}>
         <div className="text-center space-y-4">
-          <p className="text-lg font-bold">Restart Game?</p>
-          <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Your current game will be lost.</p>
+          <p className="text-lg font-bold">Abort Mission?</p>
+          <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Your current mission will be lost.</p>
           <div className="flex gap-3 pt-1">
             <Button variant="secondary" fullWidth onClick={() => setConfirming(false)}>
               Cancel
             </Button>
             <Button variant="danger" fullWidth onClick={handleConfirm}>
-              Restart
+              Abort
             </Button>
           </div>
         </div>

@@ -1,63 +1,79 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useGame } from '@/context/GameContext'
-import { PlayerList } from '@/components/setup/PlayerList'
-import { ImpostorToggle } from '@/components/setup/ImpostorToggle'
-import { CategoryGrid } from '@/components/setup/CategoryGrid'
-import { Button } from '@/components/ui/Button'
-import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import Link from 'next/link'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 
-export default function SetupPage() {
-  const { state, dispatch } = useGame()
-  const router = useRouter()
-
-  const minPlayers = state.impostorCount === 3 ? 7 : state.impostorCount === 2 ? 5 : 3
-  const canStart = state.players.length >= minPlayers && state.selectedCategory !== null
-
-  function handleStart() {
-    dispatch({ type: 'START_GAME' })
-    router.push('/reveal')
-  }
-
+export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col max-w-md mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-12">
       <ThemeToggle />
-      <header className="mb-8 text-center">
-        <h1 className="text-4xl font-bold tracking-tight text-violet-500">SusOut</h1>
-        <p className="mt-1 text-sm" style={{ color: 'var(--fg-muted)' }}>There's someone sus among us.</p>
-        <Link href="/rules" className="inline-block mt-2 text-sm font-medium text-violet-400 hover:text-violet-300 underline underline-offset-2 transition-colors">
-          How to play
-        </Link>
-      </header>
 
-      <div className="flex flex-col gap-6 flex-1">
-        <PlayerList />
-
-        {state.players.length > 0 && (
-          <button
-            onClick={() => dispatch({ type: 'CLEAR_PLAYERS' })}
-            className="text-sm transition-colors self-start hover:text-red-400"
-            style={{ color: 'var(--fg-subtle)' }}
+      {/* Hero */}
+      <div className="flex-1 flex flex-col justify-center gap-10">
+        <div className="text-center">
+          <h1
+            className="font-title"
+            style={{
+              fontSize: '4rem',
+              fontWeight: 900,
+              lineHeight: 1,
+              color: '#9b1c31',
+              textShadow: '0 2px 24px rgba(155,28,49,0.25)',
+              letterSpacing: '-0.03em',
+            }}
           >
-            Reset players
-          </button>
-        )}
-
-        <ImpostorToggle />
-        <CategoryGrid />
-
-        <div className="mt-auto pt-4">
-          {state.players.length < minPlayers && (
-            <p className="text-center text-sm mb-3" style={{ color: 'var(--fg-muted)' }}>
-              Need at least {minPlayers} players for {state.impostorCount} impostor{state.impostorCount > 1 ? 's' : ''}
-            </p>
-          )}
-          <Button fullWidth size="lg" onClick={handleStart} disabled={!canStart}>
-            Start Game
-          </Button>
+            Spyhunt
+          </h1>
+          <p className="mt-3 text-base" style={{ color: 'var(--fg-muted)' }}>
+            Intel is in. There&apos;s a spy among you.
+          </p>
         </div>
+
+        {/* Overview */}
+        <div className="rounded-2xl border px-5 py-4 space-y-3" style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}>
+          <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--fg-subtle)' }}>How it works</p>
+          <div className="space-y-2 text-sm" style={{ color: 'var(--fg-muted)' }}>
+            <div className="flex gap-3">
+              <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>1</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Assignment</strong> — Each player secretly learns if they&apos;re an Operative or a Spy. Operatives see the codeword. Spies don&apos;t.</span>
+            </div>
+            <div className="flex gap-3">
+              <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>2</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Signal</strong> — Everyone gives one clue about the codeword. Spies bluff. Operatives prove themselves without giving too much away.</span>
+            </div>
+            <div className="flex gap-3">
+              <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>3</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Debrief</strong> — Discuss who seemed off. Debate. Deceive.</span>
+            </div>
+            <div className="flex gap-3">
+              <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>4</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Vote</strong> — Eliminate the spies. If any survive, the mission is sabotaged.</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="space-y-3">
+          <Link
+            href="/setup"
+            className="w-full flex items-center justify-center rounded-xl text-lg font-semibold min-h-[56px] transition-all active:scale-95"
+            style={{ background: '#9b1c31', color: '#fff' }}
+          >
+            Start Mission
+          </Link>
+          <Link
+            href="/rules"
+            className="w-full flex items-center justify-center rounded-xl text-base font-medium min-h-[48px] border transition-all active:scale-95"
+            style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg-muted)' }}
+          >
+            Full Rules
+          </Link>
+        </div>
+
+        {/* Credits */}
+        <p className="text-center text-xs" style={{ color: 'var(--fg-subtle)' }}>
+          A pass-and-play party game for 3–12 players
+        </p>
       </div>
     </div>
   )

@@ -19,12 +19,12 @@ export default function ResultsPage() {
   if (state.players.length === 0 || state.phase !== 'results' || state.ballots.length === 0) return null
 
   const results = tallyVotes(state.ballots, state.players)
-  const impostorsCaught = checkImpostorsCaught(results, state.players, state.impostorCount)
-  const impostors = state.players.filter(p => p.isImpostor)
+  const spiesCaught = checkImpostorsCaught(results, state.players, state.impostorCount)
+  const spies = state.players.filter(p => p.isImpostor)
   const playerMap = new Map(state.players.map(p => [p.id, p]))
 
   function handleReset() {
-    router.push('/')
+    router.push('/setup')
     dispatch({ type: 'RESET_GAME' })
   }
 
@@ -33,60 +33,60 @@ export default function ResultsPage() {
       <header className="mb-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>
-            Category: <span className="text-violet-500">{state.selectedCategory}</span>
+            Domain: <span className="text-rose-800">{state.selectedCategory}</span>
           </p>
-          <h1 className="text-3xl font-bold mb-1">Results</h1>
+          <h1 className="text-2xl font-bold mb-1">Outcome</h1>
         </div>
       </header>
 
       <div className="text-center mb-6">
-        <p className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--fg-subtle)' }}>Word</p>
+        <p className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--fg-subtle)' }}>Codeword</p>
         <button
           onClick={() => setWordRevealed(r => !r)}
           className="w-full rounded-xl transition-all active:scale-95 flex items-center justify-center min-h-[72px] border-2"
           style={wordRevealed ? {
-            borderColor: 'rgba(124,58,237,0.4)',
-            background: 'rgba(124,58,237,0.08)',
+            borderColor: 'rgba(155,28,49,0.4)',
+            background: 'rgba(155,28,49,0.08)',
           } : {
             borderStyle: 'dashed',
-            borderColor: 'rgba(124,58,237,0.5)',
+            borderColor: 'rgba(155,28,49,0.5)',
             background: 'var(--bg-elevated)',
           }}
         >
           {wordRevealed ? (
-            <span className="text-5xl font-bold text-violet-500">{state.secretWord}</span>
+            <span className="text-5xl font-bold text-rose-800">{state.secretWord}</span>
           ) : (
             <span className="text-lg font-semibold" style={{ color: 'var(--fg-muted)' }}>Tap to reveal</span>
           )}
         </button>
       </div>
 
-      {impostorsCaught ? (
-        <div className="bg-green-500/20 border border-green-500/40 rounded-2xl p-5 mb-6 text-center">
-          <p className="text-2xl font-bold text-green-500 mb-1">Impostors Caught!</p>
-          <p className="text-green-400 text-sm">
-            One last chance — let them guess the secret word to steal the win!
+      {spiesCaught ? (
+        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)' }}>
+          <p className="font-title text-2xl font-bold mb-1" style={{ color: 'var(--fg)' }}>Spies Identified!</p>
+          <p className="text-base" style={{ color: 'var(--fg-muted)' }}>
+            One last chance — spies can guess the codeword to steal the win!
           </p>
-          <p className="text-sm mt-2" style={{ color: 'var(--fg-muted)' }}>
-            Impostors: <span className="font-bold" style={{ color: 'var(--fg)' }}>
-              {impostors.map(p => p.name).join(', ')}
+          <p className="text-base mt-2" style={{ color: 'var(--fg-muted)' }}>
+            Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>
+              {spies.map(p => p.name).join(', ')}
             </span>
           </p>
         </div>
       ) : (
-        <div className="bg-red-500/20 border border-red-500/40 rounded-2xl p-5 mb-6 text-center">
-          <p className="text-2xl font-bold text-red-500 mb-1">Impostors Win!</p>
-          <p className="text-red-400 text-sm mb-2">They blended in perfectly.</p>
-          <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>
+        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.25)' }}>
+          <p className="font-title text-2xl font-bold mb-1" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
+          <p className="text-base mb-2" style={{ color: 'var(--fg-muted)' }}>The spies blended in perfectly.</p>
+          <p className="text-base" style={{ color: 'var(--fg-muted)' }}>
             They were: <span className="font-bold" style={{ color: 'var(--fg)' }}>
-              {impostors.map(p => p.name).join(', ')}
+              {spies.map(p => p.name).join(', ')}
             </span>
           </p>
         </div>
       )}
 
       <h2 className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--fg-subtle)' }}>
-        Vote Results
+        Vote Tally
       </h2>
       <div className="space-y-2 mb-8">
         {results.map((result, rank) => {
@@ -102,11 +102,11 @@ export default function ResultsPage() {
               }
             >
               <div className="flex items-center gap-3">
-                <span className="text-sm w-5" style={{ color: 'var(--fg-subtle)' }}>{rank + 1}.</span>
-                <span className="font-medium">{player.name}</span>
+                <span className="text-base w-5" style={{ color: 'var(--fg-subtle)' }}>{rank + 1}.</span>
+                <span className="font-medium text-base">{player.name}</span>
                 {player.isImpostor && (
-                  <span className="text-xs font-bold text-red-500 bg-red-500/20 px-2 py-0.5 rounded-full">
-                    IMPOSTOR
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.18)', color: 'rgba(0,0,0,0.8)' }}>
+                    SPY
                   </span>
                 )}
               </div>
@@ -119,7 +119,7 @@ export default function ResultsPage() {
       </div>
 
       <Button fullWidth size="lg" onClick={handleReset}>
-        Play Again
+        New Mission
       </Button>
     </div>
   )
