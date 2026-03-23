@@ -10,6 +10,8 @@ export default function ResultsPage() {
   const { state, dispatch } = useGame()
   const router = useRouter()
 
+  const [wordRevealed, setWordRevealed] = useState(false)
+
   useEffect(() => {
     if (state.players.length === 0) router.replace('/')
   }, [state.players.length, router])
@@ -20,8 +22,6 @@ export default function ResultsPage() {
   const impostorsCaught = checkImpostorsCaught(results, state.players, state.impostorCount)
   const impostors = state.players.filter(p => p.isImpostor)
   const playerMap = new Map(state.players.map(p => [p.id, p]))
-
-  const [wordRevealed, setWordRevealed] = useState(false)
 
   function handleReset() {
     router.push('/')
@@ -41,21 +41,24 @@ export default function ResultsPage() {
 
       <div className="text-center mb-6">
         <p className="text-sm font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>Word</p>
-        {wordRevealed ? (
-          <p className="text-5xl font-bold text-violet-500">{state.secretWord}</p>
-        ) : (
-          <button
-            onClick={() => setWordRevealed(true)}
-            className="text-5xl font-bold rounded-xl px-4 py-1 transition-all active:scale-95"
-            style={{ background: 'var(--bg-elevated)', color: 'transparent', textShadow: 'none',
-              backdropFilter: 'blur(8px)', letterSpacing: '0.05em', border: '2px dashed',
-              borderColor: 'rgba(124,58,237,0.5)' }}
-          >
-            <span className="text-violet-400 text-lg font-semibold" style={{ color: 'var(--fg-muted)' }}>
-              Tap to reveal
-            </span>
-          </button>
-        )}
+        <button
+          onClick={() => setWordRevealed(r => !r)}
+          className="w-full rounded-xl transition-all active:scale-95 flex items-center justify-center min-h-[72px] border-2"
+          style={wordRevealed ? {
+            borderColor: 'rgba(124,58,237,0.4)',
+            background: 'rgba(124,58,237,0.08)',
+          } : {
+            borderStyle: 'dashed',
+            borderColor: 'rgba(124,58,237,0.5)',
+            background: 'var(--bg-elevated)',
+          }}
+        >
+          {wordRevealed ? (
+            <span className="text-5xl font-bold text-violet-500">{state.secretWord}</span>
+          ) : (
+            <span className="text-lg font-semibold" style={{ color: 'var(--fg-muted)' }}>Tap to reveal</span>
+          )}
+        </button>
       </div>
 
       {impostorsCaught ? (
@@ -115,7 +118,7 @@ export default function ResultsPage() {
         })}
       </div>
 
-      <Button fullWidth size="lg" variant="secondary" onClick={handleReset}>
+      <Button fullWidth size="lg" onClick={handleReset}>
         Play Again
       </Button>
     </div>

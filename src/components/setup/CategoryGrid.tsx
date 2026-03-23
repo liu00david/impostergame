@@ -22,7 +22,7 @@ export function CategoryGrid() {
             <button
               key={name}
               onClick={() => dispatch({ type: 'SET_CATEGORY', category: name })}
-              className="rounded-xl border px-4 py-3 text-center transition-all min-h-[48px]"
+              className="rounded-xl border px-4 py-2 text-center transition-all min-h-[36px]"
               style={isSelected ? {
                 borderColor: '#7c3aed',
                 background: 'rgba(124,58,237,0.15)',
