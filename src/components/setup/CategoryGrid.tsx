@@ -4,11 +4,17 @@ import { useGame } from '@/context/GameContext'
 import { Category } from '@/types/game'
 
 const CATEGORIES: Category[] = [
-  'Food', 'Movies', 'Animals', 'Travel', 'Sports', 'Music', 'Nature', 'Tech',
+  'Food', 'Movies', 'Animals', 'Travel', 'Sports', 'Music',
+  'Nature', 'Tech', 'TV Shows', 'Celebrities', 'Brands', 'Holidays',
 ]
 
 export function CategoryGrid() {
   const { state, dispatch } = useGame()
+
+  function handleRandom() {
+    const pick = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)]
+    dispatch({ type: 'SET_CATEGORY', category: pick })
+  }
 
   return (
     <div className="space-y-2">
@@ -39,6 +45,18 @@ export function CategoryGrid() {
             </button>
           )
         })}
+        <button
+          onClick={handleRandom}
+          className="col-span-2 rounded-xl border px-4 py-2 text-center transition-all min-h-[36px]"
+          style={{
+            borderColor: 'var(--border)',
+            background: 'var(--bg-card)',
+            color: 'var(--fg-muted)',
+            fontWeight: 400,
+          }}
+        >
+          Random
+        </button>
       </div>
     </div>
   )

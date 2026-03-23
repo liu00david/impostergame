@@ -25,7 +25,7 @@ export default function SetupPage() {
       <ThemeToggle />
       <header className="mb-8 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-violet-500">SusOut</h1>
-        <p className="mt-1 text-sm" style={{ color: 'var(--fg-muted)' }}>Can you keep your suspicions?</p>
+        <p className="mt-1 text-sm" style={{ color: 'var(--fg-muted)' }}>There's someone sus among us.</p>
       </header>
 
       <div className="flex flex-col gap-6 flex-1">
