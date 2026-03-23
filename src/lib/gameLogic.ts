@@ -1,18 +1,18 @@
 import { Player, Category, VoteBallot } from '@/types/game'
 import { WORD_LISTS } from './wordLists'
 
-export function assignRoles(players: Player[], impostorCount: 1 | 2 | 3): Player[] {
-  const shuffled = [...players]
-  // Fisher-Yates shuffle
-  for (let i = shuffled.length - 1; i > 0; i--) {
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    ;[a[i], a[j]] = [a[j], a[i]]
   }
-  return shuffled.map((player, index) => ({
-    ...player,
-    isImpostor: index < impostorCount,
-    hasSeenRole: false,
-  }))
+  return a
+}
+
+export function assignRoles(players: Player[], impostorCount: 1 | 2 | 3): Player[] {
+  const shuffled = shuffle(players)
+  return shuffled.map((player, index) => ({ ...player, isImpostor: index < impostorCount, hasSeenRole: false }))
 }
 
 export function pickWord(category: Category): string {
@@ -44,19 +44,9 @@ export function tallyVotes(ballots: VoteBallot[], players: Player[]): TallyResul
     .sort((a, b) => b.votes - a.votes)
 }
 
-export function checkImpostorsCaught(
-  results: TallyResult[],
-  players: Player[],
-  impostorCount: 1 | 2 | 3
-): boolean {
+export function checkImpostorsCaught(results: TallyResult[], players: Player[], impostorCount: 1 | 2 | 3): boolean {
   const impostorIds = new Set(players.filter(p => p.isImpostor).map(p => p.id))
-  const civilianIds = new Set(players.filter(p => !p.isImpostor).map(p => p.id))
-
   const impostorVotes = results.filter(r => impostorIds.has(r.playerId))
-  const civilianVotes = results.filter(r => civilianIds.has(r.playerId))
-
-  const maxCivilianVotes = civilianVotes.reduce((m, r) => Math.max(m, r.votes), 0)
-
-  // Every impostor must have strictly more votes than every civilian
+  const maxCivilianVotes = results.filter(r => !impostorIds.has(r.playerId)).reduce((m, r) => Math.max(m, r.votes), 0)
   return impostorVotes.every(r => r.votes > maxCivilianVotes)
 }

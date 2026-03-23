@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
 import { Button } from '@/components/ui/Button'
 import { ExitButton } from '@/components/ui/ExitButton'
+import { formatTime } from '@/lib/formatTime'
+import { DomainLabel } from '@/components/ui/DomainLabel'
 
 export default function DebriefPage() {
   const { state } = useGame()
@@ -23,24 +25,16 @@ export default function DebriefPage() {
 
   if (state.players.length === 0) return null
 
-  function formatTime(s: number) {
-    const m = Math.floor(s / 60).toString().padStart(2, '0')
-    const sec = (s % 60).toString().padStart(2, '0')
-    return `${m}:${sec}`
-  }
-
   function handleProceed() {
     if (intervalRef.current) clearInterval(intervalRef.current)
     router.push('/vote')
   }
 
   return (
-    <div className="min-h-screen flex flex-col max-w-md mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
       <header className="mb-8 flex items-start justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>
-            Domain: <span className="text-rose-800">{state.selectedCategory}</span>
-          </p>
+          <DomainLabel category={state.selectedCategory} />
           <h1 className="text-2xl font-bold">Debrief</h1>
         </div>
         <div className="flex items-center gap-3">
@@ -55,9 +49,12 @@ export default function DebriefPage() {
         <div className="space-y-3">
           <p className="text-3xl font-bold" style={{ color: 'var(--fg)' }}>Time to debrief.</p>
           <p className="text-lg leading-relaxed" style={{ color: 'var(--fg-muted)' }}>
-            Discuss the signals. Who seemed off? Who sounded too vague — or too confident?
+            Discuss the signals.
           </p>
-          <p className="text-lg" style={{ color: 'var(--fg-subtle)' }}>
+          <p className="text-lg leading-relaxed" style={{ color: 'var(--fg-muted)' }}>
+            Did someone seem off? Were they too vague, or even too confident?
+          </p>
+          <p className="text-lg font-bold" style={{ color: 'var(--fg-subtle)' }}>
             When you&apos;re ready, proceed to the vote.
           </p>
         </div>

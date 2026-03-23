@@ -26,5 +26,4 @@ export interface GameState {
   ballots: VoteBallot[]
   elapsedSeconds: number
   loopComplete: boolean
-  turnIndex: number
 }

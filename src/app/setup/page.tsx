@@ -7,12 +7,13 @@ import { ImpostorToggle } from '@/components/setup/ImpostorToggle'
 import { CategoryGrid } from '@/components/setup/CategoryGrid'
 import { Button } from '@/components/ui/Button'
 import Link from 'next/link'
+import { IMPOSTOR_MIN_PLAYERS } from '@/lib/constants'
 
 export default function SetupPage() {
   const { state, dispatch } = useGame()
   const router = useRouter()
 
-  const minPlayers = state.impostorCount === 3 ? 7 : state.impostorCount === 2 ? 5 : 3
+  const minPlayers = IMPOSTOR_MIN_PLAYERS[state.impostorCount]
   const canStart = state.players.length >= minPlayers && state.selectedCategory !== null
 
   function handleStart() {
@@ -21,7 +22,7 @@ export default function SetupPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col max-w-md mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
       <header className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold font-title" style={{ color: 'var(--fg)' }}>Mission Setup</h1>

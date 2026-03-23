@@ -3,13 +3,16 @@
 import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
+import { useTheme } from '@/context/ThemeContext'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { ExitButton } from '@/components/ui/ExitButton'
 import { Player } from '@/types/game'
+import { DomainLabel } from '@/components/ui/DomainLabel'
 
 export default function VotePage() {
   const { state, dispatch } = useGame()
+  const { theme } = useTheme()
   const router = useRouter()
   const [activeVoter, setActiveVoter] = useState<Player | null>(null)
   const [selected, setSelected] = useState<Set<string>>(new Set())
@@ -53,15 +56,13 @@ export default function VotePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col max-w-md mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
       <header className="mb-6 flex items-start justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>
-            Domain: <span className="text-rose-800">{state.selectedCategory}</span>
-          </p>
+          <DomainLabel category={state.selectedCategory} />
           <h1 className="text-2xl font-bold">Voting</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--fg-muted)' }}>
-            Each operative taps their name to cast a private vote
+            Each operative casts a private vote.
           </p>
           <p className="text-sm mt-0.5" style={{ color: 'var(--fg-muted)' }}>
             Voted: {voted.size}/{state.players.length}
@@ -86,8 +87,10 @@ export default function VotePage() {
                 color: 'var(--fg-subtle)',
               } : {
                 minHeight: '88px', padding: '20px',
-                borderColor: '#9b1c31',
-                background: 'rgba(155,28,49,0.12)',
+                borderColor: '#000',
+                background: theme === 'dark'
+                ? 'radial-gradient(circle at center, rgb(144, 55, 75) 0%, rgb(60, 10, 23) 100%)'
+                : 'radial-gradient(circle at center, rgba(255, 255, 255, 0) 0%, rgb(255, 220, 227) 100%)',
                 color: 'var(--fg)',
                 boxShadow: '0 4px 24px rgba(155,28,49,0.15)',
               }}
@@ -117,7 +120,7 @@ export default function VotePage() {
               <p className="text-sm font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-muted)' }}>
                 {activeVoter.name}&apos;s ruling
               </p>
-              <p className="text-xs" style={{ color: 'var(--fg-subtle)' }}>
+              <p className="text-sm" style={{ color: 'var(--fg-subtle)' }}>
                 Identify up to {state.impostorCount} spy{state.impostorCount > 1 ? 's' : ''} (or skip)
               </p>
             </div>
@@ -141,7 +144,7 @@ export default function VotePage() {
                     }}
                   >
                     <span className="font-medium">{player.name}</span>
-                    {isSelf && <span className="text-xs" style={{ color: 'var(--fg-subtle)' }}>you</span>}
+                    {isSelf && <span className="text-sm" style={{ color: 'var(--fg-subtle)' }}>you</span>}
                     {isSelected && <span className="text-red-400 text-lg">✓</span>}
                     {!isSelf && !isSelected && (
                       <div className="w-5 h-5 rounded border" style={{ borderColor: 'var(--border)' }} />

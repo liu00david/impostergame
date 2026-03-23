@@ -6,6 +6,10 @@ import { ThemeProvider } from '@/context/ThemeContext'
 export const metadata: Metadata = {
   title: 'Spyhunt',
   description: 'A covert word deduction party game',
+  icons: {
+    icon: '/icon.svg',
+    apple: '/icon.svg',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

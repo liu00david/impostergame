@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function RulesPage() {
   return (
-    <div className="min-h-screen flex flex-col max-w-md mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
       <header className="mb-8 flex items-center justify-between">
         <h1 className="text-3xl font-bold">How to Play</h1>
         <Link

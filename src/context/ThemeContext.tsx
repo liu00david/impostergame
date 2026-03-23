@@ -10,12 +10,12 @@ const ThemeContext = createContext<{ theme: Theme; toggle: () => void }>({
 })
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      return 'light'
-    }
-    return 'dark'
-  })
+  const [theme, setTheme] = useState<Theme>('dark')
+
+  useEffect(() => {
+    const initial = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+    setTheme(initial)
+  }, [])
 
   useEffect(() => {
     const root = document.documentElement

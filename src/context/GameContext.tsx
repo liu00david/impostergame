@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useReducer } from 'react'
 import { GameState, Phase, Category, VoteBallot } from '@/types/game'
 import { assignRoles, pickWord, pickStartingPlayer } from '@/lib/gameLogic'
+import { IMPOSTOR_MIN_PLAYERS } from '@/lib/constants'
 
 
 type Action =
@@ -16,7 +17,6 @@ type Action =
   | { type: 'CAST_VOTE'; ballot: VoteBallot }
   | { type: 'TICK_TIMER' }
   | { type: 'SET_LOOP_COMPLETE' }
-  | { type: 'ADVANCE_TURN' }
   | { type: 'SET_PHASE'; phase: Phase }
   | { type: 'RESET_GAME' }
   | { type: 'CLEAR_PLAYERS' }
@@ -33,7 +33,6 @@ const initialState: GameState = {
   ballots: [],
   elapsedSeconds: 0,
   loopComplete: false,
-  turnIndex: 0,
 }
 
 
@@ -58,8 +57,7 @@ function reducer(state: GameState, action: Action): GameState {
     }
     case 'REMOVE_PLAYER': {
       const remaining = state.players.filter(p => p.id !== action.id)
-      const minForCurrent =
-        state.impostorCount === 3 ? 7 : state.impostorCount === 2 ? 5 : 3
+      const minForCurrent = IMPOSTOR_MIN_PLAYERS[state.impostorCount]
       const impostorCount =
         remaining.length < minForCurrent ? 1 : state.impostorCount
       return { ...state, players: remaining, impostorCount }
@@ -85,7 +83,6 @@ function reducer(state: GameState, action: Action): GameState {
         ballots: [],
         elapsedSeconds: 0,
         loopComplete: false,
-        turnIndex: 0,
         phase: 'reveal',
       }
     }
@@ -126,14 +123,6 @@ function reducer(state: GameState, action: Action): GameState {
     }
     case 'SET_LOOP_COMPLETE': {
       return { ...state, loopComplete: true }
-    }
-    case 'ADVANCE_TURN': {
-      const next = state.turnIndex + 1
-      return {
-        ...state,
-        turnIndex: next,
-        loopComplete: state.loopComplete || next >= state.players.length,
-      }
     }
     case 'SET_PHASE': {
       return { ...state, phase: action.phase }

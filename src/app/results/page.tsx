@@ -3,11 +3,14 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
+import { useTheme } from '@/context/ThemeContext'
 import { Button } from '@/components/ui/Button'
 import { tallyVotes, checkImpostorsCaught } from '@/lib/gameLogic'
+import { DomainLabel } from '@/components/ui/DomainLabel'
 
 export default function ResultsPage() {
   const { state, dispatch } = useGame()
+  const { theme } = useTheme()
   const router = useRouter()
 
   const [wordRevealed, setWordRevealed] = useState(false)
@@ -29,12 +32,10 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col max-w-md mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
       <header className="mb-6">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>
-            Domain: <span className="text-rose-800">{state.selectedCategory}</span>
-          </p>
+          <DomainLabel category={state.selectedCategory} />
           <h1 className="text-2xl font-bold mb-1">Outcome</h1>
         </div>
       </header>
@@ -54,7 +55,7 @@ export default function ResultsPage() {
           }}
         >
           {wordRevealed ? (
-            <span className="text-5xl font-bold text-rose-800">{state.secretWord}</span>
+            <span className="text-5xl font-bold" style={{ color: theme === 'dark' ? '#ffffff' : '#000000' }}>{state.secretWord}</span>
           ) : (
             <span className="text-lg font-semibold" style={{ color: 'var(--fg-muted)' }}>Tap to reveal</span>
           )}
@@ -62,22 +63,22 @@ export default function ResultsPage() {
       </div>
 
       {spiesCaught ? (
-        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.25)' }}>
-          <p className="font-title text-2xl font-bold mb-1" style={{ color: 'var(--fg)' }}>Spies Identified!</p>
-          <p className="text-base" style={{ color: 'var(--fg-muted)' }}>
-            One last chance — spies can guess the codeword to steal the win!
+        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(34, 245, 111, 0.23)' : 'rgba(145, 255, 185, 0.39)', border: '1px solid rgba(0, 147, 54, 0.68)' }}>
+          <p className="font-title text-4xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Identified!</p>
+          <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
+            One last chance for spies to guess the codeword to steal the win!
           </p>
-          <p className="text-base mt-2" style={{ color: 'var(--fg-muted)' }}>
+          <p className="text-lg mt-2" style={{ color: 'var(--fg-muted)' }}>
             Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>
               {spies.map(p => p.name).join(', ')}
             </span>
           </p>
         </div>
       ) : (
-        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: 'rgba(239,68,68,0.10)', border: '1px solid rgba(239,68,68,0.25)' }}>
-          <p className="font-title text-2xl font-bold mb-1" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
-          <p className="text-base mb-2" style={{ color: 'var(--fg-muted)' }}>The spies blended in perfectly.</p>
-          <p className="text-base" style={{ color: 'var(--fg-muted)' }}>
+        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(236, 34, 81, 0.41)' : 'rgba(232, 69, 107, 0.22)', border: '1px solid rgba(255, 37, 37, 0.54)' }}>
+          <p className="font-title text-4xl font-bold mb-1" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
+          <p className="text-lg mb-2" style={{ color: 'var(--fg-muted)' }}>The spies blended in perfectly.</p>
+          <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
             They were: <span className="font-bold" style={{ color: 'var(--fg)' }}>
               {spies.map(p => p.name).join(', ')}
             </span>
@@ -105,7 +106,7 @@ export default function ResultsPage() {
                 <span className="text-base w-5" style={{ color: 'var(--fg-subtle)' }}>{rank + 1}.</span>
                 <span className="font-medium text-base">{player.name}</span>
                 {player.isImpostor && (
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.18)', color: 'rgba(0,0,0,0.8)' }}>
+                  <span className="text-sm font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(0,0,0,0.18)', color: 'rgba(0,0,0,0.8)' }}>
                     SPY
                   </span>
                 )}

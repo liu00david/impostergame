@@ -3,13 +3,16 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
+import { useTheme } from '@/context/ThemeContext'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { ExitButton } from '@/components/ui/ExitButton'
 import { Player } from '@/types/game'
+import { DomainLabel } from '@/components/ui/DomainLabel'
 
 export default function RevealPage() {
   const { state, dispatch } = useGame()
+  const { theme } = useTheme()
   const router = useRouter()
   const [activePlayer, setActivePlayer] = useState<Player | null>(null)
 
@@ -31,15 +34,13 @@ export default function RevealPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col max-w-md mx-auto px-4 py-8">
+    <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
       <header className="mb-6 flex items-start justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--fg-subtle)' }}>
-            Domain: <span className="text-rose-800">{state.selectedCategory}</span>
-          </p>
+          <DomainLabel category={state.selectedCategory} />
           <h1 className="text-2xl font-bold">Assignment</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--fg-muted)' }}>
-            Each operative taps their name privately to receive their assignment
+            Each operative taps their name privately to receive their role
           </p>
         </div>
         <ExitButton />
@@ -60,8 +61,10 @@ export default function RevealPage() {
                 color: 'var(--fg-subtle)',
               } : {
                 minHeight: '88px', padding: '20px',
-                borderColor: '#9b1c31',
-                background: 'rgba(155,28,49,0.12)',
+                borderColor: '#000',
+                background: theme === 'dark'
+                  ? 'radial-gradient(circle at center, rgb(144, 55, 75) 0%, rgb(60, 10, 23) 100%)'
+                  : 'radial-gradient(circle at center, rgba(255, 255, 255, 0) 0%, rgb(255, 220, 227) 100%)',
                 color: 'var(--fg)',
                 boxShadow: '0 4px 24px rgba(155,28,49,0.15)',
               }}
@@ -80,7 +83,7 @@ export default function RevealPage() {
 
       <div className="mt-6">
         <Button fullWidth size="lg" disabled={!allRevealed} onClick={() => router.push('/game')}>
-          {allRevealed ? 'Begin Signal Phase' : `Waiting (${state.players.filter(p => p.hasSeenRole).length}/${state.players.length} ready)`}
+          {allRevealed ? 'Proceed to Signal' : `Waiting (${state.players.filter(p => p.hasSeenRole).length}/${state.players.length} ready)`}
         </Button>
       </div>
 
@@ -96,7 +99,7 @@ export default function RevealPage() {
             </div>
             {activePlayer.isImpostor ? (
               <div className="rounded-xl p-4 space-y-2" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
-                <p className="text-2xl font-bold" style={{ color: 'var(--fg)' }}>You are a Spy!</p>
+                <p className="text-3xl font-bold" style={{ color: '#e8385a' }}>You are a Spy!</p>
                 <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Blend in. Don&apos;t reveal yourself.</p>
                 {spyPartners(activePlayer).length > 0 && (
                   <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>
@@ -108,8 +111,8 @@ export default function RevealPage() {
             ) : (
               <div className="rounded-xl p-4 space-y-1" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
                 <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Codeword</p>
-                <p className="text-4xl font-bold" style={{ color: '#9b1c31' }}>{state.secretWord}</p>
-                <p className="text-xs mt-1" style={{ color: 'var(--fg-subtle)' }}>You are an Operative. Protect the codeword.</p>
+                <p className="text-4xl font-bold" style={{ color: '#ffffff' }}>{state.secretWord}</p>
+                <p className="text-sm mt-1" style={{ color: 'var(--fg-subtle)' }}>You are an Operative. Protect the codeword.</p>
               </div>
             )}
             <Button fullWidth size="lg" onClick={handleGotIt}>Understood</Button>

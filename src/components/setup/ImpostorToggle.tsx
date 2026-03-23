@@ -34,7 +34,7 @@ export function ImpostorToggle() {
               }
             >
               <span>{count}</span>
-              <span className="text-xs font-normal" style={{ color: isSelected ? '#fecdd3' : 'var(--fg-subtle)' }}>
+              <span className="text-sm font-normal" style={{ color: isSelected ? '#fecdd3' : 'var(--fg-subtle)', opacity: isDisabled ? undefined : 0.95 }}>
                 {minPlayers}+ players
               </span>
             </button>

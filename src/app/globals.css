@@ -14,14 +14,14 @@
 
 /* ── Light theme ── */
 .light {
-  --bg:          #fdf5f6;
-  --bg-card:     #ffffff;
-  --bg-elevated: #f5e8ea;
+  --bg:          #ffffff;
+  --bg-card:     #f9f9f9;
+  --bg-elevated: #f0f0f0;
   --fg:          #1a0a0d;
   --fg-muted:    #3b1a20;
   --fg-subtle:   #7c3040;
-  --border:      rgba(155,28,49,0.15);
-  --border-hover:rgba(155,28,49,0.30);
+  --border:      rgba(0,0,0,0.12);
+  --border-hover:rgba(0,0,0,0.24);
 }
 
 body {
