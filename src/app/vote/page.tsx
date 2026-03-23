@@ -71,37 +71,49 @@ export default function VotePage() {
         <ExitButton />
       </header>
 
-      <div className="grid grid-cols-2 gap-3 flex-1">
+      <div className="grid grid-cols-2 gap-4 flex-1 content-start">
         {[...state.players].sort((a, b) => a.order - b.order).map(player => {
           const hasVoted = voted.has(player.id)
+          const bg = hasVoted
+            ? 'var(--bg-card)'
+            : theme === 'dark' ? '#3c0a17' : '#fff0f3'
+          const border = hasVoted ? 'var(--border)' : '#666666'
           return (
             <button
               key={player.id}
               onClick={() => handleTap(player)}
               disabled={hasVoted}
-              className="rounded-2xl border transition-all flex flex-col items-center justify-center text-center gap-1 active:scale-95"
-              style={hasVoted ? {
-                minHeight: '72px', padding: '16px',
-                borderColor: 'var(--border)',
-                background: 'var(--bg-card)',
-                color: 'var(--fg-subtle)',
-              } : {
-                minHeight: '88px', padding: '20px',
-                borderColor: '#000',
-                background: theme === 'dark'
-                ? 'radial-gradient(circle at center, rgb(144, 55, 75) 0%, rgb(60, 10, 23) 100%)'
-                : 'radial-gradient(circle at center, rgba(255, 255, 255, 0) 0%, rgb(255, 220, 227) 100%)',
-                color: 'var(--fg)',
-                boxShadow: '0 4px 24px rgba(155,28,49,0.15)',
+              className="relative overflow-hidden border transition-all flex flex-col items-center justify-center text-center gap-1 active:scale-95"
+              style={{
+                minHeight: '96px',
+                borderColor: border,
+                borderWidth: '1.5px',
+                background: bg,
+                color: hasVoted ? 'var(--fg-subtle)' : 'var(--fg)',
+                borderRadius: '4px',
+                boxShadow: hasVoted ? 'none' : '0 2px 12px rgba(155,28,49,0.18)',
               }}
             >
-              <span className={`font-bold truncate w-full ${hasVoted ? 'text-lg' : 'text-xl'}`}>
-                {player.name}
-              </span>
-              {hasVoted
-                ? <span className="text-green-500 text-sm font-bold">✓ Voted</span>
-                : <span className="text-sm font-bold" style={{ color: 'var(--fg-subtle)' }}>Tap to vote</span>
-              }
+              {/* Envelope flap */}
+              <div
+                className="absolute top-0 left-0 w-full"
+                style={{
+                  height: '36%',
+                  background: hasVoted
+                    ? (theme === 'dark' ? '#251c1e' : '#e8e8e8')
+                    : (theme === 'dark' ? '#5c1a2a' : '#f5c8d0'),
+                  clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
+                }}
+              />
+              <div className="relative flex flex-col items-center gap-1 mt-6">
+                <span className={`font-bold truncate w-full px-3 ${hasVoted ? 'text-lg' : 'text-xl'}`}>
+                  {player.name}
+                </span>
+                {hasVoted
+                  ? <span className="text-green-500 text-sm font-bold">✓ Voted</span>
+                  : <span className="text-sm font-bold" style={{ color: 'var(--fg-subtle)' }}>Tap to vote</span>
+                }
+              </div>
             </button>
           )
         })}

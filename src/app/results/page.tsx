@@ -75,7 +75,7 @@ export default function ResultsPage() {
           </p>
         </div>
       ) : (
-        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(236, 34, 81, 0.41)' : 'rgba(232, 69, 107, 0.22)', border: '1px solid rgba(255, 37, 37, 0.54)' }}>
+        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(236, 34, 81, 0.41)' : 'rgba(235, 146, 158, 0.32)', border: '1px solid rgba(255, 37, 37, 0.54)' }}>
           <p className="font-title text-4xl font-bold mb-1" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
           <p className="text-lg mb-2" style={{ color: 'var(--fg-muted)' }}>The spies blended in perfectly.</p>
           <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
