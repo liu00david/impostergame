@@ -15,6 +15,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            var stored = localStorage.getItem('theme');
+            var theme = stored || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+            if (theme === 'light') document.documentElement.classList.add('light');
+          })();
+        `}} />
+      </head>
       <body className="min-h-full antialiased" style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
         <ThemeProvider>
           <GameProvider>

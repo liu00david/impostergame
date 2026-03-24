@@ -45,16 +45,13 @@ export default function DebriefPage() {
         </div>
       </header>
 
-      <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2">
+      <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2" style={{ marginBottom: '10px' }}>
         <div className="space-y-3">
-          <p className="text-3xl font-bold" style={{ color: 'var(--fg)' }}>Time to debrief.</p>
-          <p className="text-lg leading-relaxed" style={{ color: 'var(--fg-muted)' }}>
-            Discuss the signals.
-          </p>
-          <p className="text-lg leading-relaxed" style={{ color: 'var(--fg-muted)' }}>
+          <p className="text-xl" style={{ color: 'var(--fg)' }}>Discuss among each other</p>
+          <p className="text-xl leading-relaxed" style={{ color: 'var(--fg-muted)' }}>
             Was anyone suspicious? 
           </p>
-          <p className="text-lg font-bold" style={{ color: 'var(--fg-subtle)' }}>
+          <p className="text-xl font-bold" style={{ color: 'var(--fg-subtle)' }}>
             When ready, proceed to voting.
           </p>
         </div>

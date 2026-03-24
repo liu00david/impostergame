@@ -51,12 +51,12 @@ export default function GamePage() {
       </header>
 
       <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2">
-        <p className="text-lg leading-relaxed font-medium" style={{ color: 'var(--fg)' }}>
+        <p className="text-xl leading-relaxed font-medium" style={{ color: 'var(--fg)' }}>
           Go around in a circle. Each agent gives one signal, without revealing the codeword!
         </p>
         <div className="space-y-2 w-full">
-          <p className="text-xl font-semibold" style={{ color: 'var(--fg-muted)' }}>Starting with</p>
-          <div className="rounded-2xl border px-6 py-4 w-full" style={{ background: 'var(--bg-card)', borderColor: 'rgba(155,28,49,0.4)' }}>
+          <p className="text-xl font-semibold" style={{ color: 'var(--fg-subtle)' }}>Starting with agent</p>
+          <div className="rounded-3xl border px-6 py-4" style={{ background: 'var(--bg-card)', borderColor: 'rgba(155,28,49,0.4)' }}>
             <p className="text-3xl font-bold">{firstPlayer?.name}</p>
           </div>
         </div>

@@ -32,16 +32,16 @@ export default function LandingPage() {
               aria-hidden="true"
               style={{
                 position: 'absolute',
-                width: '28px',
-                height: '28px',
-                top: '-22px',
+                width: '56px',
+                height: '56px',
+                top: '-44px',
                 right: '18%',
                 pointerEvents: 'none',
               }}
             />
           </div>
           <p className="mt-3 text-base" style={{ color: 'var(--fg-muted)' }}>
-            Intel is in. There&apos;s a spy among you.
+            Intel is in. There&apos;s a spy among us.
           </p>
         </div>
 

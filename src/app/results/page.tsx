@@ -26,15 +26,26 @@ export default function ResultsPage() {
   const spies = state.players.filter(p => p.isImpostor)
   const playerMap = new Map(state.players.map(p => [p.id, p]))
 
-  // Compute eliminated set: include rank i only if results[i].votes > results[i+1].votes
-  // i.e. stop adding as soon as the next person outside ties with the current rank
+  // Compute eliminated set: take whole vote-count groups from the top.
+  // A group fits only if slotsUsed + groupSize <= impostorCount.
+  // Example: votes [2,2,1], 2 spies → group {2 votes, size 2} fits in 2 slots → both eliminated.
+  // Example: votes [2,1,1], 1 spy → group {2 votes, size 1} fits in 1 slot → only top eliminated.
+  // Example: votes [1,1,1], 1 spy → group {1 vote, size 3} doesn't fit in 1 slot → nobody eliminated.
   const eliminatedIds = new Set<string>()
-  for (let i = 0; i < state.impostorCount && i < results.length; i++) {
-    const nextVotes = results[i + 1]?.votes ?? -1
-    if (results[i].votes > nextVotes) {
-      eliminatedIds.add(results[i].playerId)
+  let slotsUsed = 0
+  let i = 0
+  while (i < results.length && slotsUsed < state.impostorCount) {
+    const groupVotes = results[i].votes
+    const group: string[] = []
+    while (i < results.length && results[i].votes === groupVotes) {
+      group.push(results[i].playerId)
+      i++
+    }
+    if (slotsUsed + group.length <= state.impostorCount) {
+      group.forEach(id => eliminatedIds.add(id))
+      slotsUsed += group.length
     } else {
-      break
+      break // group straddles the cutoff — don't partially eliminate
     }
   }
 
@@ -44,8 +55,8 @@ export default function ResultsPage() {
     .join(', ') || 'Nobody'
 
   function handleReset() {
-    router.push('/setup')
     dispatch({ type: 'RESET_GAME' })
+    router.push('/setup')
   }
 
   return (
@@ -57,11 +68,11 @@ export default function ResultsPage() {
         </div>
       </header>
 
-      <div className="text-center mb-6">
-        <p className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--fg-subtle)' }}>Codeword</p>
+      <div className="text-center mb-4">
+        <p className="text-sm font-semibold uppercase tracking-wider mb-2" style={{ color: 'var(--fg-subtle)' }}>Codeword</p>
         <button
           onClick={() => setWordRevealed(r => !r)}
-          className="w-full rounded-xl transition-all active:scale-95 flex items-center justify-center min-h-[72px] border-2"
+          className="w-full rounded-xl transition-all active:scale-95 flex items-center justify-center min-h-[60px] border-2"
           style={wordRevealed ? {
             borderColor: 'rgba(155,28,49,0.4)',
             background: 'rgba(155,28,49,0.08)',
@@ -72,7 +83,7 @@ export default function ResultsPage() {
           }}
         >
           {wordRevealed ? (
-            <span className="text-4xl font-bold" style={{ color: theme === 'dark' ? '#ffffff' : '#000000' }}>{state.secretWord}</span>
+            <span className="text-3xl font-bold" style={{ color: theme === 'dark' ? '#ffffff' : '#000000' }}>{state.secretWord}</span>
           ) : (
             <span className="text-lg font-semibold" style={{ color: 'var(--fg-muted)' }}>Tap to reveal</span>
           )}
@@ -113,14 +124,16 @@ export default function ResultsPage() {
           const player = playerMap.get(result.playerId)
           if (!player) return null
           const isEliminated = eliminatedIds.has(result.playerId)
+          const rowStyle = isEliminated
+            ? player.isImpostor
+              ? { borderColor: 'rgba(34,197,94,0.45)', background: 'rgba(34,197,94,0.10)' }
+              : { borderColor: 'rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.08)' }
+            : { borderColor: 'var(--border)', background: 'var(--bg-card)' }
           return (
             <div
               key={result.playerId}
               className="flex items-center justify-between rounded-xl border px-4 py-3"
-              style={isEliminated
-                ? { borderColor: 'rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.08)' }
-                : { borderColor: 'var(--border)', background: 'var(--bg-card)' }
-              }
+              style={rowStyle}
             >
               <div className="flex items-center gap-3">
                 <span className="text-base w-5" style={{ color: 'var(--fg-subtle)' }}>{rank + 1}.</span>
