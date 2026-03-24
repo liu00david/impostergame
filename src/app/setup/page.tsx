@@ -54,7 +54,7 @@ export default function SetupPage() {
 
   return (
     <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
-      <header className="mb-8 flex items-center justify-between">
+      <header className="mb-5 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold font-title" style={{ color: 'var(--fg)' }}>Mission Setup</h1>
           <p className="text-sm mt-0.5" style={{ color: 'var(--fg-muted)' }}>Configure your agents and domain</p>
@@ -65,27 +65,29 @@ export default function SetupPage() {
       <div className="flex flex-col gap-6 flex-1">
         <PlayerList />
 
-        {state.players.length > 0 && (
+        <div className="flex items-center justify-between">
+          {state.players.length > 0 ? (
+            <button
+              onClick={() => dispatch({ type: 'CLEAR_PLAYERS' })}
+              className="text-sm transition-colors hover:text-red-400"
+              style={{ color: 'var(--fg-subtle)' }}
+            >
+              Reset players
+            </button>
+          ) : <span />}
           <button
-            onClick={() => dispatch({ type: 'CLEAR_PLAYERS' })}
-            className="text-sm transition-colors self-start hover:text-red-400"
+            onClick={() => setShowAdvanced(true)}
+            className="text-sm font-medium transition-colors"
             style={{ color: 'var(--fg-subtle)' }}
           >
-            Reset players
+            ⚙ Advanced Settings
           </button>
-        )}
+        </div>
 
         <ImpostorToggle />
         <CategoryGrid />
 
         <div className="mt-auto pt-4 space-y-3">
-          <button
-            onClick={() => setShowAdvanced(true)}
-            className="w-full text-sm font-medium text-center transition-colors"
-            style={{ color: 'var(--fg-subtle)' }}
-          >
-            ⚙ Advanced Settings
-          </button>
           {state.selectedCounts.length === 0 && (
             <p className="text-center text-sm" style={{ color: 'var(--fg-muted)', opacity: 0.95 }}>
               Select at least one spy count above
