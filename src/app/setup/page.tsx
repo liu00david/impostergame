@@ -1,20 +1,51 @@
 'use client'
 
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
+import { useTheme } from '@/context/ThemeContext'
 import { PlayerList } from '@/components/setup/PlayerList'
 import { ImpostorToggle } from '@/components/setup/ImpostorToggle'
 import { CategoryGrid } from '@/components/setup/CategoryGrid'
 import { Button } from '@/components/ui/Button'
+import { Modal } from '@/components/ui/Modal'
 import Link from 'next/link'
 import { IMPOSTOR_MIN_PLAYERS } from '@/lib/constants'
 
+function Toggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <button
+      onClick={() => onChange(!value)}
+      className="relative inline-flex items-center rounded-full transition-colors flex-shrink-0"
+      style={{
+        width: '44px', height: '24px',
+        background: value ? '#16a34a' : 'rgba(128,128,128,0.4)',
+      }}
+      aria-checked={value}
+      role="switch"
+    >
+      <span
+        className="inline-block rounded-full bg-white transition-transform"
+        style={{
+          width: '18px', height: '18px',
+          transform: value ? 'translateX(23px)' : 'translateX(3px)',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+        }}
+      />
+    </button>
+  )
+}
+
 export default function SetupPage() {
   const { state, dispatch } = useGame()
+  const { theme, toggle: toggleTheme } = useTheme()
   const router = useRouter()
+  const [showAdvanced, setShowAdvanced] = useState(false)
 
-  const minPlayers = IMPOSTOR_MIN_PLAYERS[state.impostorCount]
-  const canStart = state.players.length >= minPlayers && state.selectedCategory !== null
+  const minPlayersNeeded = state.selectedCounts.length > 0 ? IMPOSTOR_MIN_PLAYERS[state.selectedCounts[0]] : 3
+  const canStart = state.selectedCounts.length > 0
+    && state.players.length >= minPlayersNeeded
+    && (state.selectedCategory !== null || state.useRandomCategory)
 
   function handleStart() {
     dispatch({ type: 'START_GAME' })
@@ -47,10 +78,22 @@ export default function SetupPage() {
         <ImpostorToggle />
         <CategoryGrid />
 
-        <div className="mt-auto pt-4">
-          {state.players.length < minPlayers && (
-            <p className="text-center text-sm mb-3" style={{ color: 'var(--fg-muted)' }}>
-              Need at least {minPlayers} agents for {state.impostorCount} spy{state.impostorCount > 1 ? 's' : ''}
+        <div className="mt-auto pt-4 space-y-3">
+          <button
+            onClick={() => setShowAdvanced(true)}
+            className="w-full text-sm font-medium text-center transition-colors"
+            style={{ color: 'var(--fg-subtle)' }}
+          >
+            ⚙ Advanced Settings
+          </button>
+          {state.selectedCounts.length === 0 && (
+            <p className="text-center text-sm" style={{ color: 'var(--fg-muted)', opacity: 0.95 }}>
+              Select at least one spy count above
+            </p>
+          )}
+          {state.selectedCounts.length > 0 && state.players.length < minPlayersNeeded && (
+            <p className="text-center text-sm" style={{ color: 'var(--fg-muted)', opacity: 0.95 }}>
+              Need at least {minPlayersNeeded} agents for {state.selectedCounts[0]} spy{state.selectedCounts[0] > 1 ? 's' : ''}
             </p>
           )}
           <Button fullWidth size="lg" onClick={handleStart} disabled={!canStart}>
@@ -58,6 +101,61 @@ export default function SetupPage() {
           </Button>
         </div>
       </div>
+
+      <Modal open={showAdvanced}>
+        <div className="space-y-5">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">Advanced Settings</h2>
+            <button
+              onClick={() => setShowAdvanced(false)}
+              className="text-xl leading-none p-1"
+              style={{ color: 'var(--fg-subtle)' }}
+            >
+              ✕
+            </button>
+          </div>
+
+          <div className="space-y-4">
+            <SettingRow
+              label="Spies know each other"
+              description="Spies are told who their fellow spies are"
+              value={state.settings.spiesKnowEachOther}
+              onChange={v => dispatch({ type: 'UPDATE_SETTINGS', settings: { spiesKnowEachOther: v } })}
+            />
+            <SettingRow
+              label="Spy votes count"
+              description="Spies' votes affect the tally outcome"
+              value={state.settings.spiesVoteCount}
+              onChange={v => dispatch({ type: 'UPDATE_SETTINGS', settings: { spiesVoteCount: v } })}
+            />
+            <SettingRow
+              label="Dark mode"
+              description="Use dark theme"
+              value={theme === 'dark'}
+              onChange={() => toggleTheme()}
+            />
+          </div>
+
+          <Button fullWidth onClick={() => setShowAdvanced(false)}>Done</Button>
+        </div>
+      </Modal>
+    </div>
+  )
+}
+
+function SettingRow({ label, description, value, onChange }: {
+  label: string
+  description: string
+  value: boolean
+  onChange: (v: boolean) => void
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 rounded-xl px-4 py-3 border" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}>
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-semibold" style={{ color: 'var(--fg)' }}>{label}</p>
+        <p className="text-xs mt-0.5" style={{ color: 'var(--fg-subtle)' }}>{description}</p>
+      </div>
+      <Toggle value={value} onChange={onChange} />
     </div>
   )
 }

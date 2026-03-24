@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button'
 import { ExitButton } from '@/components/ui/ExitButton'
 import { Player } from '@/types/game'
 import { DomainLabel } from '@/components/ui/DomainLabel'
+import { CATEGORY_LABELS } from '@/lib/gameLogic'
 
 export default function RevealPage() {
   const { state, dispatch } = useGame()
@@ -112,13 +113,13 @@ export default function RevealPage() {
             </p>
             <div className="border-t pt-4" style={{ borderColor: 'var(--border)' }}>
               <p className="text-sm mb-1" style={{ color: 'var(--fg-muted)' }}>Domain</p>
-              <p className="text-2xl font-bold">{state.selectedCategory}</p>
+              <p className="text-2xl font-bold">{state.selectedCategory ? (CATEGORY_LABELS[state.selectedCategory] ?? state.selectedCategory) : ''}</p>
             </div>
             {activePlayer.isImpostor ? (
               <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
                 <p className="text-3xl font-bold" style={{ color: '#e8385a' }}>You are a Spy!</p>
                 <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Blend in. Don&apos;t reveal yourself.</p>
-                {spyPartners(activePlayer).length > 0 && (
+                {state.settings.spiesKnowEachOther && spyPartners(activePlayer).length > 0 && (
                   <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>
                     {spyPartners(activePlayer).length === 1 ? 'Partner' : 'Partners'}:{' '}
                     <span className="font-bold" style={{ color: 'var(--fg)' }}>{spyPartners(activePlayer).join(', ')}</span>

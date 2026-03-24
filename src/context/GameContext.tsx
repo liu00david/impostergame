@@ -1,16 +1,18 @@
 'use client'
 
 import React, { createContext, useContext, useReducer } from 'react'
-import { GameState, Phase, Category, VoteBallot } from '@/types/game'
-import { assignRoles, pickWord, pickStartingPlayer } from '@/lib/gameLogic'
+import { GameState, Phase, Category, VoteBallot, GameSettings } from '@/types/game'
+import { assignRoles, pickWord, pickStartingPlayer, CATEGORIES } from '@/lib/gameLogic'
 import { IMPOSTOR_MIN_PLAYERS } from '@/lib/constants'
 
 
 type Action =
   | { type: 'ADD_PLAYER'; name: string }
   | { type: 'REMOVE_PLAYER'; id: string }
-  | { type: 'SET_IMPOSTOR_COUNT'; count: 1 | 2 | 3 }
+  | { type: 'TOGGLE_SPY_COUNT'; count: 1 | 2 | 3 }
   | { type: 'SET_CATEGORY'; category: Category }
+  | { type: 'SET_RANDOM_CATEGORY' }
+  | { type: 'UPDATE_SETTINGS'; settings: Partial<GameSettings> }
   | { type: 'START_GAME' }
   | { type: 'MARK_ROLE_SEEN'; id: string }
   | { type: 'ADVANCE_REVEAL' }
@@ -25,7 +27,9 @@ const initialState: GameState = {
   phase: 'setup',
   players: [],
   impostorCount: 1,
+  selectedCounts: [],
   selectedCategory: null,
+  useRandomCategory: false,
   secretWord: null,
   startingPlayerIndex: 0,
   currentRevealIndex: 0,
@@ -33,6 +37,10 @@ const initialState: GameState = {
   ballots: [],
   elapsedSeconds: 0,
   loopComplete: false,
+  settings: {
+    spiesKnowEachOther: true,
+    spiesVoteCount: true,
+  },
 }
 
 
@@ -57,26 +65,48 @@ function reducer(state: GameState, action: Action): GameState {
     }
     case 'REMOVE_PLAYER': {
       const remaining = state.players.filter(p => p.id !== action.id)
-      const minForCurrent = IMPOSTOR_MIN_PLAYERS[state.impostorCount]
-      const impostorCount =
-        remaining.length < minForCurrent ? 1 : state.impostorCount
-      return { ...state, players: remaining, impostorCount }
+      // Remove any selected counts that now require more players than we have
+      const selectedCounts = state.selectedCounts.filter(
+        c => remaining.length >= IMPOSTOR_MIN_PLAYERS[c]
+      ) as (1 | 2 | 3)[]
+      return { ...state, players: remaining, selectedCounts }
     }
-    case 'SET_IMPOSTOR_COUNT': {
-      return { ...state, impostorCount: action.count }
+    case 'TOGGLE_SPY_COUNT': {
+      const { count } = action
+      const already = state.selectedCounts.includes(count)
+      const selectedCounts = already
+        ? state.selectedCounts.filter(c => c !== count)
+        : [...state.selectedCounts, count].sort() as (1 | 2 | 3)[]
+      return { ...state, selectedCounts }
     }
     case 'SET_CATEGORY': {
-      return { ...state, selectedCategory: action.category }
+      return { ...state, selectedCategory: action.category, useRandomCategory: false }
+    }
+    case 'SET_RANDOM_CATEGORY': {
+      return { ...state, selectedCategory: 'Food', useRandomCategory: true } // placeholder; real pick at START_GAME
+    }
+    case 'UPDATE_SETTINGS': {
+      return { ...state, settings: { ...state.settings, ...action.settings } }
     }
     case 'START_GAME': {
-      if (!state.selectedCategory) return state
-      const playersWithRoles = assignRoles(state.players, state.impostorCount)
-      const secretWord = pickWord(state.selectedCategory)
+      if (!state.selectedCategory && !state.useRandomCategory) return state
+      if (state.selectedCounts.length === 0) return state
+      const category = state.useRandomCategory
+        ? CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)]
+        : state.selectedCategory!
+      // Pick actual spy count randomly from the selected options
+      const impostorCount = state.selectedCounts[
+        Math.floor(Math.random() * state.selectedCounts.length)
+      ] as 1 | 2 | 3
+      const playersWithRoles = assignRoles(state.players, impostorCount)
+      const secretWord = pickWord(category)
       const startingPlayerIndex = pickStartingPlayer(state.players.length)
       return {
         ...state,
+        impostorCount,
         players: playersWithRoles,
         secretWord,
+        selectedCategory: category,
         startingPlayerIndex,
         currentRevealIndex: 0,
         currentVoterIndex: 0,
@@ -128,7 +158,7 @@ function reducer(state: GameState, action: Action): GameState {
       return { ...state, phase: action.phase }
     }
     case 'CLEAR_PLAYERS': {
-      return { ...state, players: [], impostorCount: 1 }
+      return { ...state, players: [], selectedCounts: [] }
     }
     case 'RESET_GAME': {
       // Keep player names and settings; clear all in-game state.
@@ -138,9 +168,11 @@ function reducer(state: GameState, action: Action): GameState {
         .map(p => ({ ...p, isImpostor: false, hasSeenRole: false }))
       return {
         ...initialState,
-        impostorCount: state.impostorCount,
-        selectedCategory: state.selectedCategory,
+        selectedCounts: state.selectedCounts,
+        selectedCategory: state.useRandomCategory ? null : state.selectedCategory,
+        useRandomCategory: state.useRandomCategory,
         players: resetPlayers,
+        settings: state.settings,
       }
     }
     default:

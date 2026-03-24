@@ -1,6 +1,24 @@
 import { Player, Category, VoteBallot } from '@/types/game'
 import { WORD_LISTS } from './wordLists'
 
+export const CATEGORIES: Category[] = [
+  'Animals', 'AsianFood', 'Celebrities', 'Cities', 'FictionalCharacter', 'Food', 'Hobbies',
+  'Internet', 'Movies', 'Sports'
+]
+
+export const CATEGORY_LABELS: Record<Category, string> = {
+  Animals: 'Animals',
+  AsianFood: 'Asian Food',
+  Celebrities: 'Celebrities',
+  Cities: 'Cities',
+  FictionalCharacter: 'Fictional Character',
+  Food: 'Food',
+  Hobbies: 'Hobbies',
+  Internet: 'Internet',
+  Movies: 'Movies',
+  Sports: 'Sports',
+}
+
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
   for (let i = a.length - 1; i > 0; i--) {

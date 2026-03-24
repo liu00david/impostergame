@@ -21,7 +21,11 @@ export default function ResultsPage() {
 
   if (state.players.length === 0 || state.phase !== 'results' || state.ballots.length === 0) return null
 
-  const results = tallyVotes(state.ballots, state.players)
+  const spyIds = new Set(state.players.filter(p => p.isImpostor).map(p => p.id))
+  const effectiveBallots = state.settings.spiesVoteCount
+    ? state.ballots
+    : state.ballots.filter(b => !spyIds.has(b.voterId))
+  const results = tallyVotes(effectiveBallots, state.players)
   const spiesCaught = checkImpostorsCaught(results, state.players, state.impostorCount)
   const spies = state.players.filter(p => p.isImpostor)
   const playerMap = new Map(state.players.map(p => [p.id, p]))

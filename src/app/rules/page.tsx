@@ -73,9 +73,8 @@ export default function RulesPage() {
 
         <Section title="Tips">
           <ul>
-            <li>Spies: let the early signals guide you — then give something plausible but noncommittal.</li>
+            <li>Spies: let the early signals guide you, then give something plausible but noncommittal.</li>
             <li>Operatives: don&apos;t make signals too specific or the spy will learn the codeword and win the final guess.</li>
-            <li>In debrief, pressure the agents who hedged — confidence can reveal more than words.</li>
           </ul>
         </Section>
 

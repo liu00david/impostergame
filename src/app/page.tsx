@@ -32,10 +32,10 @@ export default function LandingPage() {
               aria-hidden="true"
               style={{
                 position: 'absolute',
-                width: '56px',
-                height: '56px',
-                top: '-44px',
-                right: '18%',
+                width: '80px',
+                height: '60px',
+                top: '-36px',
+                right: '10%',
                 pointerEvents: 'none',
               }}
             />

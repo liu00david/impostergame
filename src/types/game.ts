@@ -1,5 +1,5 @@
 export type Phase = 'setup' | 'reveal' | 'game' | 'vote' | 'results'
-export type Category = 'Food' | 'Movies' | 'Animals' | 'Travel' | 'Sports' | 'Music' | 'Nature' | 'Tech' | 'TV Shows' | 'Celebrities' | 'Brands' | 'Holidays'
+export type Category = 'Animals'| 'AsianFood' | 'Celebrities' | 'Cities' | 'FictionalCharacter' | 'Food' | 'Hobbies' | 'Internet' | 'Movies' | 'Sports'
 
 export interface Player {
   id: string
@@ -14,11 +14,18 @@ export interface VoteBallot {
   suspects: string[]
 }
 
+export interface GameSettings {
+  spiesKnowEachOther: boolean
+  spiesVoteCount: boolean
+}
+
 export interface GameState {
   phase: Phase
   players: Player[]
-  impostorCount: 1 | 2 | 3
+  impostorCount: 1 | 2 | 3        // actual count used this game (picked at START_GAME)
+  selectedCounts: (1 | 2 | 3)[]   // which spy counts are toggled on in setup
   selectedCategory: Category | null
+  useRandomCategory: boolean
   secretWord: string | null
   startingPlayerIndex: number
   currentRevealIndex: number
@@ -26,4 +33,5 @@ export interface GameState {
   ballots: VoteBallot[]
   elapsedSeconds: number
   loopComplete: boolean
+  settings: GameSettings
 }

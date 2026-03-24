@@ -1,27 +1,18 @@
 'use client'
 
-import { useState } from 'react'
 import { useGame } from '@/context/GameContext'
 import { Category } from '@/types/game'
-
-const CATEGORIES: Category[] = [
-  'Food', 'Movies', 'Animals', 'Travel', 'Sports', 'Music',
-  'Nature', 'Tech', 'TV Shows', 'Celebrities', 'Brands', 'Holidays',
-]
+import { CATEGORIES, CATEGORY_LABELS } from '@/lib/gameLogic'
 
 export function CategoryGrid() {
   const { state, dispatch } = useGame()
-  const [randomSelected, setRandomSelected] = useState(false)
 
   function handleSelect(category: Category) {
-    setRandomSelected(false)
     dispatch({ type: 'SET_CATEGORY', category })
   }
 
   function handleRandom() {
-    const pick = CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)]
-    dispatch({ type: 'SET_CATEGORY', category: pick })
-    setRandomSelected(true)
+    dispatch({ type: 'SET_RANDOM_CATEGORY' })
   }
 
   const selectedStyle = {
@@ -48,15 +39,15 @@ export function CategoryGrid() {
             key={name}
             onClick={() => handleSelect(name)}
             className="rounded-xl border px-4 py-2 text-center transition-all min-h-[36px]"
-            style={!randomSelected && state.selectedCategory === name ? selectedStyle : defaultStyle}
+            style={!state.useRandomCategory && state.selectedCategory === name ? selectedStyle : defaultStyle}
           >
-            {name}
+            {CATEGORY_LABELS[name]}
           </button>
         ))}
         <button
           onClick={handleRandom}
           className="col-span-2 rounded-xl border px-4 py-2 text-center transition-all min-h-[36px]"
-          style={randomSelected ? selectedStyle : defaultStyle}
+          style={state.useRandomCategory ? selectedStyle : defaultStyle}
         >
           Random
         </button>

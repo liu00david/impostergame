@@ -40,7 +40,8 @@ export default function VotePage() {
       if (next.has(id)) {
         next.delete(id)
       } else {
-        if (next.size < state.impostorCount) next.add(id)
+        const maxVotes = Math.max(...state.selectedCounts)
+      if (next.size < maxVotes) next.add(id)
       }
       return next
     })
@@ -138,7 +139,7 @@ export default function VotePage() {
                 Agent {activeVoter.name}&apos;s ruling
               </p>
               <p className="text-sm" style={{ color: 'var(--fg-subtle)' }}>
-                Identify up to {state.impostorCount} spy{state.impostorCount > 1 ? 's' : ''} (or skip)
+                Identify up to {Math.max(...state.selectedCounts)} spy{Math.max(...state.selectedCounts) > 1 ? 's' : ''} (or skip)
               </p>
             </div>
             <div className="space-y-2">
