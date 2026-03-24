@@ -19,7 +19,7 @@ export default function LandingPage() {
                 fontWeight: 900,
                 lineHeight: 1,
                 color: '#9b1c31',
-                textShadow: '0 1px 8px rgba(155,28,49,0.18)',
+                textShadow: '0 1px 8px rgba(155, 28, 49, 0.14)',
                 letterSpacing: '-0.03em',
               }}
             >
@@ -32,9 +32,9 @@ export default function LandingPage() {
               aria-hidden="true"
               style={{
                 position: 'absolute',
-                width: '80px',
-                height: '60px',
-                top: '-36px',
+                width: '70px',
+                height: '50px',
+                top: '-22px',
                 right: '10%',
                 pointerEvents: 'none',
               }}

@@ -49,19 +49,21 @@ function reducer(state: GameState, action: Action): GameState {
     case 'ADD_PLAYER': {
       if (state.players.length >= 12) return state
       const maxOrder = state.players.reduce((m, p) => Math.max(m, p.order), -1)
-      return {
-        ...state,
-        players: [
-          ...state.players,
-          {
-            id: crypto.randomUUID(),
-            name: action.name.trim(),
-            isImpostor: false,
-            hasSeenRole: false,
-            order: maxOrder + 1,
-          },
-        ],
-      }
+      const newPlayers = [
+        ...state.players,
+        {
+          id: crypto.randomUUID(),
+          name: action.name.trim(),
+          isImpostor: false,
+          hasSeenRole: false,
+          order: maxOrder + 1,
+        },
+      ]
+      // Auto-select 1 spy when player count first reaches 3 and nothing is selected yet
+      const selectedCounts = state.selectedCounts.length === 0 && newPlayers.length === 3
+        ? [1 as const]
+        : state.selectedCounts
+      return { ...state, players: newPlayers, selectedCounts }
     }
     case 'REMOVE_PLAYER': {
       const remaining = state.players.filter(p => p.id !== action.id)
