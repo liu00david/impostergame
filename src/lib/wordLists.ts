@@ -9,11 +9,11 @@ export const WORD_LISTS: Record<Category, string[]> = {
     "Ostrich", "Panda", "Penguin", "Rabbit", "Raccoon", "Shark", "Sloth", "Tiger"
   ],
   AsianFood: [
-    "Bibimbap", "Bulgogi", "Buldak", "Chow Mein", "Dimsum", "Dumpling", "Edamame", "Gyoza",
-    "Japchae", "Kimchi", "Kimbap", "Mochi", "Naan", "Nigiri",
-    "Onigiri", "Pad Thai", "Peking Duck", "Pho", "Ramen", "Sashimi", "Satay",
-    "Samosa", "Sichuan", "Sushi", "Takoyaki", "Tandoori",
-    "Tempura", "Teriyaki", "Tteokbokki", "Udon", "Wasabi", "Wonton", "Yakitori"
+    "Banh Mi", "Bibimbap", "Bulgogi","Butter Chicken", "Chow Mein", "Dimsum", "Dumpling", "Edamame", "Gyoza",
+    "Hotpot", "Japchae", "K-BBQ", "Kimchi", "Kimbap", "Mochi",
+    "Onigiri", "Pad Thai", "Peking Duck", "Pho", "Ramen", "Sashimi",
+    "Samosa", "Spam", "Sushi", "Takoyaki", "Tandoori",
+    "Tempura", "Teriyaki", "Udon", "Yakitori"
   ],
   Celebrities: ["Adele", "Ariana Grande", "Bad Bunny", "Beyonce", "Billie Eilish", 
     "Bruno Mars", "Chappell Roan", "Chris Rock", "Doja Cat", "Drake", "Dua Lipa", 
