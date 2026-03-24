@@ -62,7 +62,7 @@ export default function VotePage() {
           <DomainLabel category={state.selectedCategory} />
           <h1 className="text-2xl font-bold">Voting</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--fg-muted)' }}>
-            Each agent taps their name to cast a private vote.
+            Each agent votes privately for who to eliminate.
           </p>
           <p className="text-sm mt-0.5" style={{ color: 'var(--fg-muted)' }}>
             Voted: {voted.size}/{state.players.length}

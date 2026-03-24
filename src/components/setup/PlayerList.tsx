@@ -68,11 +68,11 @@ export function PlayerList() {
         {[...state.players].sort((a, b) => a.order - b.order).map((player, i) => (
           <li
             key={player.id}
-            className="flex items-center justify-between rounded-xl border px-4 py-3"
+            className="flex items-center justify-between rounded-xl border px-4 py-2"
             style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}
           >
             <span className="text-lg" style={{ color: 'var(--fg)' }}>
-              <span className="mr-2 text-base" style={{ color: 'var(--fg-subtle)' }}>{i + 1}.</span>
+              <span className="mr-4 text-base" style={{ color: 'var(--fg-subtle)' }}>{i + 1}.</span>
               {player.name}
             </span>
             <button

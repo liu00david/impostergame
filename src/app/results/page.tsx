@@ -100,7 +100,7 @@ export default function ResultsPage() {
             They were: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
           </p>
           <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
-            Identified: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
+            Eliminated: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
           </p>
         </div>
       )}

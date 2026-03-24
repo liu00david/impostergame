@@ -52,10 +52,10 @@ export default function DebriefPage() {
             Discuss the signals.
           </p>
           <p className="text-lg leading-relaxed" style={{ color: 'var(--fg-muted)' }}>
-            Did someone seem off? Were they too vague, or even too confident?
+            Was anyone suspicious? 
           </p>
           <p className="text-lg font-bold" style={{ color: 'var(--fg-subtle)' }}>
-            When you&apos;re ready, proceed to the vote.
+            When ready, proceed to voting.
           </p>
         </div>
       </div>

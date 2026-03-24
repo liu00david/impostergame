@@ -40,7 +40,7 @@ export function CategoryGrid() {
   return (
     <div className="space-y-2">
       <h2 className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--fg-subtle)' }}>
-        Category
+        Domain
       </h2>
       <div className="grid grid-cols-2 gap-2">
         {CATEGORIES.map(name => (
