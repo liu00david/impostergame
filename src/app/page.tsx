@@ -18,8 +18,8 @@ export default function LandingPage() {
                 fontSize: '4rem',
                 fontWeight: 900,
                 lineHeight: 1,
-                color: '#9b1c31',
-                textShadow: '0 1px 8px rgba(155, 28, 49, 0.14)',
+                color: 'rgba(201, 29, 58, 0.94)',
+                textShadow: '0 1px 8px rgba(212, 35, 79, 0.24)',
                 letterSpacing: '-0.03em',
               }}
             >

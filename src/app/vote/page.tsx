@@ -117,7 +117,7 @@ export default function VotePage() {
                 </span>
                 {hasVoted
                   ? <span className="text-green-500 text-xs font-bold tracking-wide">✓ VOTED</span>
-                  : <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--fg-subtle)' }}>Vote</span>
+                  : <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--fg-subtle)' }}>Ballot</span>
                 }
               </div>
             </button>

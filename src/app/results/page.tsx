@@ -112,7 +112,7 @@ export default function ResultsPage() {
           <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
           <p className="text-lg mb-2" style={{ color: 'var(--fg-muted)' }}>The spies were not eliminated.</p>
           <p className="text-lg mb-1" style={{ color: 'var(--fg-muted)' }}>
-            They were: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
+            Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
           </p>
           <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
             Eliminated: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>

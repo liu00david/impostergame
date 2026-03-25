@@ -11,7 +11,7 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   AsianFood: 'Asian Food',
   Celebrities: 'Celebrities',
   Cities: 'Cities',
-  FictionalCharacter: 'Fictional Character',
+  FictionalCharacter: 'Fictional Person',
   Food: 'Food',
   Hobbies: 'Hobbies',
   Internet: 'Internet',
