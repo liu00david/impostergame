@@ -18,8 +18,8 @@ export default function LandingPage() {
                 fontSize: '4rem',
                 fontWeight: 900,
                 lineHeight: 1,
-                color: 'rgba(201, 29, 58, 0.94)',
-                textShadow: '0 1px 8px rgba(212, 35, 79, 0.24)',
+                color: 'rgba(209, 9, 42, 0.93)',
+                textShadow: '0 1px 8px rgba(0, 0, 0, 0.22)',
                 letterSpacing: '-0.03em',
               }}
             >
@@ -59,7 +59,7 @@ export default function LandingPage() {
             </div>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>3</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Debrief</strong> — Discuss who seemed off. Debate. Deceive.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Debrief</strong> — Time for discussion, whose signals seemed off? Debate. Deceive.</span>
             </div>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>4</span>
