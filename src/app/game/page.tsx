@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
 import { Button } from '@/components/ui/Button'
 import { ExitButton } from '@/components/ui/ExitButton'
+import { Speech } from 'lucide-react'
 import { getPlayerForTurn } from '@/lib/turnOrder'
 import { formatTime } from '@/lib/formatTime'
 import { DomainLabel } from '@/components/ui/DomainLabel'
@@ -43,7 +44,7 @@ export default function GamePage() {
           <h1 className="text-2xl font-bold">Signal</h1>
         </div>
         <div className="flex items-center gap-3">
-          <p className="text-3xl font-mono font-bold text-rose-800">
+          <p className="text-3xl font-mono font-bold" style={{ color: 'rgb(209, 32, 76)' }}>
             {formatTime(state.elapsedSeconds)}
           </p>
           <ExitButton />
@@ -51,6 +52,7 @@ export default function GamePage() {
       </header>
 
       <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2">
+        <Speech size={52} color="rgb(209,32,76)" strokeWidth={1.5} />
         <p className="text-xl leading-relaxed font-medium" style={{ color: 'var(--fg)' }}>
           Go around in a circle. Each agent gives one signal, without revealing the codeword!
         </p>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
 import { Button } from '@/components/ui/Button'
 import { ExitButton } from '@/components/ui/ExitButton'
+import { Search } from 'lucide-react'
 import { formatTime } from '@/lib/formatTime'
 import { DomainLabel } from '@/components/ui/DomainLabel'
 
@@ -38,14 +39,15 @@ export default function DebriefPage() {
           <h1 className="text-2xl font-bold">Debrief</h1>
         </div>
         <div className="flex items-center gap-3">
-          <p className="text-3xl font-mono font-bold text-rose-800">
+          <p className="text-3xl font-mono font-bold" style={{ color: 'rgb(209, 32, 76)' }}>
             {formatTime(seconds)}
           </p>
           <ExitButton />
         </div>
       </header>
 
-      <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2" style={{ marginBottom: '10px' }}>
+      <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2" style={{ marginBottom: '80px' }}>
+        <Search size={52} color="rgb(209,32,76)" strokeWidth={1.5} />
         <div className="space-y-3">
           <p className="text-xl" style={{ color: 'var(--fg)' }}>Discuss among each other</p>
           <p className="text-xl leading-relaxed" style={{ color: 'var(--fg-muted)' }}>

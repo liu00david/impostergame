@@ -56,7 +56,7 @@ export default function ResultsPage() {
   const eliminatedNames = [...eliminatedIds]
     .map(id => playerMap.get(id)?.name)
     .filter(Boolean)
-    .join(', ') || 'Nobody'
+    .join(', ') || '-'
 
   function handleReset() {
     dispatch({ type: 'RESET_GAME' })
@@ -94,31 +94,60 @@ export default function ResultsPage() {
         </button>
       </div>
 
-      {spiesCaught ? (
-        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(34, 245, 111, 0.23)' : 'rgba(145, 255, 185, 0.39)', border: '3px solid rgba(0, 147, 54, 0.68)', boxShadow: '0 0 0 1px rgba(0,147,54,0.15)' }}>
-          <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Caught!</p>
-          <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
-            One last chance for spies to guess the codeword to steal the win!
-          </p>
-          <p className="text-lg mt-2" style={{ color: 'var(--fg-muted)' }}>
-            Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
-          </p>
-          <p className="text-lg mt-1" style={{ color: 'var(--fg-muted)' }}>
-            Identified: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
-          </p>
+      {/* Laptop frame */}
+      <div className="mb-6">
+        {/* Screen bezel */}
+        <div className="rounded-t-xl rounded-b-md px-3 pt-3 pb-3" style={{
+          background: theme === 'dark' ? '#222222' : '#d0d0d0',
+          boxShadow: theme === 'dark'
+            ? '0 2px 16px rgba(131, 131, 131, 0.12), inset 0 1px 0 rgba(255,255,255,0.05)'
+            : '0 2px 16px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.6)',
+        }}>
+          {/* Camera dot */}
+          <div className="flex justify-center mb-2">
+            <div className="w-1 h-1 rounded-full" style={{ background: theme === 'dark' ? '#333333' : '#b0b0b0' }} />
+          </div>
+          {/* Screen content */}
+          {spiesCaught ? (
+            <div className="rounded-lg p-5 text-center" style={{ background: theme === 'dark' ? 'rgb(17, 45, 28)' : 'rgb(235, 255, 243)', border: '3px solid rgba(0, 147, 54, 0.68)', boxShadow: '0 0 0 1px rgba(0,147,54,0.15)' }}>
+              <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Caught!</p>
+              <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
+                One last chance for spies to guess the codeword to steal the win!
+              </p>
+              <p className="text-lg mt-2" style={{ color: 'var(--fg-muted)' }}>
+                Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
+              </p>
+              <p className="text-lg mt-1" style={{ color: 'var(--fg-muted)' }}>
+                Identified: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
+              </p>
+            </div>
+          ) : (
+            <div className="rounded-lg p-5 text-center" style={{ background: theme === 'dark' ? 'rgb(76, 24, 33)' : 'rgb(255, 224, 232)', border: `3px solid ${theme === 'dark' ? 'rgba(200, 60, 80, 0.65)' : 'rgba(180, 60, 80, 0.55)'}`, boxShadow: `0 0 0 1px ${theme === 'dark' ? 'rgba(200,60,80,0.15)' : 'rgba(180,60,80,0.1)'}` }}>
+              <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
+              <p className="text-lg mb-2" style={{ color: 'var(--fg-muted)' }}>The spies were not eliminated.</p>
+              <p className="text-lg mb-1" style={{ color: 'var(--fg-muted)' }}>
+                Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
+              </p>
+              <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
+                Eliminated: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
+              </p>
+            </div>
+          )}
         </div>
-      ) : (
-        <div className="rounded-2xl p-5 mb-6 text-center" style={{ background: theme === 'dark' ? 'rgba(180, 30, 60, 0.35)' : 'rgba(230, 165, 176, 0.18)', border: `3px solid ${theme === 'dark' ? 'rgba(200, 60, 80, 0.65)' : 'rgba(180, 60, 80, 0.55)'}`, boxShadow: `0 0 0 1px ${theme === 'dark' ? 'rgba(200,60,80,0.15)' : 'rgba(180,60,80,0.1)'}` }}>
-          <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
-          <p className="text-lg mb-2" style={{ color: 'var(--fg-muted)' }}>The spies were not eliminated.</p>
-          <p className="text-lg mb-1" style={{ color: 'var(--fg-muted)' }}>
-            Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span>
-          </p>
-          <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
-            Eliminated: <span className="font-bold" style={{ color: 'var(--fg)' }}>{eliminatedNames}</span>
-          </p>
+        {/* Hinge line */}
+        <div style={{ height: '1px', background: theme === 'dark' ? '#111' : '#b8b8b8' }} />
+        {/* Laptop base */}
+        <div className="rounded-b-2xl" style={{
+          height: '18px',
+          background: theme === 'dark' ? '#333333' : '#c8c8c8',
+          boxShadow: theme === 'dark'
+            ? '0 4px 12px rgba(0,0,0,0.5)'
+            : '0 4px 12px rgba(0,0,0,0.15)',
+        }}>
+          {/* Trackpad hint */}
+          <div className="mx-auto mt-1 rounded-sm" style={{ width: '28px', height: '6px', background: theme === 'dark' ? '#2a2a2a' : '#bcbcbc' }} />
         </div>
-      )}
+      </div>
 
       <h2 className="text-sm font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--fg-subtle)' }}>
         Vote Tally

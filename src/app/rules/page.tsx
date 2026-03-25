@@ -86,7 +86,7 @@ export default function RulesPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-2xl border px-5 py-4 space-y-2" style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}>
-      <h2 className="text-base font-bold text-rose-800">{title}</h2>
+      <h2 className="text-base font-bold" style={{ color: 'rgb(209, 32, 76)' }}>{title}</h2>
       <div className="text-sm leading-relaxed space-y-1 [&_ul]:list-disc [&_ul]:pl-4 [&_ul]:space-y-1" style={{ color: 'var(--fg-muted)' }}>
         {children}
       </div>

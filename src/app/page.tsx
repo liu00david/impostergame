@@ -18,8 +18,8 @@ export default function LandingPage() {
                 fontSize: '4rem',
                 fontWeight: 900,
                 lineHeight: 1,
-                color: 'rgba(209, 9, 42, 0.93)',
-                textShadow: '0 1px 8px rgba(0, 0, 0, 0.22)',
+                color: 'rgba(183, 5, 35, 0.93)',
+                textShadow: '0 1px 8px rgba(88, 88, 88, 0.5)',
                 letterSpacing: '-0.03em',
               }}
             >
@@ -69,17 +69,17 @@ export default function LandingPage() {
         </div>
 
         {/* Actions */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Link
             href="/setup"
-            className="w-full flex items-center justify-center rounded-xl text-lg font-semibold min-h-[56px] transition-all active:scale-95"
-            style={{ background: '#9b1c31', color: '#fff' }}
+            className="w-full flex items-center justify-center rounded-xl text-xl font-semibold min-h-[52px] transition-all active:scale-95"
+            style={{ background: 'rgb(171, 27, 51)', color: '#fff' }}
           >
             Start Mission
           </Link>
           <Link
             href="/rules"
-            className="w-full flex items-center justify-center rounded-xl text-base font-medium min-h-[48px] border transition-all active:scale-95"
+            className="w-full flex items-center justify-center rounded-xl text-base font-medium min-h-[52px] border transition-all active:scale-95"
             style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg-muted)' }}
           >
             Full Rules
