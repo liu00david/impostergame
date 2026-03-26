@@ -18,8 +18,8 @@ export default function LandingPage() {
                 fontSize: '4rem',
                 fontWeight: 900,
                 lineHeight: 1,
-                color: 'rgba(183, 5, 35, 0.93)',
-                textShadow: '0 1px 8px rgba(88, 88, 88, 0.5)',
+                color: 'rgba(196, 7, 38, 0.93)',
+                textShadow: '0 1px 8px rgba(88, 88, 88, 0.25)',
                 letterSpacing: '-0.03em',
               }}
             >
@@ -75,11 +75,18 @@ export default function LandingPage() {
             className="w-full flex items-center justify-center rounded-xl text-xl font-semibold min-h-[52px] transition-all active:scale-95"
             style={{ background: 'rgb(171, 27, 51)', color: '#fff' }}
           >
-            Start Mission
+            Pass & Play
+          </Link>
+          <Link
+            href="/room"
+            className="w-full flex items-center justify-center rounded-xl text-xl font-semibold min-h-[52px] transition-all active:scale-95 border"
+            style={{ background: 'var(--bg-card)', borderColor: 'rgba(209,32,76,0.4)', color: 'rgb(209,32,76)' }}
+          >
+            Online Play (local only - in development)
           </Link>
           <Link
             href="/rules"
-            className="w-full flex items-center justify-center rounded-xl text-base font-medium min-h-[52px] border transition-all active:scale-95"
+            className="w-full flex items-center justify-center rounded-xl text-base font-medium min-h-[48px] border transition-all active:scale-95"
             style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg-muted)' }}
           >
             Full Rules
