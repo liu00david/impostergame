@@ -528,7 +528,9 @@ export default function RoomPage() {
 
   // ── GAME (Signal) ───────────────────────────────────────────────────────────
   if (phase === 'game') {
-    const startingPlayer = gameState.players.find(p => p.id === gameState.startingPlayerId)
+    const activePlayers = gameState.players.filter(p => !p.hasLeft)
+    const startingPlayer = activePlayers.find(p => p.id === gameState.startingPlayerId)
+      ?? activePlayers[0]
     return (
       <>
         <div className="relative min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
@@ -727,7 +729,7 @@ function StatusLights({ players, myId, code, playerStatus }: {
   return (
     <div className="fixed left-4 bottom-4 flex flex-col gap-1.5" style={{ zIndex: 40 }}>
       <span className="text-xs font-mono font-bold mb-0.5" style={{ color: brand, letterSpacing: '0.1em' }}>ROOM: {code}</span>
-      {players.map(p => {
+      {players.filter(p => !p.hasLeft).map(p => {
         const status = playerStatus?.(p) ?? null
         return (
           <div key={p.id} className="flex items-center gap-1.5">
@@ -881,7 +883,7 @@ function GameMenuButton({ isHost, onReset, onLeave, onDisband, players, onKick, 
 }) {
   const [open, setOpen] = useState(false)
   const [kickOpen, setKickOpen] = useState(false)
-  const nonHostPlayers = (players ?? []).filter(p => !p.isHost)
+  const nonHostPlayers = (players ?? []).filter(p => !p.isHost && !p.hasLeft)
   const { theme, toggle: toggleTheme } = useTheme()
 
   return (

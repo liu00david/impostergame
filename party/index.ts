@@ -81,9 +81,9 @@ export default class SpyhuntServer implements Party.Server {
     }
   }
 
-  // Reset room if empty
+  // Reset room if no active (non-left) players remain
   resetIfEmpty() {
-    if (this.state.players.length === 0) {
+    if (this.state.players.filter(p => !p.hasLeft).length === 0) {
       this.stopTimer()
       this.state = initialState()
     }
@@ -351,8 +351,9 @@ export default class SpyhuntServer implements Party.Server {
         this.stopTimer()
         const preserved = {
           players: this.state.players
+            .filter(p => !p.hasLeft)
             .sort((a, b) => a.order - b.order)
-            .map(p => ({ ...p, isImpostor: false, hasSeenRole: false, hasVoted: false })),
+            .map(p => ({ ...p, isImpostor: false, hasSeenRole: false, hasVoted: false, hasLeft: false })),
           selectedCounts: this.state.selectedCounts,
           selectedCategory: this.state.useRandomCategory ? null : this.state.selectedCategory,
           useRandomCategory: this.state.useRandomCategory,
@@ -369,12 +370,19 @@ export default class SpyhuntServer implements Party.Server {
         // Cancel any pending disconnect timer
         const t = this.disconnectTimers.get(sender.id)
         if (t) { clearTimeout(t); this.disconnectTimers.delete(sender.id) }
-        this.state.players = this.state.players.filter(p => p.id !== sender.id)
+        const inGame = ['reveal', 'game', 'debrief', 'vote'].includes(this.state.phase)
+        if (inGame && leaving.isImpostor) {
+          // Keep impostor in list for results display, just mark as left
+          leaving.hasLeft = true
+          leaving.isConnected = false
+          leaving.isHost = false
+        } else {
+          this.state.players = this.state.players.filter(p => p.id !== sender.id)
+        }
         if (leaving.isHost) this.reassignHost(sender.id)
         // If mid-game and all spies have now left, advance to results
-        const inGame = ['reveal', 'game', 'debrief', 'vote'].includes(this.state.phase)
-        if (inGame && this.state.players.length > 0) {
-          const remainingSpies = this.state.players.filter(p => p.isImpostor)
+        if (inGame && this.state.players.filter(p => !p.hasLeft).length > 0) {
+          const remainingSpies = this.state.players.filter(p => p.isImpostor && !p.hasLeft)
           if (remainingSpies.length === 0) {
             this.stopTimer()
             this.state.phase = 'results'
@@ -413,16 +421,31 @@ export default class SpyhuntServer implements Party.Server {
 
       case 'KICK_PLAYER': {
         if (!this.isHost(sender.id)) break
+        const kicked = this.state.players.find(p => p.id === msg.playerId)
         const kickedConn = this.room.getConnection(msg.playerId)
-        // Remove player from state
-        this.state.players = this.state.players.filter(p => p.id !== msg.playerId)
         // Notify and close the kicked connection
         if (kickedConn) {
           this.sendTo(kickedConn, { type: 'KICKED' })
           kickedConn.close()
         }
+        const inGame = ['reveal', 'game', 'debrief', 'vote'].includes(this.state.phase)
+        if (kicked && inGame && kicked.isImpostor) {
+          // Keep impostor in list for results display
+          kicked.hasLeft = true
+          kicked.isConnected = false
+          kicked.isHost = false
+        } else {
+          this.state.players = this.state.players.filter(p => p.id !== msg.playerId)
+        }
+        // If all spies are now gone mid-game, advance to results
+        if (inGame && this.state.players.filter(p => !p.hasLeft).length > 0) {
+          const remainingSpies = this.state.players.filter(p => p.isImpostor && !p.hasLeft)
+          if (remainingSpies.length === 0) {
+            this.stopTimer()
+            this.state.phase = 'results'
+          }
+        }
         this.resetIfEmpty()
-        // Broadcast updated state to remaining players
         this.broadcast({ type: 'STATE', state: this.state })
         break
       }

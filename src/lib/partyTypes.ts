@@ -17,6 +17,7 @@ export interface OnlinePlayer {
   hasSeenRole: boolean
   hasVoted: boolean
   order: number
+  hasLeft?: boolean  // true if player left mid-game (kept for results display)
 }
 
 export interface OnlineVoteBallot {
