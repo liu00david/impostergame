@@ -213,6 +213,24 @@ export default function RoomPage() {
     )
   }
 
+  if (blocked) {
+    const isNameTaken = blocked.includes('is already online')
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center max-w-md mx-auto px-6 gap-6 text-center">
+        <p className="text-4xl">🚫</p>
+        <p className="text-xl font-bold" style={{ color: 'var(--fg)' }}>
+          {isNameTaken ? 'Name already taken' : 'Game in progress'}
+        </p>
+        <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>
+          {isNameTaken
+            ? 'That name is already active in this game. Use a different name to join.'
+            : 'This room is mid-game. You can only rejoin if you were already a player.'}
+        </p>
+        <Button fullWidth onClick={() => router.replace('/room')}>Back to Lobby</Button>
+      </div>
+    )
+  }
+
   if (myName === '') {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center max-w-md mx-auto px-6 gap-6">
@@ -235,24 +253,6 @@ export default function RoomPage() {
         <Button fullWidth size="lg" onClick={handleNameSubmit} disabled={!nameInput.trim() || !!pendingName}>
           {pendingName ? 'Joining…' : 'Join Room'}
         </Button>
-      </div>
-    )
-  }
-
-  if (blocked) {
-    const isNameTaken = blocked.includes('is already online')
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center max-w-md mx-auto px-6 gap-6 text-center">
-        <p className="text-4xl">🚫</p>
-        <p className="text-xl font-bold" style={{ color: 'var(--fg)' }}>
-          {isNameTaken ? 'Name already taken' : 'Game in progress'}
-        </p>
-        <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>
-          {isNameTaken
-            ? 'That name is already active in this game. Use a different name to join.'
-            : 'This room is mid-game. You can only rejoin if you were already a player.'}
-        </p>
-        <Button fullWidth onClick={() => router.replace('/room')}>Back to Lobby</Button>
       </div>
     )
   }
