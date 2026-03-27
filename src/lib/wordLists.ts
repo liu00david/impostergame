@@ -48,14 +48,16 @@ export const WORD_LISTS: Record<Category, string[]> = {
     "Yoda", "Zelda"
   ],
   Food: [
-    "Apple", "Avocado", "Bagel", "Banana", "Brownie",
-    "Burger", "Burrito", "Cheese", "Cherry", "Chicken",
-    "Cookie", "Croissant", "Curry", "Donut", "Falafel",
-    "Garlic", "Grapes", "Hummus", "Lasagna", "Lemon",
-    "Mango", "Matcha", "Melon", "Nachos", "Omelette",
-    "Onion", "Orange", "Pasta", "Peach", "Pizza",
-    "Potato", "Salad", "Salmon", "Sorbet", "Steak",
-    "Tacos", "Toast", "Waffle", "Yogurt"
+    "Apple", "Avocado", "Bacon", "Bagel", "Banana",
+    "Brownie", "Burger", "Burrito", "Cake", "Cheese",
+    "Cherry", "Chicken", "Chocolate", "Cookie", "Croissant",
+    "Curry", "Donut", "Falafel", "Garlic", "Grapes",
+    "Hummus", "Lasagna", "Lemon", "Mango", "Matcha",
+    "Melon", "Nachos", "Omelette", "Onion", "Orange",
+    "Pancake", "Pasta", "Peach", "Pie", "Pizza",
+    "Potato", "Salad", "Salmon", "Sandwich", "Sorbet",
+    "Steak", "Strawberry", "Sushi", "Tacos", "Toast",
+    "Waffle", "Yogurt"
   ],
   Hobbies: [
     "Archery", "Baking", "Bowling", "Camping", "Chess",

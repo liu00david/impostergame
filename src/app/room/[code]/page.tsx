@@ -917,36 +917,50 @@ function GameMenuButton({ isHost, onReset, onLeave, onDisband, players, onKick, 
             style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
             onClick={e => e.stopPropagation()}
           >
-            <h2 className="text-lg font-bold mb-2">Game Menu</h2>
+            <h2 className="text-lg font-bold mb-2" style={{ color: 'var(--fg)' }}>Game Menu</h2>
             <button
               onClick={() => toggleTheme()}
-              className="w-full py-3 rounded-xl text-sm font-semibold text-left px-4"
-              style={{ background: 'var(--bg-elevated)', color: 'var(--fg-muted)' }}
-            >{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</button>
+              className="w-full py-3 rounded-xl text-sm font-semibold text-left px-4 flex items-center gap-2"
+              style={{ background: 'var(--bg-elevated)', color: theme === 'dark' ? '#ffffff' : 'var(--fg-muted)' }}
+            >
+              {theme === 'dark' ? (
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                  <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+              )}
+              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </button>
             {isHost && nonHostPlayers.length > 0 && (
               <button
                 onClick={() => setKickOpen(true)}
                 className="w-full py-3 rounded-xl text-sm font-semibold text-left px-4"
-                style={{ background: 'var(--bg-elevated)', color: 'var(--fg-muted)' }}
+                style={{ background: 'var(--bg-elevated)', color: theme === 'dark' ? '#ffffff' : 'var(--fg-muted)' }}
               >Manage Players</button>
             )}
             <button
               onClick={() => { setOpen(false); onLeave() }}
               className="w-full py-3 rounded-xl text-sm font-bold text-left px-4"
-              style={{ background: dangerSubtle, color: danger }}
+              style={{ background: dangerSubtle, color: theme === 'dark' ? '#ffffff' : danger }}
             >Leave Game</button>
             {isHost && onReset && (
               <button
                 onClick={() => { setOpen(false); onReset() }}
                 className="w-full py-3 rounded-xl text-sm font-bold text-left px-4"
-                style={{ background: dangerSubtle, color: danger }}
+                style={{ background: dangerSubtle, color: theme === 'dark' ? '#ffffff' : danger }}
               >End Game for All</button>
             )}
             {isHost && onDisband && (
               <button
                 onClick={() => { setOpen(false); onDisband() }}
                 className="w-full py-3 rounded-xl text-sm font-bold text-left px-4"
-                style={{ background: dangerSubtle, color: danger }}
+                style={{ background: dangerSubtle, color: theme === 'dark' ? '#ffffff' : danger }}
               >Disband Room</button>
             )}
             <button
