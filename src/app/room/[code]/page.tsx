@@ -912,11 +912,6 @@ function GameMenuButton({ isHost, onReset, onLeave, onDisband, players, onKick, 
               className="w-full py-3 rounded-xl text-sm font-semibold text-left px-4"
               style={{ background: 'var(--bg-elevated)', color: 'var(--fg-muted)' }}
             >{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</button>
-            <button
-              onClick={() => { setOpen(false); onLeave() }}
-              className="w-full py-3 rounded-xl text-sm font-semibold text-left px-4"
-              style={{ background: 'var(--bg-elevated)', color: 'var(--fg)', border: '1px solid var(--border)' }}
-            >Leave Game</button>
             {isHost && nonHostPlayers.length > 0 && (
               <button
                 onClick={() => setKickOpen(true)}
@@ -924,6 +919,11 @@ function GameMenuButton({ isHost, onReset, onLeave, onDisband, players, onKick, 
                 style={{ background: 'var(--bg-elevated)', color: 'var(--fg-muted)' }}
               >Manage Players</button>
             )}
+            <button
+              onClick={() => { setOpen(false); onLeave() }}
+              className="w-full py-3 rounded-xl text-sm font-bold text-left px-4"
+              style={{ background: dangerSubtle, color: danger }}
+            >Leave Game</button>
             {isHost && onReset && (
               <button
                 onClick={() => { setOpen(false); onReset() }}

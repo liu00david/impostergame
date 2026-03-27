@@ -371,6 +371,15 @@ export default class SpyhuntServer implements Party.Server {
         if (t) { clearTimeout(t); this.disconnectTimers.delete(sender.id) }
         this.state.players = this.state.players.filter(p => p.id !== sender.id)
         if (leaving.isHost) this.reassignHost(sender.id)
+        // If mid-game and all spies have now left, advance to results
+        const inGame = ['reveal', 'game', 'debrief', 'vote'].includes(this.state.phase)
+        if (inGame && this.state.players.length > 0) {
+          const remainingSpies = this.state.players.filter(p => p.isImpostor)
+          if (remainingSpies.length === 0) {
+            this.stopTimer()
+            this.state.phase = 'results'
+          }
+        }
         this.resetIfEmpty()
         this.broadcast({ type: 'STATE', state: this.state })
         break
