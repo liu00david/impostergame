@@ -2,72 +2,99 @@ import { Category } from '@/types/game'
 
 export const WORD_LISTS: Record<Category, string[]> = {
   Animals: [
-    "Alligator", "Antelope", "Axolotl", "Baboon", "Badger", "Beagle", "Beaver", "Buffalo",
-    "Capybara", "Cheetah", "Chicken", "Coyote", "Dolphin", "Donkey", "Eagle", "Elephant",
-    "Falcon", "Ferret", "Fox", "Giraffe", "Gorilla", "Hamster", "Hippo", "Horse",
-    "Jaguar", "Jellyfish", "Kangaroo", "Koala", "Leopard", "Lion", "Lizard", "Monkey",
-    "Ostrich", "Panda", "Penguin", "Rabbit", "Raccoon", "Shark", "Sloth", "Tiger"
+    "Alligator", "Antelope", "Baboon", "Badger", "Beaver", "Buffalo",
+    "Capybara", "Cheetah", "Chicken", "Coyote", "Dolphin", "Donkey",
+    "Eagle", "Elephant", "Falcon", "Fox", "Giraffe", "Gorilla",
+    "Hamster", "Hippo", "Horse", "Jaguar", "Jellyfish", "Kangaroo",
+    "Koala", "Leopard", "Lion", "Lizard", "Monkey", "Ostrich",
+    "Panda", "Penguin", "Rabbit", "Raccoon", "Shark", "Sloth",
+    "Tiger", "Wolf", "Zebra"
   ],
   AsianFood: [
-    "Banh Mi", "Bibimbap", "Bulgogi","Butter Chicken", "Chow Mein", "Dimsum", "Dumpling", "Edamame", "Gyoza",
-    "Hotpot", "Japchae", "K-BBQ", "Kimchi", "Kimbap", "Mochi",
-    "Onigiri", "Pad Thai", "Peking Duck", "Pho", "Ramen", "Sashimi",
-    "Samosa", "Spam", "Sushi", "Takoyaki", "Tandoori",
-    "Tempura", "Teriyaki", "Udon", "Yakitori"
+    "Banh Mi", "Bao", "Bibimbap", "Bulgogi", "Butter Chicken",
+    "Chow Mein", "Dumpling", "Dumplings", "Edamame", "Fried Rice",
+    "Gyoza", "Hotpot", "Kimchi", "Kimbap", "Mochi",
+    "Noodles", "Onigiri", "Pad Thai", "Peking Duck", "Pho",
+    "Ramen", "Samosa", "Sashimi", "Spring Roll", "Sushi",
+    "Tempura", "Teriyaki", "Tofu", "Udon", "Wonton"
   ],
-  Celebrities: ["Adele", "Ariana Grande", "Bad Bunny", "Beyonce", "Billie Eilish", 
-    "Bruno Mars", "Chappell Roan", "Chris Rock", "Doja Cat", "Drake", "Dua Lipa", 
-    "Ed Sheeran", "Eminem", "Harry Styles", "Ice Spice", "Jack Harlow",
-    "Jenna Ortega", "Justin Bieber", "Kanye West", "Kylie Jenner", "Lady Gaga", "LeBron James", 
-    "Lionel Messi", "Lizzo", "Madonna", "MrBeast", "Nicki Minaj", "Olivia Rodrigo", "Pedro Pascal", 
-    "Post Malone", "Rihanna", "Snoop Dogg", "SZA", "Taylor Swift", "The Weeknd", "Timothee Chalamet", 
-    "Tom Holland", "Travis Scott", "Zendaya"],
+  Celebrities: [
+    "Adele", "Ariana Grande", "Bad Bunny", "Beyonce", "Billie Eilish",
+    "Bruno Mars", "Chris Rock", "Cristiano Ronaldo", "Doja Cat", "Drake",
+    "Dua Lipa", "Ed Sheeran", "Eminem", "Harry Styles", "Justin Bieber",
+    "Kanye West", "Katy Perry", "Kylie Jenner", "Lady Gaga", "LeBron James",
+    "Lionel Messi", "Madonna", "MrBeast", "Nicki Minaj", "Olivia Rodrigo",
+    "Post Malone", "Rihanna", "Selena Gomez", "Snoop Dogg", "Taylor Swift",
+    "The Weeknd", "Timothee Chalamet", "Tom Holland", "Travis Scott", "Zendaya"
+  ],
   Cities: [
-    "Amsterdam", "Athens", "Austin", "Bangkok", "Barcelona", "Beijing", "Berlin", "Boston",
-    "Chicago", "Dallas", "Denver", "Dubai", "Dublin", "Istanbul", "Lisbon", "London",
-    "Madrid", "Manila", "Miami", "Milan", "Moscow", "Mumbai", "Munich", "Nashville",
-    "Osaka", "Paris", "Prague", "Rome", "Seattle", "Seoul", "Sydney", "Taipei",
-    "Tokyo", "Toronto", "Venice", "Vienna", "Wuhan", "Zurich"
+    "Amsterdam", "Athens", "Austin", "Bangkok", "Barcelona",
+    "Beijing", "Berlin", "Boston", "Cairo", "Chicago",
+    "Dallas", "Denver", "Dubai", "Dublin", "Istanbul",
+    "Lagos", "Lisbon", "London", "Madrid", "Manila",
+    "Miami", "Milan", "Moscow", "Mumbai", "Munich",
+    "Nashville", "Osaka", "Paris", "Prague", "Rome",
+    "Seattle", "Seoul", "Singapore", "Sydney", "Taipei",
+    "Tokyo", "Toronto", "Venice", "Vienna", "Zurich"
   ],
-  FictionalCharacter: ["Ash Ketchum", "Batman", "Black Widow", "Bugs Bunny", "Deadpool", 
-    "Darth Vader", "Elsa", "Frodo", "Gandalf", "Goku", "Harry Potter", "Homer Simpson", 
-    "Iron Man", "Jack Sparrow", "James Bond", "Joker", "Katniss", "Kirby", "Lara Croft", 
-    "Luke Skywalker", "Mario", "Mickey Mouse", "Naruto", "Pac-Man", "Peter Griffin",
-    "Pikachu", "Popeye", "Rick Sanchez", "Sherlock Holmes", "Shrek", "Snoopy", "Sonic", "Spider-Man",
-    "SpongeBob", "Superman", "Thanos", "Winnie-the-Pooh", "Yoda", "Zelda"],
+  FictionalCharacter: [
+    "Batman", "Bugs Bunny", "Darth Vader", "Deadpool", "Dumbledore",
+    "Elsa", "Frodo", "Gandalf", "Goku", "Harry Potter",
+    "Hermione", "Homer Simpson", "Iron Man", "Jack Sparrow", "James Bond",
+    "Joker", "Katniss", "Lara Croft", "Luke Skywalker", "Mario",
+    "Mickey Mouse", "Naruto", "Pac-Man", "Peter Griffin", "Pikachu",
+    "Sherlock Holmes", "Shrek", "Snoopy", "Sonic", "Spider-Man",
+    "SpongeBob", "Superman", "Thanos", "Winnie-the-Pooh", "Wolverine",
+    "Yoda", "Zelda"
+  ],
   Food: [
-    "Apple", "Avocado", "Bagel", "Banana", "Burger", "Burrito", "Cheese", "Cherry",
-    "Chicken", "Cookie", "Crisp", "Croissant", "Curry", "Donut", "Falafel", "Garlic",
-    "Grapes", "Hummus", "Lasagna", "Lemon", "Mango", "Matcha", "Melon", "Nachos", 
-    "Onion", "Orange", "Pasta", "Peach", "Pizza", "Potato", "Salad", "Salmon", 
-    "Sorbet", "Steak", "Tacos", "Toast", "Waffle", "Yogurt", "Zucchini", "Omelette"
+    "Apple", "Avocado", "Bagel", "Banana", "Brownie",
+    "Burger", "Burrito", "Cheese", "Cherry", "Chicken",
+    "Cookie", "Croissant", "Curry", "Donut", "Falafel",
+    "Garlic", "Grapes", "Hummus", "Lasagna", "Lemon",
+    "Mango", "Matcha", "Melon", "Nachos", "Omelette",
+    "Onion", "Orange", "Pasta", "Peach", "Pizza",
+    "Potato", "Salad", "Salmon", "Sorbet", "Steak",
+    "Tacos", "Toast", "Waffle", "Yogurt"
   ],
   Hobbies: [
-    "Archery", "Baking", "Bowling", "Camping", "Chess", "Coding", "Cooking", "Cycling",
-    "Dancing", "Drawing", "Fishing", "Gaming", "Gardening", "Hiking", "Hunting", "Jogging",
-    "Karate", "Knitting", "Origami", "Painting", "Pilates", "Poker", "Pottery", "Puzzle",
-    "Reading", "Rowing", "Running", "Sailing", "Sewing", "Singing", "Skating", "Skiing",
-    "Soccer", "Squash", "Surfing", "Tennis", "Travel", "Typing", "Writing", "Yoga"
+    "Archery", "Baking", "Bowling", "Camping", "Chess",
+    "Coding", "Cooking", "Cycling", "Dancing", "Drawing",
+    "Fishing", "Gaming", "Gardening", "Hiking", "Hunting",
+    "Jogging", "Karate", "Knitting", "Origami", "Painting",
+    "Photography", "Pilates", "Poker", "Pottery", "Puzzle",
+    "Reading", "Rowing", "Running", "Sailing", "Sewing",
+    "Singing", "Skating", "Skiing", "Soccer", "Surfing",
+    "Tennis", "Travel", "Woodworking", "Writing", "Yoga"
   ],
   Internet: [
-    "Amazon", "Android", "Browse", "ChatGPT", "Chrome", "Cloud", "Discord", "Email",
-    "Facebook", "Google", "Hashtag", "Instagram", "LinkedIn", "Meme", "Netflix", "Online",
-    "Patreon", "Pinterest", "Podcast", "Portal", "Reddit", "Roblox", "Router", "Safari",
-    "Search", "Server", "Shopify", "Skype", "Snapchat", "Spotify", "Stream", "Substack",
-    "Telegram", "Threads", "TikTok", "Tumblr", "Twitch", "Twitter", "WhatsApp", "YouTube"
+    "Amazon", "Android", "ChatGPT", "Chrome", "Cloud",
+    "Discord", "Email", "Emoji", "Facebook", "Google",
+    "Hashtag", "Instagram", "iPhone", "LinkedIn", "Meme",
+    "Netflix", "Password", "Pinterest", "Podcast", "Reddit",
+    "Roblox", "Router", "Safari", "Server", "Skype",
+    "Snapchat", "Spotify", "Telegram", "Threads", "TikTok",
+    "Tumblr", "Twitch", "Twitter", "WhatsApp", "Wifi",
+    "YouTube"
   ],
   Movies: [
-    "Aladdin", "Avatar", "Avengers", "Barbie", "Batman", "Beetlejuice", "Casablanca", "Coraline",
-    "Deadpool", "Dracula", "Frozen", "Gladiator", "Godzilla", "Hamlet", "Inception", "Interstellar",
-    "Jaws", "Joker", "Jumanji", "Matrix", "Minions", "Moana", "Psycho", "Ratatouille",
-    "Rocky", "Saw", "Scarface", "Scream", "Shrek", "Skyfall", "Speed", "Superman",
-    "Titanic", "Twilight", "Vertigo", "Whiplash", "Braveheart", "Cinderella", "Goodfellas", "Pinocchio"
+    "Aladdin", "Avatar", "Avengers", "Barbie", "Batman",
+    "Cinderella", "Coraline", "Deadpool", "Dracula", "Frozen",
+    "Gladiator", "Godzilla", "Harry Potter", "Inception", "Incredibles",
+    "Inside Out", "Interstellar", "Iron Man", "Jaws", "Joker",
+    "Jumanji", "La La Land", "Lion King", "Matrix", "Minions",
+    "Moana", "Paranormal Activity", "Ratatouille", "Scream", "Shrek",
+    "Skyfall", "Superman", "Titanic", "Transformers", "Twilight",
+    "Whiplash"
   ],
   Sports: [
-    "Archery", "Baseball", "Basketball", "Billiards", "Bowling", "Boxing", "Cricket", "Curling",
-    "Cycling", "Diving", "Fencing", "Fishing", "Football", "Golf", "Handball", "Hiking",
-    "Hockey", "Hunting", "Judo", "Karate", "Lacrosse", "Netball", "Polo", "Racing",
-    "Rowing", "Rugby", "Running", "Sailing", "Skating", "Skiing", "Soccer", "Softball",
-    "Squash", "Surfing", "Swimming", "Tennis", "Track", "Volleyball", "Walking", "Wrestling"
+    "Archery", "Badminton", "Baseball", "Basketball", "Billiards",
+    "Bowling", "Boxing", "Cricket", "Curling", "Cycling",
+    "Diving", "Fencing", "Football", "Golf", "Gymnastics",
+    "Handball", "Hockey", "Judo", "Karate", "Lacrosse",
+    "Polo", "Racing", "Rowing", "Rugby", "Sailing",
+    "Skating", "Skiing", "Soccer", "Softball", "Squash",
+    "Surfing", "Swimming", "Tennis", "Volleyball", "Weightlifting",
+    "Wrestling"
   ],
 }

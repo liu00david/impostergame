@@ -154,7 +154,6 @@ function OnlineRules() {
         <ul>
           <li><strong>Spies Caught</strong> — every spy got strictly more votes than any operative. Spies get one last chance to guess the codeword out loud and steal the win.</li>
           <li><strong>Mission Sabotaged</strong> — any spy tied or received fewer votes. Spies win.</li>
-          <li><strong>Spies Vanished</strong> — all spies left or were removed. Operatives win by default.</li>
         </ul>
       </Section>
 
