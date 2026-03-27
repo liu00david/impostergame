@@ -39,7 +39,8 @@ export default function RoomPage() {
   const code = (params.code as string).toUpperCase()
   const { theme, toggle: toggleTheme } = useTheme()
 
-  const [myName, setMyName] = useState<string | null>(null)  // null = not yet resolved
+  const [myName, setMyName] = useState<string | null>(null)  // null = not yet resolved, '' = show form
+  const [pendingName, setPendingName] = useState<string | null>(null)  // submitted but not confirmed
   const [gameState, setGameState] = useState<OnlineGameState | null>(null)
   const [myId, setMyId] = useState<string | null>(null)
   const [roleRevealed, setRoleRevealed] = useState(false)
@@ -105,32 +106,36 @@ export default function RoomPage() {
   const socket = usePartySocket({
     host: HOST,
     room: code,
-    // Only connect once we have a name
-    query: myName ? undefined : { disabled: '1' },
     onOpen() {
-      if (!myName) return
       setMyId(socket.id)
-      send({ type: 'SET_NAME', name: myName })
+      const nameToSend = myName || pendingName
+      if (nameToSend) send({ type: 'SET_NAME', name: nameToSend })
     },
     onMessage(evt) {
       const msg = JSON.parse(evt.data) as ServerMessage
-      if (msg.type === 'STATE') setGameState(msg.state)
+      if (msg.type === 'STATE') {
+        setGameState(msg.state)
+        // Confirm pending name once server accepts us (our id appears in state)
+        if (pendingName && msg.state.players.some(p => p.id === socket.id)) {
+          localStorage.setItem(LS_NAME_KEY, pendingName)
+          localStorage.setItem(LS_ROOM_KEY, code)
+          setMyName(pendingName)
+          setPendingName(null)
+        }
+      }
       if (msg.type === 'KICKED') {
         localStorage.removeItem(LS_NAME_KEY)
         localStorage.removeItem(LS_ROOM_KEY)
         router.replace('/room?kicked=1')
       }
       if (msg.type === 'ERROR') {
-        setNameError(msg.message)
-        // Block entry if game is already in progress
+        // Block entry if game is already in progress or name active in-game
         if (msg.message === 'Game in progress — new players cannot join' || msg.message.includes('is already online')) {
           setBlocked(msg.message)
-        }
-        // Name taken in lobby — force back to name entry
-        if (msg.message === 'Name already taken') {
-          localStorage.removeItem(LS_NAME_KEY)
-          setMyName('')
-          setNameInput('')
+        } else {
+          // Stay on name entry screen — show error inline, clear pending
+          setPendingName(null)
+          setNameError(msg.message)
         }
         // Show as fade toast
         setToast(msg.message)
@@ -152,12 +157,12 @@ export default function RoomPage() {
   function handleNameSubmit() {
     const name = nameInput.trim()
     if (!name) return
-    localStorage.setItem(LS_NAME_KEY, name)
-    localStorage.setItem(LS_ROOM_KEY, code)
-    setMyName(name)
+    setNameError('')
+    setPendingName(name)
+    send({ type: 'SET_NAME', name })
   }
 
-  // When myName is set (either from localStorage or form), send SET_NAME
+  // When myName is set from localStorage on load, send SET_NAME once socket is ready
   useEffect(() => {
     if (!myName || !socket || socket.readyState !== WebSocket.OPEN) return
     setMyId(socket.id)
@@ -215,8 +220,8 @@ export default function RoomPage() {
           style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg)' }}
         />
         {nameError && <p className="text-sm text-red-400 w-full">{nameError}</p>}
-        <Button fullWidth size="lg" onClick={handleNameSubmit} disabled={!nameInput.trim()}>
-          Join Room
+        <Button fullWidth size="lg" onClick={handleNameSubmit} disabled={!nameInput.trim() || !!pendingName}>
+          {pendingName ? 'Joining…' : 'Join Room'}
         </Button>
       </div>
     )
