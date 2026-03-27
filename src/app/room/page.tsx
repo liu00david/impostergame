@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
@@ -13,7 +13,7 @@ function randomCode() {
   return Math.random().toString(36).slice(2, 6).toUpperCase()
 }
 
-export default function RoomEntryPage() {
+function RoomEntryInner() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const wasKicked = searchParams.get('kicked') === '1'
@@ -113,5 +113,13 @@ export default function RoomEntryPage() {
         </button>
       </div>
     </div>
+  )
+}
+
+export default function RoomEntryPage() {
+  return (
+    <Suspense>
+      <RoomEntryInner />
+    </Suspense>
   )
 }
