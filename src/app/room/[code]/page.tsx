@@ -133,6 +133,7 @@ export default function RoomPage() {
       if (msg.type === 'ERROR') {
         // Block entry if game is already in progress or name active in-game
         if (msg.message === 'Game in progress — new players cannot join' || msg.message.includes('is already online')) {
+          setPendingName(null)
           setBlocked(msg.message)
         } else {
           // Stay on name entry screen — show error inline, clear pending
@@ -203,7 +204,8 @@ export default function RoomPage() {
   }
 
   // Pending name sent to server — hold here until confirmed or rejected
-  if (pendingName && myName === '') {
+  // (blocked check must come first so errors break out of this screen)
+  if (pendingName && myName === '' && !blocked) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p style={{ color: 'var(--fg-muted)' }}>Connecting…</p>
