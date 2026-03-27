@@ -767,6 +767,7 @@ function ResultsView({ gameState, myId, isHost, wordRevealed, setWordRevealed, o
   const results = tallyVotes(effectiveBallots, players)
   const spiesCaught = checkImpostorsCaught(results, players, gameState.impostorCount)
   const spies = gameState.players.filter(p => p.isImpostor)
+  const spiesSelfEliminated = spies.length > 0 && spies.every(p => p.hasLeft) && gameState.ballots.length === 0
   const playerMap = new Map(gameState.players.map(p => [p.id, p]))
 
   const eliminatedIds = new Set<string>()
@@ -809,7 +810,13 @@ function ResultsView({ gameState, myId, isHost, wordRevealed, setWordRevealed, o
             : '0 2px 16px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.6)',
         }}>
           <div className="flex justify-center mb-2"><div className="w-1 h-1 rounded-full" style={{ background: theme === 'dark' ? '#333333' : '#b0b0b0' }} /></div>
-          {spiesCaught ? (
+          {spiesSelfEliminated ? (
+            <div className="rounded-lg p-5 text-center" style={{ background: theme === 'dark' ? outcomeWinBgDark : outcomeWinBgLight, border: `3px solid ${outcomeWinBorder}`, boxShadow: `0 0 0 1px ${outcomeWinGlow}` }}>
+              <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Self-Eliminated!</p>
+              <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>The spies removed themselves from the game.</p>
+              <p className="text-lg mt-2" style={{ color: 'var(--fg-muted)' }}>Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span></p>
+            </div>
+          ) : spiesCaught ? (
             <div className="rounded-lg p-5 text-center" style={{ background: theme === 'dark' ? outcomeWinBgDark : outcomeWinBgLight, border: `3px solid ${outcomeWinBorder}`, boxShadow: `0 0 0 1px ${outcomeWinGlow}` }}>
               <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Caught!</p>
               <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>One last chance for spies to guess the codeword!</p>
