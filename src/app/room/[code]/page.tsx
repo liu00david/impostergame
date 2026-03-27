@@ -814,8 +814,8 @@ function ResultsView({ gameState, myId, isHost, wordRevealed, setWordRevealed, o
           <div className="flex justify-center mb-2"><div className="w-1 h-1 rounded-full" style={{ background: theme === 'dark' ? '#333333' : '#b0b0b0' }} /></div>
           {spiesSelfEliminated ? (
             <div className="rounded-lg p-5 text-center" style={{ background: theme === 'dark' ? outcomeWinBgDark : outcomeWinBgLight, border: `3px solid ${outcomeWinBorder}`, boxShadow: `0 0 0 1px ${outcomeWinGlow}` }}>
-              <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Self-Eliminated!</p>
-              <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>The spies removed themselves from the game.</p>
+              <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Vanished!</p>
+              <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>All spies have been taken out of the mission.</p>
               <p className="text-lg mt-2" style={{ color: 'var(--fg-muted)' }}>Spies: <span className="font-bold" style={{ color: 'var(--fg)' }}>{spies.map(p => p.name).join(', ')}</span></p>
             </div>
           ) : spiesCaught ? (
