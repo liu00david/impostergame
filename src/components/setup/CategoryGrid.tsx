@@ -3,6 +3,7 @@
 import { useGame } from '@/context/GameContext'
 import { Category } from '@/types/game'
 import { CATEGORIES, CATEGORY_LABELS } from '@/lib/gameLogic'
+import { brandDark, brandDarkSubtle } from '@/lib/colors'
 
 export function CategoryGrid() {
   const { state, dispatch } = useGame()
@@ -16,8 +17,8 @@ export function CategoryGrid() {
   }
 
   const selectedStyle = {
-    borderColor: '#9b1c31',
-    background: 'rgba(155,28,49,0.15)',
+    borderColor: brandDark,
+    background: brandDarkSubtle,
     color: 'var(--fg)',
     fontWeight: 700,
   }

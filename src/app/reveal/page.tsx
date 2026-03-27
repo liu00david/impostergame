@@ -10,6 +10,7 @@ import { ExitButton } from '@/components/ui/ExitButton'
 import { Player } from '@/types/game'
 import { DomainLabel } from '@/components/ui/DomainLabel'
 import { CATEGORY_LABELS } from '@/lib/gameLogic'
+import { brand, brandDark, brandDarkSubtle, voteCardDark, voteCardAccentDark, voteCardLight, voteCardBorderLight, voteCardFlapLight } from '@/lib/colors'
 
 export default function RevealPage() {
   const { state, dispatch } = useGame()
@@ -52,10 +53,10 @@ export default function RevealPage() {
           const hasSeen = player.hasSeenRole
           const bg = hasSeen
             ? 'var(--bg-card)'
-            : theme === 'dark' ? '#3c0a17' : '#fff0f3'
+            : theme === 'dark' ? voteCardDark : voteCardLight
           const flapBg = hasSeen
             ? (theme === 'dark' ? '#1e1215' : '#e2e2e2')
-            : (theme === 'dark' ? '#5a1525' : '#f0bcc8')
+            : (theme === 'dark' ? voteCardAccentDark : voteCardFlapLight)
           return (
             <button
               key={player.id}
@@ -68,12 +69,12 @@ export default function RevealPage() {
                 borderRadius: '6px',
                 border: hasSeen
                   ? '1px solid var(--border)'
-                  : `1.5px solid ${theme === 'dark' ? '#7a1a30' : '#c06070'}`,
+                  : `1.5px solid ${theme === 'dark' ? brandDark : voteCardBorderLight}`,
                 boxShadow: hasSeen
                   ? 'none'
                   : theme === 'dark'
-                    ? '0 4px 20px rgba(155,28,49,0.3), inset 0 1px 0 rgba(255,255,255,0.05)'
-                    : '0 4px 16px rgba(155,28,49,0.15)',
+                    ? `0 4px 20px ${brandDark}, inset 0 1px 0 rgba(255,255,255,0.05)`
+                    : `0 4px 16px ${brandDarkSubtle}`,
               }}
             >
               {/* Envelope flap */}
@@ -117,7 +118,7 @@ export default function RevealPage() {
             </div>
             {activePlayer.isImpostor ? (
               <div className="rounded-xl p-4 space-y-3" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-hover)' }}>
-                <p className="text-3xl font-bold" style={{ color: '#e8385a' }}>You are a Spy!</p>
+                <p className="text-3xl font-bold" style={{ color: brand }}>You are a Spy!</p>
                 <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Blend in. Don&apos;t reveal yourself.</p>
                 {state.settings.spiesKnowEachOther && spyPartners(activePlayer).length > 0 && (
                   <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>

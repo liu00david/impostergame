@@ -1,7 +1,48 @@
 @import "tailwindcss";
 
-/* ── Dark theme (default) ── */
+/* ─────────────────────────────────────────────────────
+   DESIGN TOKENS — edit here to change colors app-wide
+   ───────────────────────────────────────────────────── */
 :root {
+  /* Brand — primary spy/action color */
+  --brand:           rgb(209,32,76);       /* main CTA buttons, accents, labels     */
+  --brand-dim:       rgba(209,32,76,0.85); /* slightly transparent version           */
+  --brand-subtle:    rgba(209,32,76,0.12); /* tinted backgrounds                     */
+  --brand-border:    rgba(209,32,76,0.4);  /* bordered elements                      */
+  --brand-dark:      rgb(155,28,49);       /* darker variant (selected states)       */
+  --brand-dark-subtle: rgba(155,28,49,0.15); /* dark variant tinted bg              */
+
+  /* Danger — errors, kick, destructive actions */
+  --danger:          #ef4444;
+  --danger-subtle:   rgba(239,68,68,0.12);
+  --danger-border:   rgba(239,68,68,0.4);
+
+  /* Success — connected, voted, ready states */
+  --success:         #22c55e;
+  --success-subtle:  rgba(34,197,94,0.10);
+  --success-border:  rgba(34,197,94,0.45);
+
+  /* Outcome — results screen verdict panels */
+  --outcome-win-bg-dark:    rgb(17,45,28);
+  --outcome-win-bg-light:   rgb(235,255,243);
+  --outcome-win-border:     rgba(0,147,54,0.68);
+  --outcome-loss-bg-dark:   rgb(76,24,33);
+  --outcome-loss-bg-light:  rgb(255,224,232);
+  --outcome-loss-border:    rgba(200,60,80,0.65);
+
+  /* Neutral status */
+  --status-offline:  #6b7280;   /* disconnected player dot    */
+  --toggle-off:      rgba(128,128,128,0.4); /* toggle switch off state */
+
+  /* Overlay / modal backdrops */
+  --overlay:         rgba(0,0,0,0.6);
+  --overlay-heavy:   rgba(0,0,0,0.75);
+
+  /* Laptop/device frame (results page) */
+  --frame-dark:      #222222;
+  --frame-light:     #d0d0d0;
+
+  /* ── Dark theme surfaces & text ── */
   --bg:          #0f0d0e;
   --bg-card:     #1a1517;
   --bg-elevated: #251c1e;

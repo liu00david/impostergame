@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect } from 'react'
+import { overlayHeavy } from '@/lib/colors'
 
 interface ModalProps {
   open: boolean
@@ -20,7 +21,7 @@ export function Modal({ open, children }: ModalProps) {
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: 'rgba(0,0,0,0.75)' }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: overlayHeavy }}>
       <div
         className="w-full max-w-sm rounded-2xl border p-6 shadow-2xl"
         style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg)' }}

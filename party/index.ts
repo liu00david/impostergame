@@ -58,12 +58,35 @@ const initialState = (): OnlineGameState => ({
   },
 })
 
+const DISCONNECT_GRACE_MS = 60_000
+
 export default class SpyhuntServer implements Party.Server {
   state: OnlineGameState
   timerInterval: ReturnType<typeof setInterval> | null = null
+  disconnectTimers: Map<string, ReturnType<typeof setTimeout>> = new Map()
 
   constructor(readonly room: Party.Room) {
     this.state = initialState()
+  }
+
+  // Assign host to next best player and broadcast HOST_CHANGED if someone new gets it
+  reassignHost(previousHostId: string) {
+    const nextHost = this.state.players
+      .filter(p => p.isConnected)
+      .sort((a, b) => a.order - b.order)[0]
+      ?? this.state.players.sort((a, b) => a.order - b.order)[0]
+    if (nextHost) {
+      nextHost.isHost = true
+      this.broadcast({ type: 'HOST_CHANGED', newHostName: nextHost.name })
+    }
+  }
+
+  // Reset room if empty
+  resetIfEmpty() {
+    if (this.state.players.length === 0) {
+      this.stopTimer()
+      this.state = initialState()
+    }
   }
 
   broadcast(msg: ServerMessage) {
@@ -89,24 +112,27 @@ export default class SpyhuntServer implements Party.Server {
     const player = this.state.players.find(p => p.id === conn.id)
     if (!player) return
 
-    if (this.state.phase === 'lobby') {
-      // Remove from lobby entirely
-      this.state.players = this.state.players.filter(p => p.id !== conn.id)
-    } else {
-      // Keep in game but mark disconnected
-      player.isConnected = false
-    }
-
-    // Reassign host to next connected player by join order if host disconnected
-    if (player.isHost) {
-      player.isHost = false
-      const nextHost = this.state.players
-        .filter(p => p.isConnected)
-        .sort((a, b) => a.order - b.order)[0]
-      if (nextHost) nextHost.isHost = true
-    }
-
+    // Mark disconnected immediately so UI reflects it
+    player.isConnected = false
     this.broadcast({ type: 'STATE', state: this.state })
+
+    // Grace period before actually removing/demoting
+    const timer = setTimeout(() => {
+      this.disconnectTimers.delete(conn.id)
+      // Player didn't reconnect in time
+      if (this.state.phase === 'lobby') {
+        this.state.players = this.state.players.filter(p => p.id !== conn.id)
+      }
+      // In-game: keep the slot but reassign host if needed
+      if (player.isHost) {
+        player.isHost = false
+        this.reassignHost(conn.id)
+      }
+      this.resetIfEmpty()
+      this.broadcast({ type: 'STATE', state: this.state })
+    }, DISCONNECT_GRACE_MS)
+
+    this.disconnectTimers.set(conn.id, timer)
   }
 
   onMessage(message: string, sender: Party.Connection) {
@@ -130,7 +156,12 @@ export default class SpyhuntServer implements Party.Server {
             this.sendTo(sender, { type: 'ERROR', message: `${matchByName.name} is already online` })
             break
           }
-          // Reconnect: reassign this connection to the existing player slot
+          // Reconnect: cancel grace timer, reassign connection slot
+          const pendingTimer = this.disconnectTimers.get(matchByName.id)
+          if (pendingTimer) {
+            clearTimeout(pendingTimer)
+            this.disconnectTimers.delete(matchByName.id)
+          }
           matchByName.id = sender.id
           matchByName.isConnected = true
           this.sendTo(sender, { type: 'STATE', state: this.state })
@@ -138,13 +169,26 @@ export default class SpyhuntServer implements Party.Server {
           break
         }
 
-        // Lobby: normal join / rename flow
-        const duplicate = this.state.players.find(
+        // Lobby: check for name collision (always, even if this connection already has a slot)
+        const matchByName = this.state.players.find(
           p => p.id !== sender.id && p.name.toLowerCase() === trimmedName.toLowerCase()
         )
-        if (duplicate) {
-          this.sendTo(sender, { type: 'ERROR', message: 'Name already taken' })
-          break
+        if (matchByName) {
+          if (matchByName.isConnected) {
+            // Active player — hard block
+            this.sendTo(sender, { type: 'ERROR', message: 'Name already taken' })
+            break
+          } else {
+            // Disconnected slot in grace period — allow reclaim
+            const pendingTimer = this.disconnectTimers.get(matchByName.id)
+            if (pendingTimer) { clearTimeout(pendingTimer); this.disconnectTimers.delete(matchByName.id) }
+            // Remove existing slot for this connection if any
+            if (existing) this.state.players = this.state.players.filter(p => p.id !== sender.id)
+            matchByName.id = sender.id
+            matchByName.isConnected = true
+            this.broadcast({ type: 'STATE', state: this.state })
+            break
+          }
         }
         const isFirst = this.state.players.length === 0
         if (existing) {
@@ -267,13 +311,16 @@ export default class SpyhuntServer implements Party.Server {
       case 'SIGNAL_COMPLETE': {
         if (!this.isHost(sender.id)) break
         this.stopTimer()
+        this.state.elapsedSeconds = 0
         this.state.phase = 'debrief'
+        this.startTimer()
         this.broadcast({ type: 'STATE', state: this.state })
         break
       }
 
       case 'DEBRIEF_COMPLETE': {
         if (!this.isHost(sender.id)) break
+        this.stopTimer()
         this.state.phase = 'vote'
         this.broadcast({ type: 'STATE', state: this.state })
         break
@@ -287,6 +334,14 @@ export default class SpyhuntServer implements Party.Server {
         if (this.state.players.every(p => p.hasVoted)) {
           this.state.phase = 'results'
         }
+        this.broadcast({ type: 'STATE', state: this.state })
+        break
+      }
+
+      case 'FORCE_RESULTS': {
+        if (!this.isHost(sender.id)) break
+        if (this.state.phase !== 'vote') break
+        this.state.phase = 'results'
         this.broadcast({ type: 'STATE', state: this.state })
         break
       }
@@ -308,6 +363,45 @@ export default class SpyhuntServer implements Party.Server {
         break
       }
 
+      case 'LEAVE_GAME': {
+        const leaving = this.state.players.find(p => p.id === sender.id)
+        if (!leaving) break
+        // Cancel any pending disconnect timer
+        const t = this.disconnectTimers.get(sender.id)
+        if (t) { clearTimeout(t); this.disconnectTimers.delete(sender.id) }
+        this.state.players = this.state.players.filter(p => p.id !== sender.id)
+        if (leaving.isHost) this.reassignHost(sender.id)
+        this.resetIfEmpty()
+        this.broadcast({ type: 'STATE', state: this.state })
+        break
+      }
+
+      case 'DISBAND_ROOM': {
+        if (!this.isHost(sender.id)) break
+        // Kick every non-host player
+        for (const p of this.state.players) {
+          if (p.id === sender.id) continue
+          const conn = this.room.getConnection(p.id)
+          if (conn) { this.sendTo(conn, { type: 'KICKED' }); conn.close() }
+        }
+        // Clear all players and reset
+        this.stopTimer()
+        this.state = initialState()
+        break
+      }
+
+      case 'MAKE_HOST': {
+        if (!this.isHost(sender.id)) break
+        const newHost = this.state.players.find(p => p.id === msg.playerId)
+        if (!newHost) break
+        // Demote current host, promote new one
+        this.state.players.forEach(p => { p.isHost = false })
+        newHost.isHost = true
+        this.broadcast({ type: 'HOST_CHANGED', newHostName: newHost.name })
+        this.broadcast({ type: 'STATE', state: this.state })
+        break
+      }
+
       case 'KICK_PLAYER': {
         if (!this.isHost(sender.id)) break
         const kickedConn = this.room.getConnection(msg.playerId)
@@ -318,6 +412,7 @@ export default class SpyhuntServer implements Party.Server {
           this.sendTo(kickedConn, { type: 'KICKED' })
           kickedConn.close()
         }
+        this.resetIfEmpty()
         // Broadcast updated state to remaining players
         this.broadcast({ type: 'STATE', state: this.state })
         break

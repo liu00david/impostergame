@@ -54,11 +54,16 @@ export type ClientMessage =
   | { type: 'SIGNAL_COMPLETE' }   // host taps "proceed to debrief"
   | { type: 'DEBRIEF_COMPLETE' }  // host taps "proceed to voting"
   | { type: 'CAST_VOTE'; suspects: string[] }
+  | { type: 'FORCE_RESULTS' }     // host skips waiting for all votes
   | { type: 'RESET_GAME' }
   | { type: 'KICK_PLAYER'; playerId: string }
+  | { type: 'MAKE_HOST'; playerId: string }
+  | { type: 'LEAVE_GAME' }
+  | { type: 'DISBAND_ROOM' }
 
 // Messages sent from SERVER → CLIENT (broadcast)
 export type ServerMessage =
   | { type: 'STATE'; state: OnlineGameState }
   | { type: 'ERROR'; message: string }
   | { type: 'KICKED' }
+  | { type: 'HOST_CHANGED'; newHostName: string }

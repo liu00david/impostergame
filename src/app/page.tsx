@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { brand, brandBorder, brandDark } from '@/lib/colors'
 
 export default function LandingPage() {
   return (
@@ -18,7 +19,7 @@ export default function LandingPage() {
                 fontSize: '4rem',
                 fontWeight: 900,
                 lineHeight: 1,
-                color: 'rgba(196, 7, 38, 0.93)',
+                color: brand,
                 textShadow: '0 1px 8px rgba(88, 88, 88, 0.25)',
                 letterSpacing: '-0.03em',
               }}
@@ -50,19 +51,19 @@ export default function LandingPage() {
           <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--fg-subtle)' }}>How it works</p>
           <div className="space-y-2 text-sm" style={{ color: 'var(--fg-muted)' }}>
             <div className="flex gap-3">
-              <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>1</span>
+              <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>1</span>
               <span><strong style={{ color: 'var(--fg)' }}>Assignment</strong> — Each agent secretly learns their role. Operatives see the codeword. Spies don&apos;t.</span>
             </div>
             <div className="flex gap-3">
-              <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>2</span>
+              <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>2</span>
               <span><strong style={{ color: 'var(--fg)' }}>Signal</strong> — Everyone gives one clue about the codeword. Spies bluff. Operatives prove themselves without giving too much away.</span>
             </div>
             <div className="flex gap-3">
-              <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>3</span>
+              <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>3</span>
               <span><strong style={{ color: 'var(--fg)' }}>Debrief</strong> — Time for discussion, whose signals seemed off? Debate. Deceive.</span>
             </div>
             <div className="flex gap-3">
-              <span className="font-bold w-4 shrink-0" style={{ color: '#9b1c31' }}>4</span>
+              <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>4</span>
               <span><strong style={{ color: 'var(--fg)' }}>Vote</strong> — Eliminate the spies. If any survive, the mission is sabotaged.</span>
             </div>
           </div>
@@ -73,14 +74,14 @@ export default function LandingPage() {
           <Link
             href="/setup"
             className="w-full flex items-center justify-center rounded-xl text-xl font-semibold min-h-[52px] transition-all active:scale-95"
-            style={{ background: 'rgb(171, 27, 51)', color: '#fff' }}
+            style={{ background: brandDark, color: '#fff' }}
           >
             Pass & Play
           </Link>
           <Link
             href="/room"
             className="w-full flex items-center justify-center rounded-xl text-xl font-semibold min-h-[52px] transition-all active:scale-95 border"
-            style={{ background: 'var(--bg-card)', borderColor: 'rgba(209,32,76,0.4)', color: 'rgb(209,32,76)' }}
+            style={{ background: 'var(--bg-card)', borderColor: brandBorder, color: brand }}
           >
             Online Play (local only - in development)
           </Link>

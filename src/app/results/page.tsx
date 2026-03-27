@@ -7,6 +7,15 @@ import { useTheme } from '@/context/ThemeContext'
 import { Button } from '@/components/ui/Button'
 import { tallyVotes, checkImpostorsCaught } from '@/lib/gameLogic'
 import { DomainLabel } from '@/components/ui/DomainLabel'
+import {
+  brandDark, brandDarkBorder, brandDarkFaint, brandBorderStrong,
+  frameDark, frameLight,
+  outcomeWinBgDark, outcomeWinBgLight, outcomeWinBorder, outcomeWinGlow,
+  outcomeLossBgDark, outcomeLossBgLight, outcomeLossBorder, outcomeLossGlow, outcomeLossBorderLight,
+  successBorder, successSubtle,
+  dangerBorder, dangerFaint,
+  spyBadgeBg,
+} from '@/lib/colors'
 
 export default function ResultsPage() {
   const { state, dispatch } = useGame()
@@ -78,11 +87,11 @@ export default function ResultsPage() {
           onClick={() => setWordRevealed(r => !r)}
           className="w-full rounded-xl transition-all active:scale-95 flex items-center justify-center min-h-[60px] border-2"
           style={wordRevealed ? {
-            borderColor: 'rgba(155,28,49,0.4)',
-            background: 'rgba(155,28,49,0.08)',
+            borderColor: brandDarkBorder,
+            background: brandDarkFaint,
           } : {
             borderStyle: 'dashed',
-            borderColor: 'rgba(155,28,49,0.5)',
+            borderColor: brandBorderStrong,
             background: 'var(--bg-elevated)',
           }}
         >
@@ -98,7 +107,7 @@ export default function ResultsPage() {
       <div className="mb-6">
         {/* Screen bezel */}
         <div className="rounded-t-xl rounded-b-md px-3 pt-3 pb-3" style={{
-          background: theme === 'dark' ? '#222222' : '#d0d0d0',
+          background: theme === 'dark' ? frameDark : frameLight,
           boxShadow: theme === 'dark'
             ? '0 2px 16px rgba(131, 131, 131, 0.12), inset 0 1px 0 rgba(255,255,255,0.05)'
             : '0 2px 16px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.6)',
@@ -109,7 +118,7 @@ export default function ResultsPage() {
           </div>
           {/* Screen content */}
           {spiesCaught ? (
-            <div className="rounded-lg p-5 text-center" style={{ background: theme === 'dark' ? 'rgb(17, 45, 28)' : 'rgb(235, 255, 243)', border: '3px solid rgba(0, 147, 54, 0.68)', boxShadow: '0 0 0 1px rgba(0,147,54,0.15)' }}>
+            <div className="rounded-lg p-5 text-center" style={{ background: theme === 'dark' ? outcomeWinBgDark : outcomeWinBgLight, border: `3px solid ${outcomeWinBorder}`, boxShadow: `0 0 0 1px ${outcomeWinGlow}` }}>
               <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Spies Caught!</p>
               <p className="text-lg" style={{ color: 'var(--fg-muted)' }}>
                 One last chance for spies to guess the codeword to steal the win!
@@ -122,7 +131,7 @@ export default function ResultsPage() {
               </p>
             </div>
           ) : (
-            <div className="rounded-lg p-5 text-center" style={{ background: theme === 'dark' ? 'rgb(76, 24, 33)' : 'rgb(255, 224, 232)', border: `3px solid ${theme === 'dark' ? 'rgba(200, 60, 80, 0.65)' : 'rgba(180, 60, 80, 0.55)'}`, boxShadow: `0 0 0 1px ${theme === 'dark' ? 'rgba(200,60,80,0.15)' : 'rgba(180,60,80,0.1)'}` }}>
+            <div className="rounded-lg p-5 text-center" style={{ background: theme === 'dark' ? outcomeLossBgDark : outcomeLossBgLight, border: `3px solid ${theme === 'dark' ? outcomeLossBorder : outcomeLossBorderLight}`, boxShadow: `0 0 0 1px ${theme === 'dark' ? outcomeLossGlow : outcomeLossGlow}` }}>
               <p className="font-title text-3xl font-bold mb-3" style={{ color: 'var(--fg)' }}>Mission Sabotaged!</p>
               <p className="text-lg mb-2" style={{ color: 'var(--fg-muted)' }}>The spies were not eliminated.</p>
               <p className="text-lg mb-1" style={{ color: 'var(--fg-muted)' }}>
@@ -139,7 +148,7 @@ export default function ResultsPage() {
         {/* Laptop base */}
         <div className="rounded-b-2xl" style={{
           height: '18px',
-          background: theme === 'dark' ? '#333333' : '#c8c8c8',
+          background: theme === 'dark' ? '#333333' : '#c8c8c8', // neutral greys, no token needed
           boxShadow: theme === 'dark'
             ? '0 4px 12px rgba(0,0,0,0.5)'
             : '0 4px 12px rgba(0,0,0,0.15)',
@@ -159,8 +168,8 @@ export default function ResultsPage() {
           const isEliminated = eliminatedIds.has(result.playerId)
           const rowStyle = isEliminated
             ? player.isImpostor
-              ? { borderColor: 'rgba(34,197,94,0.45)', background: 'rgba(34,197,94,0.10)' }
-              : { borderColor: 'rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.08)' }
+              ? { borderColor: successBorder, background: successSubtle }
+              : { borderColor: dangerBorder, background: dangerFaint }
             : { borderColor: 'var(--border)', background: 'var(--bg-card)' }
           return (
             <div
@@ -172,7 +181,7 @@ export default function ResultsPage() {
                 <span className="text-base w-5" style={{ color: 'var(--fg-subtle)' }}>{rank + 1}.</span>
                 <span className="font-medium text-base">{player.name}</span>
                 {player.isImpostor && (
-                  <span className="text-sm font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(161, 10, 10, 0.93)', color: 'rgba(255, 255, 255, 0.9)' }}>
+                  <span className="text-sm font-bold px-2 py-0.5 rounded-full" style={{ background: spyBadgeBg, color: 'rgba(255, 255, 255, 0.9)' }}>
                     SPY
                   </span>
                 )}

@@ -9,6 +9,7 @@ import { Modal } from '@/components/ui/Modal'
 import { ExitButton } from '@/components/ui/ExitButton'
 import { Player } from '@/types/game'
 import { DomainLabel } from '@/components/ui/DomainLabel'
+import { brandDark, brandDarkSubtle, voteCardDark, voteCardAccentDark, voteCardLight, voteCardBorderLight, voteCardFlapLight, danger, dangerSubtle, dangerLight } from '@/lib/colors'
 
 export default function VotePage() {
   const { state, dispatch } = useGame()
@@ -34,7 +35,7 @@ export default function VotePage() {
   }
 
   function toggleSelect(id: string) {
-    if (!activeVoter || id === activeVoter.id) return
+    if (!activeVoter) return
     setSelected(prev => {
       const next = new Set(prev)
       if (next.has(id)) {
@@ -77,10 +78,10 @@ export default function VotePage() {
           const hasVoted = voted.has(player.id)
           const bg = hasVoted
             ? 'var(--bg-card)'
-            : theme === 'dark' ? '#3c0a17' : '#fff0f3'
+            : theme === 'dark' ? voteCardDark : voteCardLight
           const flapBg = hasVoted
             ? (theme === 'dark' ? '#1e1215' : '#e2e2e2')
-            : (theme === 'dark' ? '#5a1525' : '#f0bcc8')
+            : (theme === 'dark' ? voteCardAccentDark : voteCardFlapLight)
           return (
             <button
               key={player.id}
@@ -94,12 +95,12 @@ export default function VotePage() {
                 borderRadius: '6px',
                 border: hasVoted
                   ? '1px solid var(--border)'
-                  : `1.5px solid ${theme === 'dark' ? '#7a1a30' : '#c06070'}`,
+                  : `1.5px solid ${theme === 'dark' ? brandDark : voteCardBorderLight}`,
                 boxShadow: hasVoted
                   ? 'none'
                   : theme === 'dark'
-                    ? '0 4px 20px rgba(155,28,49,0.3), inset 0 1px 0 rgba(255,255,255,0.05)'
-                    : '0 4px 16px rgba(155,28,49,0.15)',
+                    ? `0 4px 20px ${brandDark}, inset 0 1px 0 rgba(255,255,255,0.05)`
+                    : `0 4px 16px ${brandDarkSubtle}`,
               }}
             >
               {/* Envelope flap */}
@@ -144,27 +145,21 @@ export default function VotePage() {
             </div>
             <div className="space-y-2">
               {[...state.players].sort((a, b) => a.order - b.order).map(player => {
-                const isSelf = player.id === activeVoter.id
                 const isSelected = selected.has(player.id)
                 return (
                   <button
                     key={player.id}
                     onClick={() => toggleSelect(player.id)}
-                    disabled={isSelf}
                     className="w-full flex items-center justify-between rounded-xl border px-4 py-3 min-h-[52px] transition-all"
-                    style={isSelf ? {
-                      borderColor: 'var(--border)', background: 'var(--bg-card)',
-                      color: 'var(--fg-subtle)', opacity: 0.5, cursor: 'not-allowed',
-                    } : isSelected ? {
-                      borderColor: '#ef4444', background: 'rgba(239,68,68,0.15)', color: '#f87171',
+                    style={isSelected ? {
+                      borderColor: danger, background: dangerSubtle, color: dangerLight,
                     } : {
                       borderColor: 'var(--border)', background: 'var(--bg-elevated)', color: 'var(--fg)',
                     }}
                   >
                     <span className="font-medium">{player.name}</span>
-                    {isSelf && <span className="text-sm" style={{ color: 'var(--fg-subtle)' }}>you</span>}
                     {isSelected && <span className="text-red-400 text-lg">✓</span>}
-                    {!isSelf && !isSelected && (
+                    {!isSelected && (
                       <div className="w-5 h-5 rounded border" style={{ borderColor: 'var(--border)' }} />
                     )}
                   </button>

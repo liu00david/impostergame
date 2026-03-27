@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useGame } from '@/context/GameContext'
-import { useTheme } from '@/context/ThemeContext'
+
 import { PlayerList } from '@/components/setup/PlayerList'
 import { ImpostorToggle } from '@/components/setup/ImpostorToggle'
 import { CategoryGrid } from '@/components/setup/CategoryGrid'
@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import Link from 'next/link'
 import { IMPOSTOR_MIN_PLAYERS } from '@/lib/constants'
+import { toggleOn, toggleOff } from '@/lib/colors'
 
 function Toggle({ value, onChange }: { value: boolean; onChange: (v: boolean) => void }) {
   return (
@@ -19,7 +20,7 @@ function Toggle({ value, onChange }: { value: boolean; onChange: (v: boolean) =>
       className="relative inline-flex items-center rounded-full transition-colors flex-shrink-0"
       style={{
         width: '44px', height: '24px',
-        background: value ? '#16a34a' : 'rgba(128,128,128,0.4)',
+        background: value ? toggleOn : toggleOff,
       }}
       aria-checked={value}
       role="switch"
@@ -38,7 +39,7 @@ function Toggle({ value, onChange }: { value: boolean; onChange: (v: boolean) =>
 
 export default function SetupPage() {
   const { state, dispatch } = useGame()
-  const { theme, toggle: toggleTheme } = useTheme()
+
   const router = useRouter()
   const [showAdvanced, setShowAdvanced] = useState(false)
 
@@ -129,12 +130,6 @@ export default function SetupPage() {
               description="Spies' votes affect the tally outcome"
               value={state.settings.spiesVoteCount}
               onChange={v => dispatch({ type: 'UPDATE_SETTINGS', settings: { spiesVoteCount: v } })}
-            />
-            <SettingRow
-              label="Dark mode"
-              description="Use dark theme"
-              value={theme === 'dark'}
-              onChange={() => toggleTheme()}
             />
           </div>
 

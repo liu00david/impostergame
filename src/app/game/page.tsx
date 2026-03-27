@@ -9,6 +9,7 @@ import { Speech } from 'lucide-react'
 import { getPlayerForTurn } from '@/lib/turnOrder'
 import { formatTime } from '@/lib/formatTime'
 import { DomainLabel } from '@/components/ui/DomainLabel'
+import { brand, brandDarkBorder } from '@/lib/colors'
 
 export default function GamePage() {
   const { state, dispatch } = useGame()
@@ -44,7 +45,7 @@ export default function GamePage() {
           <h1 className="text-2xl font-bold">Signal</h1>
         </div>
         <div className="flex items-center gap-3">
-          <p className="text-3xl font-mono font-bold" style={{ color: 'rgb(209, 32, 76)' }}>
+          <p className="text-3xl font-mono font-bold" style={{ color: brand }}>
             {formatTime(state.elapsedSeconds)}
           </p>
           <ExitButton />
@@ -52,13 +53,13 @@ export default function GamePage() {
       </header>
 
       <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2">
-        <Speech size={52} color="rgb(209,32,76)" strokeWidth={1.5} />
+        <Speech size={52} color={brand} strokeWidth={1.5} />
         <p className="text-xl leading-relaxed font-medium" style={{ color: 'var(--fg)' }}>
           Go around in a circle. Each agent gives one signal, without revealing the codeword!
         </p>
         <div className="space-y-2 w-full">
           <p className="text-xl font-semibold" style={{ color: 'var(--fg-subtle)' }}>Starting with agent</p>
-          <div className="rounded-3xl border px-6 py-4" style={{ background: 'var(--bg-card)', borderColor: 'rgba(155,28,49,0.4)' }}>
+          <div className="rounded-3xl border px-6 py-4" style={{ background: 'var(--bg-card)', borderColor: brandDarkBorder }}>
             <p className="text-3xl font-bold">{firstPlayer?.name}</p>
           </div>
         </div>
