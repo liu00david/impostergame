@@ -83,7 +83,7 @@ export default function LandingPage() {
             className="w-full flex items-center justify-center rounded-xl text-xl font-semibold min-h-[52px] transition-all active:scale-95 border"
             style={{ background: 'var(--bg-card)', borderColor: brandBorder, color: brand }}
           >
-            Online Play (local only - in development)
+            Online Play
           </Link>
           <Link
             href="/rules"

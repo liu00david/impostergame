@@ -123,7 +123,7 @@ export default function RoomPage() {
       if (msg.type === 'ERROR') {
         setNameError(msg.message)
         // Block entry if game is already in progress
-        if (msg.message === 'Game in progress — new players cannot join') {
+        if (msg.message === 'Game in progress — new players cannot join' || msg.message.includes('is already online')) {
           setBlocked(msg.message)
         }
         // Name taken in lobby — force back to name entry
@@ -223,11 +223,18 @@ export default function RoomPage() {
   }
 
   if (blocked) {
+    const isNameTaken = blocked.includes('is already online')
     return (
       <div className="min-h-screen flex flex-col items-center justify-center max-w-md mx-auto px-6 gap-6 text-center">
         <p className="text-4xl">🚫</p>
-        <p className="text-xl font-bold" style={{ color: 'var(--fg)' }}>Game in progress</p>
-        <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>This room is mid-game. You can only rejoin if you were already a player.</p>
+        <p className="text-xl font-bold" style={{ color: 'var(--fg)' }}>
+          {isNameTaken ? 'Name already taken' : 'Game in progress'}
+        </p>
+        <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>
+          {isNameTaken
+            ? 'That name is already active in this game. Use a different name to join.'
+            : 'This room is mid-game. You can only rejoin if you were already a player.'}
+        </p>
         <Button fullWidth onClick={() => router.replace('/room')}>Back to Lobby</Button>
       </div>
     )
@@ -893,7 +900,7 @@ function GameMenuButton({ isHost, onReset, onLeave, onDisband, players, onKick, 
             <button
               onClick={() => { setOpen(false); onLeave() }}
               className="w-full py-3 rounded-xl text-sm font-semibold text-left px-4"
-              style={{ background: 'var(--bg-elevated)', color: 'var(--fg-muted)' }}
+              style={{ background: 'var(--bg-elevated)', color: 'var(--fg)', border: '1px solid var(--border)' }}
             >Leave Game</button>
             {isHost && nonHostPlayers.length > 0 && (
               <button
