@@ -10,7 +10,8 @@ const LS_NAME_KEY = 'spyhunt_name'
 const LS_ROOM_KEY = 'spyhunt_room'
 
 function randomCode() {
-  return Math.random().toString(36).slice(2, 6).toUpperCase()
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  return Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
 }
 
 function RoomEntryInner() {
@@ -23,7 +24,7 @@ function RoomEntryInner() {
 
   function handleJoin() {
     if (!name.trim()) { setError('Enter your agent name first'); return }
-    const code = joinCode.trim().toUpperCase()
+    const code = joinCode.trim().toUpperCase().replace(/[^A-Z]/g, '')
     if (code.length < 4) { setError('Enter a valid room code'); return }
     localStorage.setItem(LS_NAME_KEY, name.trim())
     localStorage.setItem(LS_ROOM_KEY, code)
@@ -39,8 +40,8 @@ function RoomEntryInner() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-12">
-      <header className="mb-8 flex items-center">
+    <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
+      <header className="mb-6 flex items-center">
         <Link href="/" className="text-xl px-2" style={{ color: 'var(--fg-muted)' }}>←</Link>
       </header>
 
@@ -50,7 +51,7 @@ function RoomEntryInner() {
         </div>
       )}
 
-      <div className="flex-1 flex flex-col justify-center gap-8">
+      <div className="flex flex-col gap-8" style={{ marginTop: '8vh' }}>
         <div>
           <h1 className="text-3xl font-bold font-title mb-1" style={{ color: 'var(--fg)' }}>Online Play</h1>
           <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>Each player uses their own device</p>
@@ -83,9 +84,9 @@ function RoomEntryInner() {
             <input
               type="text"
               value={joinCode}
-              onChange={e => { setJoinCode(e.target.value.toUpperCase()); setError('') }}
+              onChange={e => { setJoinCode(e.target.value.toUpperCase().replace(/[^A-Z]/g, '')); setError('') }}
               onKeyDown={e => e.key === 'Enter' && handleJoin()}
-              placeholder="e.g. AB3X"
+              placeholder="e.g. ABCD"
               maxLength={6}
               className="flex-1 rounded-xl border px-4 py-3 text-base font-mono uppercase outline-none"
               style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg)' }}

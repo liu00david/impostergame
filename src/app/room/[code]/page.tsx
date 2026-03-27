@@ -59,7 +59,9 @@ export default function RoomPage() {
     const savedName = localStorage.getItem(LS_NAME_KEY)
     const savedRoom = localStorage.getItem(LS_ROOM_KEY)
     if (savedName && savedRoom === code) {
-      setMyName(savedName)
+      // Treat as pending — hold on loading screen until server confirms
+      setPendingName(savedName)
+      setMyName('')
     } else {
       setMyName('')  // show name entry form
     }
@@ -187,16 +189,24 @@ export default function RoomPage() {
         <p className="text-4xl">📵</p>
         <p className="text-xl font-bold" style={{ color: 'var(--fg)' }}>Already open in another tab</p>
         <p className="text-sm" style={{ color: 'var(--fg-muted)' }}>This game is running in a different tab or window. Close this one to avoid conflicts.</p>
-        <Button fullWidth onClick={() => window.close()}>Close This Tab</Button>
       </div>
     )
   }
 
-  // Name entry screen (shown on refresh or first visit without saved name)
+  // Still resolving from localStorage
   if (myName === null) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p style={{ color: 'var(--fg-muted)' }}>Loading…</p>
+      </div>
+    )
+  }
+
+  // Pending name sent to server — hold here until confirmed or rejected
+  if (pendingName && myName === '') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p style={{ color: 'var(--fg-muted)' }}>Connecting…</p>
       </div>
     )
   }
