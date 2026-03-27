@@ -4,7 +4,7 @@ import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
-import { brand, brandBorder, danger, dangerSubtle, dangerBorder } from '@/lib/colors'
+import { danger, dangerSubtle, dangerBorder } from '@/lib/colors'
 
 const LS_NAME_KEY = 'spyhunt_name'
 const LS_ROOM_KEY = 'spyhunt_room'
@@ -71,7 +71,7 @@ function RoomEntryInner() {
             maxLength={20}
             autoFocus
             className="w-full rounded-xl border px-4 py-3 text-base outline-none"
-            style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg)' }}
+            style={{ background: error === 'Enter your agent name first' ? dangerSubtle : 'var(--bg-card)', borderColor: error === 'Enter your agent name first' ? dangerBorder : 'var(--border)', color: 'var(--fg)' }}
           />
         </div>
 
@@ -89,7 +89,7 @@ function RoomEntryInner() {
               placeholder="e.g. ABCD"
               maxLength={6}
               className="flex-1 rounded-xl border px-4 py-3 text-base font-mono uppercase outline-none"
-              style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg)' }}
+              style={{ background: error === 'Enter a valid room code' ? dangerSubtle : 'var(--bg-card)', borderColor: error === 'Enter a valid room code' ? dangerBorder : 'var(--border)', color: 'var(--fg)' }}
             />
             <Button size="lg" onClick={handleJoin}>Join</Button>
           </div>
@@ -105,13 +105,7 @@ function RoomEntryInner() {
         </div>
 
         {/* Create — secondary action */}
-        <button
-          onClick={handleCreate}
-          className="w-full rounded-xl border px-4 py-3 text-base font-semibold transition-all active:scale-95"
-          style={{ background: 'var(--bg-card)', borderColor: brandBorder, color: brand }}
-        >
-          Create New Room
-        </button>
+        <Button fullWidth onClick={handleCreate}>Create New Room</Button>
       </div>
     </div>
   )
