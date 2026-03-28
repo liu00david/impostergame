@@ -82,7 +82,7 @@ export default function LandingPage() {
                 width: '44%',
                 background: theme === 'dark'
                   ? 'linear-gradient(135deg, rgba(255, 251, 0, 0.2) 0%, rgba(255, 255, 255, 0.1) 20%, rgba(17, 17, 17, 0.2) 30%)'
-                  : '#fff',
+                  : 'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.15) 15%, rgba(233, 233, 233, 0.15) 30%)',
                 border: `8px solid ${brand}`,
                 color: theme === 'dark' ? '#fff' : '#111',
                 borderRadius: '50%',
@@ -110,7 +110,7 @@ export default function LandingPage() {
                 width: '44%',
                 background: theme === 'dark'
                   ? 'linear-gradient(135deg, rgba(255, 251, 0, 0.2) 0%, rgba(255, 255, 255, 0.1) 20%, rgba(17, 17, 17, 0.2) 30%)'
-                  : '#fff',
+                  : 'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.15) 15%, rgba(233, 233, 233, 0.15) 30%)',
                 border: `8px solid ${brand}`,
                 color: theme === 'dark' ? '#fff' : '#111',
                 borderRadius: '50%',
