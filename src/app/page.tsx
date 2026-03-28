@@ -2,16 +2,18 @@
 
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { useTheme } from '@/context/ThemeContext'
 import { brand, brandBorder, brandDark } from '@/lib/colors'
 
 export default function LandingPage() {
+  const { theme } = useTheme()
   return (
     <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-12">
       <ThemeToggle />
 
       {/* Hero */}
       <div className="flex-1 flex flex-col justify-center gap-10">
-        <div className="text-center">
+        <div className="text-center" style={{ marginTop: '20px' }}>
           <div className="relative inline-block">
             <h1
               className="font-title"
@@ -52,42 +54,78 @@ export default function LandingPage() {
           <div className="space-y-2 text-sm" style={{ color: 'var(--fg-muted)' }}>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>1</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Assignment</strong> — Each agent secretly learns their role. Operatives see the codeword. Spies don&apos;t.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Assignment</strong>: Each agent learns their role. Operatives see the codeword. Spies don&apos;t.</span>
             </div>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>2</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Signal</strong> — Everyone gives one clue about the codeword. Spies bluff. Operatives prove themselves without giving too much away.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Signal</strong>: Everyone gives one clue about the codeword. Operatives prove themselves. Spies bluff.</span>
             </div>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>3</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Debrief</strong> — Time for discussion, whose signals seemed off? Debate. Deceive.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Debrief</strong>: Time for discussion, who's a spy? Debate. Deceive.</span>
             </div>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>4</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Vote</strong> — Eliminate the spies. If any survive, the mission is sabotaged.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Vote</strong>: Eliminate the spies. If any survive, the mission is sabotaged.</span>
             </div>
           </div>
         </div>
 
         {/* Actions */}
-        <div className="space-y-2">
-          <Link
-            href="/setup"
-            className="w-full flex items-center justify-center rounded-xl text-xl font-semibold min-h-[52px] transition-all active:scale-95"
-            style={{ background: brandDark, color: '#fff' }}
-          >
-            Pass & Play
-          </Link>
-          <Link
-            href="/room"
-            className="w-full flex items-center justify-center rounded-xl text-xl font-semibold min-h-[52px] transition-all active:scale-95 border"
-            style={{ background: 'var(--bg-card)', borderColor: brandBorder, color: brand }}
-          >
-            Online Play
-          </Link>
+        <div className="space-y-0">
+          <div className="relative flex items-center" style={{ marginBottom: '-6px', marginTop: '-16px' }}>
+            {/* Left lens — Pass & Play */}
+            <Link
+              href="/setup"
+              className="flex flex-col items-center justify-center gap-2 font-semibold transition-all active:scale-95 aspect-square"
+              style={{
+                width: '44%',
+                background: theme === 'dark'
+                  ? 'linear-gradient(135deg, rgba(255, 251, 0, 0.2) 0%, rgba(255, 255, 255, 0.1) 20%, rgba(17, 17, 17, 0.2) 30%)'
+                  : '#fff',
+                border: `8px solid ${brand}`,
+                color: theme === 'dark' ? '#fff' : '#111',
+                borderRadius: '50%',
+              }}
+            >
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="2" width="14" height="20" rx="2.5" stroke="currentColor" strokeWidth="1.8"/>
+                <line x1="9" y1="19" x2="15" y2="19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+              </svg>
+              <span className="text-lg" style={{ marginTop: '-5px' }}>Pass &amp; Play</span>
+            </Link>
+            {/* Bridge — arched SVG */}
+            <div className="flex-1 flex items-center justify-center" style={{ marginTop: '-30px' }}>
+              <svg width="100%" height="28" viewBox="0 0 48 28" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 24 Q24 2 48 24" stroke={brand} strokeWidth="7" strokeLinecap="round" fill="none"/>
+              </svg>
+            </div>
+            {/* Right lens — Online Play */}
+            <Link
+              href="/room"
+              className="flex flex-col items-center justify-center gap-2 font-semibold transition-all active:scale-95 aspect-square"
+              style={{
+                width: '44%',
+                background: theme === 'dark'
+                  ? 'linear-gradient(135deg, rgba(255, 251, 0, 0.2) 0%, rgba(255, 255, 255, 0.1) 20%, rgba(17, 17, 17, 0.2) 30%)'
+                  : '#fff',
+                border: `8px solid ${brand}`,
+                color: theme === 'dark' ? '#fff' : '#111',
+                borderRadius: '50%',
+              }}
+            >
+              <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="11" stroke="currentColor" strokeWidth="1.8"/>
+                <ellipse cx="16" cy="16" rx="5" ry="11" stroke="currentColor" strokeWidth="1.8"/>
+                <line x1="5" y1="16" x2="27" y2="16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                <path d="M7 10h18M7 22h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+              </svg>
+              <span className="text-lg" style={{ marginTop: '-5px' }}>Online Play</span>
+            </Link>
+          </div>
           <Link
             href="/rules"
-            className="w-full flex items-center justify-center rounded-xl text-base font-medium min-h-[48px] border transition-all active:scale-95"
+            className="w-full flex items-center justify-center rounded-xl text-base font-medium min-h-[48px] border transition-all active:scale-95 mt-6"
             style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', color: 'var(--fg-muted)' }}
           >
             Full Rules
@@ -95,7 +133,7 @@ export default function LandingPage() {
         </div>
 
         {/* Credits */}
-        <p className="text-center text-xs" style={{ color: 'var(--fg-subtle)' }}>
+        <p className="text-center text-xs" style={{ color: 'var(--fg-subtle)', marginTop: '-16px' }}>
           A pass-and-play party game for 3–12 agents
         </p>
       </div>

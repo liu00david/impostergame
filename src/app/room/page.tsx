@@ -21,6 +21,7 @@ function RoomEntryInner() {
   const [joinCode, setJoinCode] = useState('')
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   function handleJoin() {
     if (!name.trim()) { setError('Enter your agent name first'); return }
@@ -28,7 +29,8 @@ function RoomEntryInner() {
     if (code.length < 4) { setError('Enter a valid room code'); return }
     localStorage.setItem(LS_NAME_KEY, name.trim())
     localStorage.setItem(LS_ROOM_KEY, code)
-    router.push(`/room/${code}`)
+    setLoading(true)
+    setTimeout(() => router.push(`/room/${code}`), 400)
   }
 
   function handleCreate() {
@@ -36,7 +38,8 @@ function RoomEntryInner() {
     const code = randomCode()
     localStorage.setItem(LS_NAME_KEY, name.trim())
     localStorage.setItem(LS_ROOM_KEY, code)
-    router.push(`/room/${code}`)
+    setLoading(true)
+    setTimeout(() => router.push(`/room/${code}`), 400)
   }
 
   return (
@@ -91,7 +94,7 @@ function RoomEntryInner() {
               className="flex-1 rounded-xl border px-4 py-3 text-base font-mono uppercase outline-none"
               style={{ background: error === 'Enter a valid room code' ? dangerSubtle : 'var(--bg-card)', borderColor: error === 'Enter a valid room code' ? dangerBorder : 'var(--border)', color: 'var(--fg)' }}
             />
-            <Button size="lg" onClick={handleJoin}>Join</Button>
+            <Button size="lg" onClick={handleJoin} disabled={loading}>{loading ? '...' : 'Join'}</Button>
           </div>
         </div>
 
@@ -105,7 +108,7 @@ function RoomEntryInner() {
         </div>
 
         {/* Create — secondary action */}
-        <Button fullWidth onClick={handleCreate}>Create New Room</Button>
+        <Button fullWidth onClick={handleCreate} disabled={loading}>{loading ? '...' : 'Create New Room'}</Button>
       </div>
     </div>
   )
