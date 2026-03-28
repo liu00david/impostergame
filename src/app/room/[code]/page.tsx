@@ -332,8 +332,15 @@ export default function RoomPage() {
                   const isDisabled = gameState.players.length < minPlayers
                   return (
                     <button key={count}
-                      onClick={() => !isDisabled && send({ type: 'TOGGLE_SPY_COUNT', count })}
-                      disabled={isDisabled}
+                      onClick={() => {
+                        if (isDisabled) {
+                          setToast(`Need ${minPlayers}+ agents`)
+                          setToastVisible(true)
+                          setTimeout(() => setToastVisible(false), 2000)
+                        } else {
+                          send({ type: 'TOGGLE_SPY_COUNT', count })
+                        }
+                      }}
                       className="flex-1 py-3 text-base font-semibold flex flex-col items-center gap-0.5"
                       style={isSelected && !isDisabled
                         ? { background: brandDark, color: '#fff' }
@@ -372,6 +379,11 @@ export default function RoomPage() {
               </div>
             </div>
 
+            {gameState.players.length < 3 && (
+              <p className="text-center text-sm" style={{ color: 'var(--fg-muted)', opacity: 0.95 }}>
+                Need at least 3 agents to start a mission
+              </p>
+            )}
             <Button fullWidth size="lg" disabled={!canStart} onClick={() => send({ type: 'START_GAME' })}>
               Begin Assignment
             </Button>

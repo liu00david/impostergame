@@ -89,14 +89,9 @@ export default function SetupPage() {
         <CategoryGrid />
 
         <div className="mt-auto pt-4 space-y-3">
-          {state.selectedCounts.length === 0 && (
+          {state.players.length < 3 && (
             <p className="text-center text-sm" style={{ color: 'var(--fg-muted)', opacity: 0.95 }}>
-              Select at least one spy count above
-            </p>
-          )}
-          {state.selectedCounts.length > 0 && state.players.length < minPlayersNeeded && (
-            <p className="text-center text-sm" style={{ color: 'var(--fg-muted)', opacity: 0.95 }}>
-              Need at least {minPlayersNeeded} agents for {state.selectedCounts[0]} spy{state.selectedCounts[0] > 1 ? 's' : ''}
+              Need at least 3 agents to start a mission
             </p>
           )}
           <Button fullWidth size="lg" onClick={handleStart} disabled={!canStart}>
