@@ -9,11 +9,11 @@ export default function LandingPage() {
   const { theme } = useTheme()
   return (
     <div className="min-h-screen flex flex-col max-w-md mx-auto px-6 py-12">
-      <ThemeToggle />
+<ThemeToggle />
 
       {/* Hero */}
       <div className="flex-1 flex flex-col justify-center gap-10">
-        <div className="text-center" style={{ marginTop: '20px' }}>
+        <div className="text-center" style={{ marginTop: '24px' }}>
           <div className="relative inline-block">
             <h1
               className="font-title"
@@ -49,31 +49,31 @@ export default function LandingPage() {
         </div>
 
         {/* Overview */}
-        <div className="rounded-2xl border px-5 py-4 space-y-3" style={{ background: 'var(--bg-card)', borderColor: 'var(--border)' }}>
+        <div className="rounded-2xl border px-5 py-4 space-y-3" style={{ background: 'var(--bg-card)', borderColor: 'var(--border)', marginTop: '-12px' }}>
           <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--fg-subtle)' }}>How it works</p>
           <div className="space-y-2 text-sm" style={{ color: 'var(--fg-muted)' }}>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>1</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Assignment</strong>: Each agent learns their role. Operatives see the codeword. Spies don&apos;t.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Assignment</strong>: Each agent secretly learns their role. Spies don&apos;t have the codeword.</span>
             </div>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>2</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Signal</strong>: Everyone gives one clue about the codeword. Operatives prove themselves. Spies bluff.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Signal</strong>: Everyone gives one clue. Operatives hint carefully. Spies bluff.</span>
             </div>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>3</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Debrief</strong>: Time for discussion, who's a spy? Debate. Deceive.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Debrief</strong>: Discuss the signals openly. Who sounded suspicious? Debate.</span>
             </div>
             <div className="flex gap-3">
               <span className="font-bold w-4 shrink-0" style={{ color: brandDark }}>4</span>
-              <span><strong style={{ color: 'var(--fg)' }}>Vote</strong>: Eliminate the spies. If any survive, the mission is sabotaged.</span>
+              <span><strong style={{ color: 'var(--fg)' }}>Vote</strong>: Cast your ballot. If any spy survives, the mission is lost.</span>
             </div>
           </div>
         </div>
 
         {/* Actions */}
         <div className="space-y-0">
-          <div className="relative flex items-center" style={{ marginBottom: '-6px', marginTop: '-16px' }}>
+          <div className="relative flex items-center" style={{ marginTop: '-10px' }}>
             {/* Left lens — Pass & Play */}
             <Link
               href="/setup"
@@ -88,11 +88,13 @@ export default function LandingPage() {
                 borderRadius: '50%',
               }}
             >
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="5" y="2" width="14" height="20" rx="2.5" stroke="currentColor" strokeWidth="1.8"/>
-                <line x1="9" y1="19" x2="15" y2="19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-              </svg>
-              <span className="text-lg" style={{ marginTop: '-5px' }}>Pass &amp; Play</span>
+              <div className="flex flex-col items-center gap-2" style={{ transform: 'translateY(-5px)' }}>
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="5" y="2" width="14" height="20" rx="2.5" stroke="currentColor" strokeWidth="1.8"/>
+                  <line x1="9" y1="19" x2="15" y2="19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                </svg>
+                <span className="text-base min-[400px]:text-lg" style={{ marginTop: '-5px' }}>Pass &amp; Play</span>
+              </div>
             </Link>
             {/* Bridge — arched SVG */}
             <div className="flex-1 flex items-center justify-center" style={{ marginTop: '-30px' }}>
@@ -114,13 +116,15 @@ export default function LandingPage() {
                 borderRadius: '50%',
               }}
             >
-              <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="16" cy="16" r="11" stroke="currentColor" strokeWidth="1.8"/>
-                <ellipse cx="16" cy="16" rx="5" ry="11" stroke="currentColor" strokeWidth="1.8"/>
-                <line x1="5" y1="16" x2="27" y2="16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-                <path d="M7 10h18M7 22h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-              </svg>
-              <span className="text-lg" style={{ marginTop: '-5px' }}>Online Play</span>
+              <div className="flex flex-col items-center gap-2" style={{ transform: 'translateY(-5px)' }}>
+                <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="16" cy="16" r="11" stroke="currentColor" strokeWidth="1.8"/>
+                  <ellipse cx="16" cy="16" rx="5" ry="11" stroke="currentColor" strokeWidth="1.8"/>
+                  <line x1="5" y1="16" x2="27" y2="16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                  <path d="M7 10h18M7 22h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                </svg>
+                <span className="text-base min-[400px]:text-lg" style={{ marginTop: '-5px' }}>Online Play</span>
+              </div>
             </Link>
           </div>
           <Link
