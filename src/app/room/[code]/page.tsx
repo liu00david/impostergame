@@ -593,10 +593,9 @@ export default function RoomPage() {
   // ── GAME (Signal) ───────────────────────────────────────────────────────────
   if (phase === 'game') {
     const activePlayers = gameState.players.filter(p => !p.hasLeft)
-    const signalOrderIds = gameState.signalOrder?.filter(id => activePlayers.some(p => p.id === id)) ?? []
-    const orderedPlayers = signalOrderIds.length > 0
-      ? signalOrderIds.map(id => activePlayers.find(p => p.id === id)!).filter(Boolean)
-      : activePlayers
+    const signalNames: string[] = gameState.signalOrder?.length > 0
+      ? gameState.signalOrder
+      : activePlayers.map(p => p.name)
     return (
       <>
         <div className="relative min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
@@ -627,10 +626,10 @@ export default function RoomPage() {
                   : '2px 3px 8px rgba(0,0,0,0.12)',
               }}
             >
-              {orderedPlayers.map((p, i) => (
-                <div key={p.id} className="flex items-center gap-2">
+              {signalNames.map((name, i) => (
+                <div key={name} className="flex items-center gap-2">
                   <span className="text-sm font-bold w-4 shrink-0 text-right" style={{ color: brand }}>{i + 1}.</span>
-                  <span className="text-base font-semibold truncate" style={{ color: i === 0 ? 'var(--fg)' : 'var(--fg-muted)' }}>{p.name}</span>
+                  <span className="text-base font-semibold truncate" style={{ color: i === 0 ? 'var(--fg)' : 'var(--fg-muted)' }}>{name}</span>
                 </div>
               ))}
             </div>

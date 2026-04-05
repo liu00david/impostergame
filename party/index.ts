@@ -258,7 +258,7 @@ export default class SpyhuntServer implements Party.Server {
           Math.floor(Math.random() * activePlayers.length)
         ]
         const restShuffled = shuffle(activePlayers.filter(p => p.id !== startingPlayer.id))
-        const signalOrder = [startingPlayer, ...restShuffled].map(p => p.id)
+        const signalOrder = [startingPlayer, ...restShuffled].map(p => p.name)
 
         this.state.phase = 'reveal'
         this.state.selectedCategory = category
@@ -359,8 +359,8 @@ export default class SpyhuntServer implements Party.Server {
         const t = this.disconnectTimers.get(sender.id)
         if (t) { clearTimeout(t); this.disconnectTimers.delete(sender.id) }
         const inGame = ['reveal', 'game', 'debrief', 'vote'].includes(this.state.phase)
-        if (inGame && leaving.isImpostor) {
-          // Keep impostor in list for results display, just mark as left
+        if (inGame) {
+          // Keep player in list so signal order and results display are preserved
           leaving.hasLeft = true
           leaving.isConnected = false
           leaving.isHost = false
@@ -417,8 +417,8 @@ export default class SpyhuntServer implements Party.Server {
           kickedConn.close()
         }
         const inGame = ['reveal', 'game', 'debrief', 'vote'].includes(this.state.phase)
-        if (kicked && inGame && kicked.isImpostor) {
-          // Keep impostor in list for results display
+        if (kicked && inGame) {
+          // Keep player in list so signal order and results display are preserved
           kicked.hasLeft = true
           kicked.isConnected = false
           kicked.isHost = false
