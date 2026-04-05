@@ -543,9 +543,10 @@ export default function RoomPage() {
   // ── GAME (Signal) ───────────────────────────────────────────────────────────
   if (phase === 'game') {
     const activePlayers = gameState.players.filter(p => !p.hasLeft)
-    const orderedPlayers = (gameState.signalOrder ?? [])
-      .map(id => activePlayers.find(p => p.id === id))
-      .filter(Boolean) as typeof activePlayers
+    const signalOrderIds = gameState.signalOrder?.filter(id => activePlayers.some(p => p.id === id)) ?? []
+    const orderedPlayers = signalOrderIds.length > 0
+      ? signalOrderIds.map(id => activePlayers.find(p => p.id === id)!).filter(Boolean)
+      : activePlayers
     return (
       <>
         <div className="relative min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
