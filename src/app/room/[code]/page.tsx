@@ -12,7 +12,7 @@ import { useTheme } from '@/context/ThemeContext'
 import { tallyVotes, checkImpostorsCaught } from '@/lib/gameLogic'
 import {
   brand, brandBorder, brandBorderStrong, brandDim, brandSubtle,
-  brandDark, brandDarkSubtle, brandDarkBorder, brandDarkFaint,
+  brandDark, brandDarkSubtle, brandDarkBorder, brandDarkFaint, brandMuted,
   danger, dangerSubtle, dangerBorder, dangerLight,
   success, statusOffline,
   successBorder, successSubtle,
@@ -391,9 +391,59 @@ export default function RoomPage() {
         )}
 
         {!isHost && (
-          <p className="text-center text-sm" style={{ color: 'var(--fg-muted)' }}>
-            Waiting for host to start the game…
-          </p>
+          <>
+            {/* Read-only spy count */}
+            <div className="space-y-2">
+              <p className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--fg-subtle)' }}>
+                Spies{gameState.selectedCounts.length > 1 && <span className="ml-2 text-xs font-normal" style={{ color: brand }}>random</span>}
+              </p>
+              <div className="flex rounded-xl overflow-hidden border" style={{ borderColor: 'var(--border)', background: 'var(--bg-card)' }}>
+                {([1, 2, 3] as const).map(count => {
+                  const minPlayers = count === 1 ? 3 : count === 2 ? 5 : 7
+                  const isSelected = gameState.selectedCounts.includes(count)
+                  const isDisabled = gameState.players.length < minPlayers
+                  return (
+                    <div key={count}
+                      className="flex-1 py-3 text-base font-semibold flex flex-col items-center gap-0.5"
+                      style={isSelected && !isDisabled
+                        ? { background: brandMuted, color: '#fff' }
+                        : isDisabled
+                        ? { color: 'var(--fg-subtle)', opacity: 0.4 }
+                        : { color: 'var(--fg-muted)' }}
+                    >
+                      <span>{count}</span>
+                      <span className="text-xs" style={{ color: isSelected && !isDisabled ? brandPink : 'var(--fg-subtle)' }}>{minPlayers}+ players</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Read-only domain */}
+            <div className="space-y-2">
+              <p className="text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--fg-subtle)' }}>Domain</p>
+              <div className="grid grid-cols-2 gap-2">
+                {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
+                  <div key={key}
+                    className="rounded-xl border px-4 py-2 text-sm text-center"
+                    style={!gameState.useRandomCategory && gameState.selectedCategory === key
+                      ? { borderColor: brandMuted, background: brandMuted, color: '#fff', fontWeight: 700 }
+                      : { borderColor: 'var(--border)', background: 'var(--bg-card)', color: 'var(--fg-muted)' }}
+                  >{label}</div>
+                ))}
+                <div
+                  className="col-span-2 rounded-xl border px-4 py-2 text-sm text-center"
+                  style={gameState.useRandomCategory
+                    ? { borderColor: brandMuted, background: brandMuted, color: '#fff', fontWeight: 700 }
+                    : { borderColor: 'var(--border)', background: 'var(--bg-card)', color: 'var(--fg-muted)' }}
+                >Random</div>
+              </div>
+            </div>
+
+            <p className="text-center text-sm" style={{ color: 'var(--fg-muted)' }}>
+              Waiting for host to start the game…
+            </p>
+          </>
         )}
 
         <GameMenuButton

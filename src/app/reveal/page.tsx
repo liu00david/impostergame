@@ -24,7 +24,7 @@ export default function RevealPage() {
 
   if (state.players.length === 0) return null
 
-  const allRevealed = state.players.every(p => p.hasSeenRole || p.isImpostor)
+  const allRevealed = state.players.every(p => p.hasSeenRole)
 
   const spyPartners = (player: Player) =>
     state.players.filter(p => p.isImpostor && p.id !== player.id).map(p => p.name)
@@ -50,7 +50,7 @@ export default function RevealPage() {
 
       <div className="grid grid-cols-2 gap-4 flex-1 content-start">
         {[...state.players].sort((a, b) => a.order - b.order).map(player => {
-          const hasSeen = player.hasSeenRole || player.isImpostor
+          const hasSeen = player.hasSeenRole
           const bg = hasSeen
             ? 'var(--bg-card)'
             : theme === 'dark' ? voteCardDark : voteCardLight
@@ -60,7 +60,7 @@ export default function RevealPage() {
           return (
             <button
               key={player.id}
-              onClick={() => !hasSeen && setActivePlayer(player)}
+              onClick={() => setActivePlayer(player)}
               className="relative overflow-hidden transition-all flex flex-col items-center justify-center text-center active:scale-95"
               style={{
                 minHeight: '100px',
@@ -75,7 +75,6 @@ export default function RevealPage() {
                   : theme === 'dark'
                     ? `0 4px 20px ${brandDark}, inset 0 1px 0 rgba(255,255,255,0.05)`
                     : `0 4px 16px ${brandDarkSubtle}`,
-                cursor: hasSeen ? 'default' : 'pointer',
               }}
             >
               {/* Envelope flap */}
@@ -93,7 +92,7 @@ export default function RevealPage() {
                 </span>
                 {hasSeen
                   ? <span className="text-green-500 text-xs font-bold tracking-wide">✓ READY</span>
-                  : <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--fg-subtle)' }}>Open</span>
+                  : !player.isImpostor && <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--fg-subtle)' }}>Open</span>
                 }
               </div>
             </button>
@@ -103,7 +102,7 @@ export default function RevealPage() {
 
       <div className="mt-6">
         <Button fullWidth size="lg" disabled={!allRevealed} onClick={() => router.push('/game')}>
-          {allRevealed ? 'Proceed to Signal' : `Waiting (${state.players.filter(p => p.hasSeenRole || p.isImpostor).length}/${state.players.length} ready)`}
+          {allRevealed ? 'Proceed to Signal' : `Waiting (${state.players.filter(p => p.hasSeenRole).length}/${state.players.length} ready)`}
         </Button>
       </div>
 
