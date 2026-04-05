@@ -50,6 +50,7 @@ const initialState = (): OnlineGameState => ({
   impostorCount: 1,
   secretWord: null,
   startingPlayerId: null,
+  signalOrder: [],
   ballots: [],
   elapsedSeconds: 0,
   settings: {
@@ -269,15 +270,19 @@ export default class SpyhuntServer implements Party.Server {
           p.hasVoted = false
         })
 
-        const startingPlayer = this.state.players[
-          Math.floor(Math.random() * this.state.players.length)
+        const activePlayers = this.state.players.filter(p => !p.hasLeft)
+        const startingPlayer = activePlayers[
+          Math.floor(Math.random() * activePlayers.length)
         ]
+        const restShuffled = shuffle(activePlayers.filter(p => p.id !== startingPlayer.id))
+        const signalOrder = [startingPlayer, ...restShuffled].map(p => p.id)
 
         this.state.phase = 'reveal'
         this.state.selectedCategory = category
         this.state.impostorCount = impostorCount
         this.state.secretWord = pickWord(category)
         this.state.startingPlayerId = startingPlayer.id
+        this.state.signalOrder = signalOrder
         this.state.ballots = []
         this.state.elapsedSeconds = 0
 

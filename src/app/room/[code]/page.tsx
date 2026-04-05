@@ -543,8 +543,9 @@ export default function RoomPage() {
   // ── GAME (Signal) ───────────────────────────────────────────────────────────
   if (phase === 'game') {
     const activePlayers = gameState.players.filter(p => !p.hasLeft)
-    const startingPlayer = activePlayers.find(p => p.id === gameState.startingPlayerId)
-      ?? activePlayers[0]
+    const orderedPlayers = (gameState.signalOrder ?? [])
+      .map(id => activePlayers.find(p => p.id === id))
+      .filter(Boolean) as typeof activePlayers
     return (
       <>
         <div className="relative min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
@@ -558,14 +559,30 @@ export default function RoomPage() {
             <p className="text-3xl font-mono font-bold" style={{ color: brand }}>{formatTime(gameState.elapsedSeconds)}</p>
           </header>
 
-          <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2" style={{ marginTop: '-10vh' }}>
+          <div className="flex-1 flex flex-col items-center justify-center gap-6 px-2" style={{ marginTop: '-20vh' }}>
             <Speech size={52} color={brand} strokeWidth={1.5} />
-            <p className="text-xl font-medium" style={{ color: 'var(--fg)' }}>
-              Go around in a circle. Each agent gives one signal, without revealing the codeword!
+            <p className="text-lg font-medium text-center" style={{ color: 'var(--fg-muted)' }}>
+              Each agent gives one signal without revealing the codeword.
             </p>
-            <p className="text-2xl font-bold" style={{ color: 'var(--fg)' }}>
-              Starting with: {startingPlayer?.name}
-            </p>
+            <div
+              className="rounded-lg px-4 py-3 space-y-1.5"
+              style={{
+                width: '50%',
+                background: theme === 'dark' ? '#1e1e1e' : '#fffef5',
+                border: '1px solid',
+                borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)',
+                boxShadow: theme === 'dark'
+                  ? '2px 3px 8px rgba(0,0,0,0.4)'
+                  : '2px 3px 8px rgba(0,0,0,0.12)',
+              }}
+            >
+              {orderedPlayers.map((p, i) => (
+                <div key={p.id} className="flex items-center gap-2">
+                  <span className="text-sm font-bold w-4 shrink-0 text-right" style={{ color: brand }}>{i + 1}.</span>
+                  <span className="text-base font-semibold truncate" style={{ color: i === 0 ? 'var(--fg)' : 'var(--fg-muted)' }}>{p.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {isHost && (
@@ -597,7 +614,7 @@ export default function RoomPage() {
             </div>
             <p className="text-3xl font-mono font-bold" style={{ color: brand }}>{formatTime(gameState.elapsedSeconds)}</p>
           </header>
-          <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2" style={{ marginTop: '-10vh' }}>
+          <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2" style={{ marginBottom: '25vh' }}>
             <Search size={52} color={brand} strokeWidth={1.5} />
             <div className="space-y-3">
               <p className="text-xl" style={{ color: 'var(--fg)' }}>Discuss among each other</p>
@@ -613,6 +630,7 @@ export default function RoomPage() {
             >Voting <ArrowRight size={18} /></button>
           )}
         </div>
+        <StatusLights players={gameState.players} myId={myId} code={code} />
         <GameMenuButton isHost={isHost} onReset={() => send({ type: 'RESET_GAME' })} onLeave={() => { send({ type: 'LEAVE_GAME' }); localStorage.removeItem(LS_NAME_KEY); localStorage.removeItem(LS_ROOM_KEY); router.replace('/room') }} players={gameState.players} onKick={(id) => send({ type: 'KICK_PLAYER', playerId: id })} onMakeHost={(id) => send({ type: 'MAKE_HOST', playerId: id })} />
         <Toast />
       </>

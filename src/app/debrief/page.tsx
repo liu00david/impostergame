@@ -47,7 +47,7 @@ export default function DebriefPage() {
         </div>
       </header>
 
-      <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2" style={{ marginBottom: '80px' }}>
+      <div className="flex-1 flex flex-col items-center justify-center text-center gap-6 px-2" style={{ marginBottom: '25vh' }}>
         <Search size={52} color={brand} strokeWidth={1.5} />
         <div className="space-y-3">
           <p className="text-xl" style={{ color: 'var(--fg)' }}>Discuss among each other</p>

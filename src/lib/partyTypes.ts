@@ -34,6 +34,7 @@ export interface OnlineGameState {
   impostorCount: 1 | 2 | 3
   secretWord: string | null
   startingPlayerId: string | null
+  signalOrder: string[]  // player ids in randomized signal turn order
   ballots: OnlineVoteBallot[]
   elapsedSeconds: number
   settings: {
