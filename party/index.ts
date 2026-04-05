@@ -6,24 +6,7 @@ import type {
   ServerMessage,
 } from '../src/lib/partyTypes'
 
-// Word lists and category helpers inlined (can't import from src/ in party/)
-const CATEGORIES = [
-  'Animals', 'AsianFood', 'Celebrities', 'Cities', 'FictionalCharacter',
-  'Food', 'Hobbies', 'Internet', 'Movies', 'Sports',
-]
-
-const WORD_LISTS: Record<string, string[]> = {
-  Animals: ['Lion', 'Elephant', 'Dolphin', 'Eagle', 'Fox', 'Penguin', 'Tiger', 'Gorilla', 'Cheetah', 'Panda', 'Crocodile', 'Giraffe', 'Kangaroo', 'Octopus', 'Parrot', 'Shark', 'Snake', 'Wolf', 'Zebra', 'Bear'],
-  AsianFood: ['Sushi', 'Ramen', 'Dim Sum', 'Pad Thai', 'Bibimbap', 'Pho', 'Dumpling', 'Takoyaki', 'Tteokbokki', 'Banh Mi', 'Kimchi', 'Miso Soup', 'Tempura', 'Laksa', 'Nasi Goreng', 'Satay', 'Tom Yum', 'Char Siu', 'Onigiri', 'Gyoza'],
-  Celebrities: ['Taylor Swift', 'Elon Musk', 'Beyoncé', 'LeBron James', 'Rihanna', 'Tom Hanks', 'Oprah Winfrey', 'Drake', 'Cristiano Ronaldo', 'Adele', 'Jeff Bezos', 'Lady Gaga', 'Kanye West', 'Serena Williams', 'Brad Pitt', 'Billie Eilish', 'Barack Obama', 'Kim Kardashian', 'Dwayne Johnson', 'Zendaya'],
-  Cities: ['Tokyo', 'Paris', 'New York', 'London', 'Dubai', 'Sydney', 'Rome', 'Bangkok', 'Singapore', 'Barcelona', 'Istanbul', 'Los Angeles', 'Mumbai', 'Seoul', 'Cairo', 'Amsterdam', 'Buenos Aires', 'Toronto', 'Berlin', 'Mexico City'],
-  FictionalCharacter: ['Sherlock Holmes', 'Harry Potter', 'Darth Vader', 'Hermione Granger', 'James Bond', 'Batman', 'Gandalf', 'Elizabeth Bennet', 'Katniss Everdeen', 'Frodo Baggins', 'Tony Stark', 'Hannibal Lecter', 'Daenerys Targaryen', 'Walter White', 'Winnie-the-Pooh', 'Atticus Finch', 'Odysseus', 'Dracula', 'Holden Caulfield', 'Jay Gatsby'],
-  Food: ['Pizza', 'Sushi', 'Burger', 'Pasta', 'Tacos', 'Ice Cream', 'Steak', 'Chocolate', 'Sandwich', 'Salad', 'Fried Chicken', 'Cheesecake', 'Croissant', 'Pancakes', 'Lasagna', 'Curry', 'Hot Dog', 'Waffles', 'Burrito', 'Dumplings'],
-  Hobbies: ['Photography', 'Hiking', 'Knitting', 'Chess', 'Surfing', 'Gardening', 'Painting', 'Rock Climbing', 'Cooking', 'Cycling', 'Reading', 'Gaming', 'Yoga', 'Dancing', 'Fishing', 'Pottery', 'Running', 'Skateboarding', 'Bird Watching', 'Woodworking'],
-  Internet: ['Meme', 'Podcast', 'Streaming', 'TikTok', 'Reddit', 'Influencer', 'Viral', 'Algorithm', 'Discord', 'NFT', 'Twitch', 'YouTube', 'Hashtag', 'Deepfake', 'VPN', 'Phishing', 'Spam', 'Cryptocurrency', 'Dark Web', 'Doxxing'],
-  Movies: ['The Godfather', 'Titanic', 'Inception', 'The Matrix', 'Jurassic Park', 'Star Wars', 'The Lion King', 'Interstellar', 'Avengers', 'Pulp Fiction', 'Fight Club', 'Forrest Gump', 'The Dark Knight', 'Gladiator', 'Toy Story', 'Schindler\'s List', 'Parasite', 'Get Out', 'La La Land', 'Mad Max'],
-  Sports: ['Soccer', 'Basketball', 'Tennis', 'Swimming', 'Boxing', 'Golf', 'Baseball', 'Rugby', 'Volleyball', 'Gymnastics', 'Cycling', 'Wrestling', 'Skiing', 'Surfing', 'Athletics', 'Badminton', 'Ice Hockey', 'Cricket', 'Fencing', 'Rowing'],
-}
+import { CATEGORIES, WORD_DATA as WORD_LISTS } from '../src/lib/wordData'
 
 const IMPOSTOR_MIN_PLAYERS: Record<number, number> = { 1: 3, 2: 5, 3: 7 }
 
