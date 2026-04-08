@@ -42,7 +42,7 @@ const initialState = (): OnlineGameState => ({
   },
 })
 
-const DISCONNECT_GRACE_MS = 60_000
+const DISCONNECT_GRACE_MS = 120_000
 
 export default class SpyhuntServer implements Party.Server {
   state: OnlineGameState
