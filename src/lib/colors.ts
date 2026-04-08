@@ -19,6 +19,9 @@ export const brandDarkSubtle = 'rgba(155,28,49,0.15)' // dark variant tinted bg
 export const brandDarkBorder = 'rgba(155,28,49,0.4)' // dark variant border
 export const brandDarkFaint  = 'rgba(155,28,49,0.08)' // dark variant faint bg
 export const brandMuted    = '#804657'               // read-only selected state (non-host lobby)
+export const readonlySelectedBg   = '#f0e0e0'        // non-interactive selected bg (non-host lobby)
+export const readonlySelectedBorder = '#9ca3af'      // non-interactive selected border
+export const readonlySelectedText = '#374151'        // text on readonlySelected bg
 
 // ── Danger (errors, kick, destructive) ────────────────────────────────────────
 export const danger        = '#ef4444'

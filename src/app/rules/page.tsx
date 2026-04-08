@@ -70,6 +70,16 @@ function PassPlayRules() {
         </ul>
       </Section>
 
+      <Section title="3b · Interrogation (optional mode)">
+        <p>Enable <strong>Interrogation</strong> in Advanced Settings to replace the Signal phase with a question round.</p>
+        <ul>
+          <li>A randomized list of pairs is shown — each agent asks one question and answers one question.</li>
+          <li>Questions should relate to the domain (e.g. &quot;How does your word make you feel?&quot;).</li>
+          <li>Spies must answer convincingly without knowing the codeword.</li>
+          <li>Tap <strong>Proceed to Debrief</strong> when all pairs have gone.</li>
+        </ul>
+      </Section>
+
       <Section title="4 · Debrief">
         <ul>
           <li>Discuss the signals openly as a group.</li>
@@ -132,6 +142,16 @@ function OnlineRules() {
           <li>Communicate verbally — over voice call or in person.</li>
           <li>Starting with the named agent, each player gives <strong>one signal</strong> out loud.</li>
           <li>The host taps <strong>Proceed to Debrief</strong> when all signals are done.</li>
+        </ul>
+      </Section>
+
+      <Section title="3b · Interrogation (optional mode)">
+        <p>The host can enable <strong>Interrogation</strong> in Advanced Settings to replace the Signal phase.</p>
+        <ul>
+          <li>A randomized list of question pairs is shown on everyone&apos;s screen.</li>
+          <li>Each agent asks one question and answers one question out loud.</li>
+          <li>Questions should relate to the domain. Spies must bluff their answers convincingly.</li>
+          <li>The host taps <strong>Debrief</strong> when all pairs have gone.</li>
         </ul>
       </Section>
 

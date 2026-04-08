@@ -37,9 +37,11 @@ export interface OnlineGameState {
   signalOrder: string[]  // player names in randomized signal turn order (snapshot at game start)
   ballots: OnlineVoteBallot[]
   elapsedSeconds: number
+  interrogationPairs: [string, string][]  // player name pairs [asker, answerer], snapshot at game start
   settings: {
     spiesKnowEachOther: boolean
     spiesVoteCount: boolean
+    signalMode: 'signal' | 'interrogation'
   }
 }
 

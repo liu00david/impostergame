@@ -126,6 +126,10 @@ export default function SetupPage() {
               value={state.settings.spiesVoteCount}
               onChange={v => dispatch({ type: 'UPDATE_SETTINGS', settings: { spiesVoteCount: v } })}
             />
+            <SignalModeRow
+              value={state.settings.signalMode}
+              onChange={v => dispatch({ type: 'UPDATE_SETTINGS', settings: { signalMode: v } })}
+            />
           </div>
 
           <Button fullWidth onClick={() => setShowAdvanced(false)}>Done</Button>
@@ -148,6 +152,31 @@ function SettingRow({ label, description, value, onChange }: {
         <p className="text-xs mt-0.5" style={{ color: 'var(--fg-subtle)' }}>{description}</p>
       </div>
       <Toggle value={value} onChange={onChange} />
+    </div>
+  )
+}
+
+function SignalModeRow({ value, onChange }: {
+  value: 'signal' | 'interrogation'
+  onChange: (v: 'signal' | 'interrogation') => void
+}) {
+  return (
+    <div className="rounded-xl px-4 py-3 border space-y-2" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}>
+      <div>
+        <p className="text-sm font-semibold" style={{ color: 'var(--fg)' }}>Signal mode</p>
+        <p className="text-xs mt-0.5" style={{ color: 'var(--fg-subtle)' }}>How agents exchange information during the signal phase</p>
+      </div>
+      <div className="flex rounded-lg overflow-hidden border" style={{ borderColor: 'var(--border)' }}>
+        {(['signal', 'interrogation'] as const).map(mode => (
+          <button key={mode} onClick={() => onChange(mode)}
+            className="flex-1 py-1.5 text-xs font-semibold capitalize transition-colors"
+            style={value === mode
+              ? { background: 'var(--brand)', color: 'var(--bg)' }
+              : { background: 'transparent', color: 'var(--fg-muted)' }}>
+            {mode === 'signal' ? 'Signal' : 'Interrogation'}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

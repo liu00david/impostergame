@@ -24,6 +24,11 @@ function pickWord(category: string): string {
   return words[Math.floor(Math.random() * words.length)]
 }
 
+function makeInterrogationPairs(names: string[]): [string, string][] {
+  const shuffled = [...names].sort(() => Math.random() - 0.5)
+  return shuffled.map((name, i) => [name, shuffled[(i + 1) % shuffled.length]] as [string, string])
+}
+
 const initialState = (): OnlineGameState => ({
   phase: 'lobby',
   players: [],
@@ -34,11 +39,13 @@ const initialState = (): OnlineGameState => ({
   secretWord: null,
   startingPlayerId: null,
   signalOrder: [],
+  interrogationPairs: [],
   ballots: [],
   elapsedSeconds: 0,
   settings: {
     spiesKnowEachOther: true,
     spiesVoteCount: true,
+    signalMode: 'signal',
   },
 })
 
@@ -260,12 +267,18 @@ export default class SpyhuntServer implements Party.Server {
         const restShuffled = shuffle(activePlayers.filter(p => p.id !== startingPlayer.id))
         const signalOrder = [startingPlayer, ...restShuffled].map(p => p.name)
 
+        const activeNames = activePlayers.map(p => p.name)
+        const interrogationPairs = this.state.settings.signalMode === 'interrogation'
+          ? makeInterrogationPairs(activeNames)
+          : []
+
         this.state.phase = 'reveal'
         this.state.selectedCategory = category
         this.state.impostorCount = impostorCount
         this.state.secretWord = pickWord(category)
         this.state.startingPlayerId = startingPlayer.id
         this.state.signalOrder = signalOrder
+        this.state.interrogationPairs = interrogationPairs
         this.state.ballots = []
         this.state.elapsedSeconds = 0
 

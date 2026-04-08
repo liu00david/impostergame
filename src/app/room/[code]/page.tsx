@@ -7,12 +7,13 @@ import type { OnlineGameState, OnlinePlayer, ClientMessage, ServerMessage } from
 import { Button } from '@/components/ui/Button'
 import { CATEGORY_LABELS } from '@/lib/gameLogic'
 import { formatTime } from '@/lib/formatTime'
-import { Search, Speech, Menu, ArrowRight } from 'lucide-react'
+import { Search, Speech, MessagesSquare, Menu, ArrowRight } from 'lucide-react'
 import { useTheme } from '@/context/ThemeContext'
 import { tallyVotes, checkImpostorsCaught } from '@/lib/gameLogic'
 import {
   brand, brandBorder, brandBorderStrong, brandDim, brandSubtle,
   brandDark, brandDarkSubtle, brandDarkBorder, brandDarkFaint, brandMuted,
+  readonlySelectedBg, readonlySelectedBorder, readonlySelectedText,
   danger, dangerSubtle, dangerBorder, dangerLight,
   success, statusOffline,
   successBorder, successSubtle,
@@ -406,13 +407,13 @@ export default function RoomPage() {
                     <div key={count}
                       className="flex-1 py-3 text-base font-semibold flex flex-col items-center gap-0.5"
                       style={isSelected && !isDisabled
-                        ? { background: brandMuted, color: '#fff' }
+                        ? { background: readonlySelectedBg, color: readonlySelectedText }
                         : isDisabled
                         ? { color: 'var(--fg-subtle)', opacity: 0.4 }
                         : { color: 'var(--fg-muted)' }}
                     >
                       <span>{count}</span>
-                      <span className="text-xs" style={{ color: isSelected && !isDisabled ? brandPink : 'var(--fg-subtle)' }}>{minPlayers}+ players</span>
+                      <span className="text-xs" style={{ color: isSelected && !isDisabled ? readonlySelectedText : 'var(--fg-subtle)' }}>{minPlayers}+ players</span>
                     </div>
                   )
                 })}
@@ -427,14 +428,14 @@ export default function RoomPage() {
                   <div key={key}
                     className="rounded-xl border px-4 py-2 text-sm text-center"
                     style={!gameState.useRandomCategory && gameState.selectedCategory === key
-                      ? { borderColor: brandMuted, background: brandMuted, color: '#fff', fontWeight: 700 }
+                      ? { borderColor: readonlySelectedBorder, background: readonlySelectedBg, color: readonlySelectedText, fontWeight: 700 }
                       : { borderColor: 'var(--border)', background: 'var(--bg-card)', color: 'var(--fg-muted)' }}
                   >{label}</div>
                 ))}
                 <div
                   className="col-span-2 rounded-xl border px-4 py-2 text-sm text-center"
                   style={gameState.useRandomCategory
-                    ? { borderColor: brandMuted, background: brandMuted, color: '#fff', fontWeight: 700 }
+                    ? { borderColor: readonlySelectedBorder, background: readonlySelectedBg, color: readonlySelectedText, fontWeight: 700 }
                     : { borderColor: 'var(--border)', background: 'var(--bg-card)', color: 'var(--fg-muted)' }}
                 >Random</div>
               </div>
@@ -480,6 +481,11 @@ export default function RoomPage() {
                   description="Spies' votes affect the tally outcome"
                   value={gameState.settings.spiesVoteCount}
                   onChange={v => send({ type: 'UPDATE_SETTINGS', settings: { spiesVoteCount: v } })}
+                  disabled={!isHost}
+                />
+                <OnlineSignalModeRow
+                  value={gameState.settings.signalMode}
+                  onChange={v => send({ type: 'UPDATE_SETTINGS', settings: { signalMode: v } })}
                   disabled={!isHost}
                 />
               </div>
@@ -590,12 +596,19 @@ export default function RoomPage() {
     )
   }
 
-  // ── GAME (Signal) ───────────────────────────────────────────────────────────
+  // ── GAME (Signal / Interrogation) ───────────────────────────────────────────
   if (phase === 'game') {
     const activePlayers = gameState.players.filter(p => !p.hasLeft)
+    const isInterrogation = gameState.settings.signalMode === 'interrogation'
     const signalNames: string[] = gameState.signalOrder?.length > 0
       ? gameState.signalOrder
       : activePlayers.map(p => p.name)
+    const paperStyle = {
+      background: theme === 'dark' ? '#1e1e1e' : '#fffef5',
+      border: '1px solid',
+      borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)',
+      boxShadow: theme === 'dark' ? '2px 3px 8px rgba(0,0,0,0.4)' : '2px 3px 8px rgba(0,0,0,0.12)',
+    }
     return (
       <>
         <div className="relative min-h-screen flex flex-col max-w-md mx-auto px-6 py-8">
@@ -604,36 +617,44 @@ export default function RoomPage() {
               <p className="text-xs font-semibold uppercase tracking-widest mb-0.5" style={{ color: brand }}>
                 Domain: {gameState.selectedCategory ? (CATEGORY_LABELS[gameState.selectedCategory as keyof typeof CATEGORY_LABELS] ?? gameState.selectedCategory) : ''}
               </p>
-              <h1 className="text-2xl font-bold">Signal</h1>
+              <h1 className="text-2xl font-bold">{isInterrogation ? 'Interrogation' : 'Signal'}</h1>
             </div>
             <p className="text-3xl font-mono font-bold" style={{ color: brand }}>{formatTime(gameState.elapsedSeconds)}</p>
           </header>
 
-          <div className="flex-1 flex flex-col items-center justify-center gap-6 px-2" style={{ marginTop: '-20vh' }}>
-            <Speech size={52} color={brand} strokeWidth={1.5} />
-            <p className="text-lg font-medium text-center" style={{ color: 'var(--fg-muted)' }}>
-              Each agent gives one signal without revealing the codeword.
-            </p>
-            <div
-              className="rounded-lg px-4 py-3 space-y-1.5"
-              style={{
-                width: '50%',
-                background: theme === 'dark' ? '#1e1e1e' : '#fffef5',
-                border: '1px solid',
-                borderColor: theme === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)',
-                boxShadow: theme === 'dark'
-                  ? '2px 3px 8px rgba(0,0,0,0.4)'
-                  : '2px 3px 8px rgba(0,0,0,0.12)',
-              }}
-            >
-              {signalNames.map((name, i) => (
-                <div key={name} className="flex items-center gap-2">
-                  <span className="text-sm font-bold w-4 shrink-0 text-right" style={{ color: brand }}>{i + 1}.</span>
-                  <span className="text-base font-semibold truncate" style={{ color: i === 0 ? 'var(--fg)' : 'var(--fg-muted)' }}>{name}</span>
-                </div>
-              ))}
+          {isInterrogation ? (
+            <div className="flex-1 flex flex-col items-center justify-center gap-6 px-2" style={{ marginTop: '-20vh' }}>
+              <MessagesSquare size={52} color={brand} strokeWidth={1.5} />
+              <p className="text-lg font-medium text-center" style={{ color: 'var(--fg-muted)' }}>
+                Each agent asks one question and answers one question.
+              </p>
+              <div className="rounded-lg px-5 py-3 space-y-2.5 mx-auto" style={{ ...paperStyle, width: '70%' }}>
+                {(gameState.interrogationPairs ?? []).map(([asker, answerer], i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="text-sm font-bold w-4 shrink-0 text-right" style={{ color: brand }}>{i + 1}.</span>
+                    <span className="text-base font-semibold" style={{ color: 'var(--fg)' }}>{asker}</span>
+                    <span className="text-sm" style={{ color: 'var(--fg-subtle)' }}>asks</span>
+                    <span className="text-base font-semibold" style={{ color: 'var(--fg)' }}>{answerer}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="flex-1 flex flex-col items-center justify-center gap-6 px-2" style={{ marginTop: '-20vh' }}>
+              <Speech size={52} color={brand} strokeWidth={1.5} />
+              <p className="text-lg font-medium text-center" style={{ color: 'var(--fg-muted)' }}>
+                Each agent gives one signal without revealing the codeword.
+              </p>
+              <div className="rounded-lg px-4 py-3 space-y-1.5" style={{ ...paperStyle, width: '50%' }}>
+                {signalNames.map((name, i) => (
+                  <div key={name} className="flex items-center gap-2">
+                    <span className="text-sm font-bold w-4 shrink-0 text-right" style={{ color: brand }}>{i + 1}.</span>
+                    <span className="text-base font-semibold truncate" style={{ color: i === 0 ? 'var(--fg)' : 'var(--fg-muted)' }}>{name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {isHost && (
             <button
@@ -1101,6 +1122,36 @@ function GameMenuButton({ isHost, onReset, onLeave, onDisband, players, onKick, 
   )
 }
 
+
+// ── Online signal mode row ────────────────────────────────────────────────────
+
+function OnlineSignalModeRow({ value, onChange, disabled }: {
+  value: 'signal' | 'interrogation'
+  onChange: (v: 'signal' | 'interrogation') => void
+  disabled?: boolean
+}) {
+  return (
+    <div className="rounded-xl px-4 py-3 border space-y-2" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border)' }}>
+      <div>
+        <p className="text-sm font-semibold" style={{ color: 'var(--fg)' }}>Signal mode</p>
+        <p className="text-xs mt-0.5" style={{ color: 'var(--fg-subtle)' }}>How agents exchange information during the signal phase</p>
+      </div>
+      <div className="flex rounded-lg overflow-hidden border" style={{ borderColor: 'var(--border)', opacity: disabled ? 0.5 : 1 }}>
+        {(['signal', 'interrogation'] as const).map(mode => (
+          <button key={mode}
+            onClick={() => !disabled && onChange(mode)}
+            disabled={disabled}
+            className="flex-1 py-1.5 text-s font-semibold capitalize transition-colors"
+            style={value === mode
+              ? { background: 'var(--brand)', color: 'var(--bg)' }
+              : { background: 'transparent', color: 'var(--fg-muted)' }}>
+            {mode === 'signal' ? 'Signal' : 'Interrogation'}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 // ── Online setting row ────────────────────────────────────────────────────────
 

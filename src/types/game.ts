@@ -17,6 +17,7 @@ export interface VoteBallot {
 export interface GameSettings {
   spiesKnowEachOther: boolean
   spiesVoteCount: boolean
+  signalMode: 'signal' | 'interrogation'
 }
 
 export interface GameState {
@@ -34,4 +35,5 @@ export interface GameState {
   elapsedSeconds: number
   loopComplete: boolean
   settings: GameSettings
+  interrogationPairs: [string, string][]  // snapshot at game start: [asker, answerer]
 }

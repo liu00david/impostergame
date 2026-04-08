@@ -40,7 +40,17 @@ const initialState: GameState = {
   settings: {
     spiesKnowEachOther: true,
     spiesVoteCount: true,
+    signalMode: 'signal',
   },
+  interrogationPairs: [],
+}
+
+function makeInterrogationPairs(names: string[]): [string, string][] {
+  // Each person asks one question and answers one question.
+  // Shuffle names, then pair i → i+1 (with wrap). This ensures every person
+  // appears exactly once as asker and once as answerer.
+  const shuffled = [...names].sort(() => Math.random() - 0.5)
+  return shuffled.map((name, i) => [name, shuffled[(i + 1) % shuffled.length]] as [string, string])
 }
 
 
@@ -103,6 +113,10 @@ function reducer(state: GameState, action: Action): GameState {
       const playersWithRoles = assignRoles(state.players, impostorCount)
       const secretWord = pickWord(category)
       const startingPlayerIndex = pickStartingPlayer(state.players.length)
+      const playerNames = state.players.map(p => p.name)
+      const interrogationPairs = state.settings.signalMode === 'interrogation'
+        ? makeInterrogationPairs(playerNames)
+        : []
       return {
         ...state,
         impostorCount,
@@ -115,6 +129,7 @@ function reducer(state: GameState, action: Action): GameState {
         ballots: [],
         elapsedSeconds: 0,
         loopComplete: false,
+        interrogationPairs,
         phase: 'reveal',
       }
     }
