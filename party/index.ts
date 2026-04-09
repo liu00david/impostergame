@@ -105,6 +105,13 @@ export default class SpyhuntServer implements Party.Server {
 
     // Mark disconnected immediately so UI reflects it
     player.isConnected = false
+
+    // Immediately promote a new host if this player was host
+    if (player.isHost) {
+      player.isHost = false
+      this.reassignHost(conn.id)
+    }
+
     this.broadcast({ type: 'STATE', state: this.state })
 
     // Grace period before actually removing/demoting
@@ -113,11 +120,6 @@ export default class SpyhuntServer implements Party.Server {
       // Player didn't reconnect in time
       if (this.state.phase === 'lobby') {
         this.state.players = this.state.players.filter(p => p.id !== conn.id)
-      }
-      // In-game: keep the slot but reassign host if needed
-      if (player.isHost) {
-        player.isHost = false
-        this.reassignHost(conn.id)
       }
       this.resetIfEmpty()
       this.broadcast({ type: 'STATE', state: this.state })
