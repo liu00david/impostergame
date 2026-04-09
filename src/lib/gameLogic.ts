@@ -3,7 +3,7 @@ import { WORD_LISTS } from './wordLists'
 
 export const CATEGORIES: Category[] = [
   'Animals', 'AsianFood', 'Celebrities', 'Cities', 'FictionalCharacter', 'Food', 'Hobbies',
-  'Internet', 'Movies', 'Sports'
+  'Jobs', 'Movies', 'Sports'
 ]
 
 export const CATEGORY_LABELS: Record<Category, string> = {
@@ -11,10 +11,10 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   AsianFood: 'Asian Food',
   Celebrities: 'Celebrities',
   Cities: 'Cities',
-  FictionalCharacter: 'Fictional Person',
+  FictionalCharacter: 'Fictional Character',
   Food: 'Food',
   Hobbies: 'Hobbies',
-  Internet: 'Internet',
+  Jobs: 'Jobs',
   Movies: 'Movies',
   Sports: 'Sports',
 }

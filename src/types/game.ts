@@ -1,5 +1,5 @@
 export type Phase = 'setup' | 'reveal' | 'game' | 'vote' | 'results'
-export type Category = 'Animals'| 'AsianFood' | 'Celebrities' | 'Cities' | 'FictionalCharacter' | 'Food' | 'Hobbies' | 'Internet' | 'Movies' | 'Sports'
+export type Category = 'Animals'| 'AsianFood' | 'Celebrities' | 'Cities' | 'FictionalCharacter' | 'Food' | 'Hobbies' | 'Jobs' | 'Movies' | 'Sports'
 
 export interface Player {
   id: string

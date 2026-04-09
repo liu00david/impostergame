@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { brand } from '@/lib/colors'
+import { brand, outcomeWinBgLight, outcomeWinBorder, outcomeLossBgLight, outcomeLossBorderLight } from '@/lib/colors'
 
 type Tab = 'passplay' | 'online'
 
@@ -61,23 +61,10 @@ function PassPlayRules() {
         </ul>
       </Section>
 
-      <Section title="3 · Signal">
-        <ul>
-          <li>Starting with the named agent, go around the circle.</li>
-          <li>Each agent gives <strong>one word or short phrase</strong> hinting at the codeword.</li>
-          <li>Don&apos;t say the codeword directly. Spies bluff based on what they hear.</li>
-          <li>Tap <strong>Proceed to Debrief</strong> when done.</li>
-        </ul>
-      </Section>
-
-      <Section title="3b · Interrogation (optional mode)">
-        <p>Enable <strong>Interrogation</strong> in Advanced Settings to replace the Signal phase with a question round.</p>
-        <ul>
-          <li>A randomized list of pairs is shown — each agent asks one question and answers one question.</li>
-          <li>Questions should relate to the domain (e.g. &quot;How does your word make you feel?&quot;).</li>
-          <li>Spies must answer convincingly without knowing the codeword.</li>
-          <li>Tap <strong>Proceed to Debrief</strong> when all pairs have gone.</li>
-        </ul>
+      <Section title="3 · Signal / Interrogation">
+        <p>Choose a mode in Advanced Settings. Both end with <strong>Proceed to Debrief</strong>.</p>
+        <p><strong>Signal</strong> — Starting with the named agent, go around the circle. Each agent gives <strong>one word or short phrase</strong> hinting at the codeword. Don&apos;t say the codeword directly — spies bluff based on what they hear.</p>
+        <p><strong>Interrogation</strong> — A randomized list of pairs is shown. Each agent asks their assigned partner one question relating to the domain. Spies must answer convincingly without knowing the codeword.</p>
       </Section>
 
       <Section title="4 · Debrief">
@@ -97,10 +84,16 @@ function PassPlayRules() {
       </Section>
 
       <Section title="6 · Outcome">
-        <ul>
-          <li><strong>Spies Caught</strong> — every spy got strictly more votes than any operative. Spies get one last chance to guess the codeword and steal the win.</li>
-          <li><strong>Mission Sabotaged</strong> — any spy tied or received fewer votes than an operative. Spies win.</li>
-        </ul>
+        <div className="flex gap-2 mt-1">
+          <div className="flex-1 rounded-xl p-3 space-y-1" style={{ background: outcomeWinBgLight, border: `2px solid ${outcomeWinBorder}` }}>
+            <p className="font-bold text-sm" style={{ color: '#166534' }}>Spies Caught!</p>
+            <p>Operatives win — unless the spies can correctly guess the codeword out loud to steal the win.</p>
+          </div>
+          <div className="flex-1 rounded-xl p-3 space-y-1" style={{ background: outcomeLossBgLight, border: `2px solid ${outcomeLossBorderLight}` }}>
+            <p className="font-bold text-sm" style={{ color: '#9f1239' }}>Mission Sabotaged!</p>
+            <p>Spies win — any spy tied or received fewer votes than an operative.</p>
+          </div>
+        </div>
       </Section>
 
       <Section title="Tips">
@@ -137,22 +130,10 @@ function OnlineRules() {
         </ul>
       </Section>
 
-      <Section title="3 · Signal">
-        <ul>
-          <li>Communicate verbally — over voice call or in person.</li>
-          <li>Starting with the named agent, each player gives <strong>one signal</strong> out loud.</li>
-          <li>The host taps <strong>Proceed to Debrief</strong> when all signals are done.</li>
-        </ul>
-      </Section>
-
-      <Section title="3b · Interrogation (optional mode)">
-        <p>The host can enable <strong>Interrogation</strong> in Advanced Settings to replace the Signal phase.</p>
-        <ul>
-          <li>A randomized list of question pairs is shown on everyone&apos;s screen.</li>
-          <li>Each agent asks one question and answers one question out loud.</li>
-          <li>Questions should relate to the domain. Spies must bluff their answers convincingly.</li>
-          <li>The host taps <strong>Debrief</strong> when all pairs have gone.</li>
-        </ul>
+      <Section title="3 · Signal / Interrogation">
+        <p>The host chooses a mode in Advanced Settings. Both are done verbally — over call or in person.</p>
+        <p><strong>Signal</strong> — Starting with the named agent, each player gives <strong>one signal</strong> out loud hinting at the codeword. Spies bluff based on what they hear.</p>
+        <p><strong>Interrogation</strong> — A randomized list of pairs is shown on everyone&apos;s screen. Each agent asks their assigned partner one question relating to the domain. Spies must answer convincingly without knowing the codeword.</p>
       </Section>
 
       <Section title="4 · Debrief">
@@ -171,10 +152,16 @@ function OnlineRules() {
       </Section>
 
       <Section title="6 · Outcome">
-        <ul>
-          <li><strong>Spies Caught</strong> — every spy got strictly more votes than any operative. Spies get one last chance to guess the codeword out loud and steal the win.</li>
-          <li><strong>Mission Sabotaged</strong> — any spy tied or received fewer votes. Spies win.</li>
-        </ul>
+        <div className="flex gap-2 mt-1">
+          <div className="flex-1 rounded-xl p-3 space-y-1" style={{ background: outcomeWinBgLight, border: `2px solid ${outcomeWinBorder}` }}>
+            <p className="font-bold text-sm" style={{ color: '#166534' }}>Spies Caught!</p>
+            <p>Operatives win — unless the spies can correctly guess the codeword out loud to steal the win.</p>
+          </div>
+          <div className="flex-1 rounded-xl p-3 space-y-1" style={{ background: outcomeLossBgLight, border: `2px solid ${outcomeLossBorderLight}` }}>
+            <p className="font-bold text-sm" style={{ color: '#9f1239' }}>Mission Sabotaged!</p>
+            <p>Spies win — any spy tied or received fewer votes than an operative.</p>
+          </div>
+        </div>
       </Section>
 
       <Section title="Tips">

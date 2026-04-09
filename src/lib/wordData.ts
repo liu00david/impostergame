@@ -2,7 +2,7 @@
 
 export const CATEGORIES = [
   'Animals', 'AsianFood', 'Celebrities', 'Cities', 'FictionalCharacter',
-  'Food', 'Hobbies', 'Internet', 'Movies', 'Sports',
+  'Food', 'Hobbies', 'Jobs', 'Movies', 'Sports',
 ] as const
 
 export const WORD_DATA: Record<string, string[]> = {
@@ -18,10 +18,10 @@ export const WORD_DATA: Record<string, string[]> = {
   AsianFood: [
     "Banh Mi", "Bao", "Bibimbap", "Bulgogi", "Butter Chicken",
     "Chow Mein", "Dumpling", "Edamame", "Fried Rice",
-    "Gyoza", "Hotpot", "Kimchi", "Kimbap", "Mochi",
+    "Hotpot", "Kimchi", "Kimbap", "Mochi",
     "Noodles", "Onigiri", "Pad Thai", "Peking Duck", "Pho",
     "Ramen", "Samosa", "Sashimi", "Spring Roll", "Sushi",
-    "Tempura", "Teriyaki", "Tofu", "Udon", "Wonton",
+    "Tempura", "Teriyaki", "Tofu", "Udon",
   ],
   Celebrities: [
     "Adele", "Ariana Grande", "Bad Bunny", "Beyonce", "Billie Eilish",
@@ -74,19 +74,19 @@ export const WORD_DATA: Record<string, string[]> = {
     "Singing", "Skating", "Skiing", "Soccer", "Surfing",
     "Tennis", "Travel", "Woodworking", "Writing", "Yoga",
   ],
-  Internet: [
-    "Amazon", "Android", "ChatGPT", "Chrome", "Cloud",
-    "Discord", "Email", "Emoji", "Facebook", "Google",
-    "Hashtag", "Instagram", "iPhone", "LinkedIn", "Meme",
-    "Netflix", "Password", "Pinterest", "Podcast", "Reddit",
-    "Roblox", "Router", "Safari", "Server", "Skype",
-    "Snapchat", "Spotify", "Telegram", "Threads", "TikTok",
-    "Tumblr", "Twitch", "Twitter", "WhatsApp", "Wifi",
-    "YouTube",
+  Jobs: [
+    "Accountant", "Actor", "Architect", "Artist", "Astronaut",
+    "Banker", "Barber", "Carpenter", "Chef", "Dentist",
+    "Designer", "Doctor", "Driver", "Electrician", "Engineer",
+    "Farmer", "Firefighter", "Judge", "Journalist", "Lawyer",
+    "Librarian", "Mechanic", "Musician", "Nurse", "Painter",
+    "Pharmacist", "Photographer", "Pilot", "Plumber", "Police Officer",
+    "Professor", "Programmer", "Scientist", "Security Guard", "Social Worker",
+    "Soldier", "Surgeon", "Teacher", "Therapist", "Veterinarian",
   ],
   Movies: [
     "Aladdin", "Avatar", "Avengers", "Barbie", "Batman",
-    "Cinderella", "Coraline", "Deadpool", "Dracula", "Frozen",
+    "Cinderella", "Coraline", "Deadpool", "Frozen",
     "Gladiator", "Godzilla", "Harry Potter", "Inception", "Incredibles",
     "Inside Out", "Interstellar", "Iron Man", "Jaws", "Joker",
     "Jumanji", "La La Land", "Lion King", "Matrix", "Minions",
