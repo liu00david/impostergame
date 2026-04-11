@@ -10,10 +10,16 @@ import { CATEGORIES, WORD_DATA as WORD_LISTS } from '../src/lib/wordData'
 
 const IMPOSTOR_MIN_PLAYERS: Record<number, number> = { 1: 3, 2: 5, 3: 7 }
 
+function rand(): number {
+  const buf = new Uint32Array(1)
+  crypto.getRandomValues(buf)
+  return buf[0] / 0x100000000
+}
+
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
   for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
+    const j = Math.floor(rand() * (i + 1))
     ;[a[i], a[j]] = [a[j], a[i]]
   }
   return a
@@ -21,11 +27,11 @@ function shuffle<T>(arr: T[]): T[] {
 
 function pickWord(category: string): string {
   const words = WORD_LISTS[category] ?? WORD_LISTS['Food']
-  return words[Math.floor(Math.random() * words.length)]
+  return words[Math.floor(rand() * words.length)]
 }
 
 function makeInterrogationPairs(names: string[]): [string, string][] {
-  const shuffled = [...names].sort(() => Math.random() - 0.5)
+  const shuffled = [...names].sort(() => rand() - 0.5)
   return shuffled.map((name, i) => [name, shuffled[(i + 1) % shuffled.length]] as [string, string])
 }
 
@@ -247,11 +253,11 @@ export default class SpyhuntServer implements Party.Server {
         if (!this.state.selectedCategory && !this.state.useRandomCategory) break
 
         const category = this.state.useRandomCategory
-          ? CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)]
+          ? CATEGORIES[Math.floor(rand() * CATEGORIES.length)]
           : this.state.selectedCategory!
 
         const impostorCount = this.state.selectedCounts[
-          Math.floor(Math.random() * this.state.selectedCounts.length)
+          Math.floor(rand() * this.state.selectedCounts.length)
         ] as 1 | 2 | 3
 
         // Assign roles
@@ -264,7 +270,7 @@ export default class SpyhuntServer implements Party.Server {
 
         const activePlayers = this.state.players.filter(p => !p.hasLeft)
         const startingPlayer = activePlayers[
-          Math.floor(Math.random() * activePlayers.length)
+          Math.floor(rand() * activePlayers.length)
         ]
         const restShuffled = shuffle(activePlayers.filter(p => p.id !== startingPlayer.id))
         const signalOrder = [startingPlayer, ...restShuffled].map(p => p.name)
