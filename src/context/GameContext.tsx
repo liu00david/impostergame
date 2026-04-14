@@ -40,7 +40,7 @@ const initialState: GameState = {
   settings: {
     spiesKnowEachOther: true,
     spiesVoteCount: true,
-    signalMode: 'signal',
+    signalMode: 'interrogation',
   },
   interrogationPairs: [],
 }

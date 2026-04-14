@@ -25,9 +25,12 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-function pickWord(category: string): string {
-  const words = WORD_LISTS[category] ?? WORD_LISTS['Food']
-  return words[Math.floor(rand() * words.length)]
+function pickWordFromList(words: string[], used: Set<string>): string {
+  if (used.size >= words.length) used.clear()
+  const available = words.filter(w => !used.has(w))
+  const word = available[Math.floor(rand() * available.length)]
+  used.add(word)
+  return word
 }
 
 function makeInterrogationPairs(names: string[]): [string, string][] {
@@ -51,14 +54,15 @@ const initialState = (): OnlineGameState => ({
   settings: {
     spiesKnowEachOther: true,
     spiesVoteCount: true,
-    signalMode: 'signal',
+    signalMode: 'interrogation',
   },
 })
 
-const DISCONNECT_GRACE_MS = 120_000
+const DISCONNECT_GRACE_MS = 300_000 // 5 minutes
 
 export default class SpyhuntServer implements Party.Server {
   state: OnlineGameState
+  usedWords: Map<string, Set<string>> = new Map()
   timerInterval: ReturnType<typeof setInterval> | null = null
   disconnectTimers: Map<string, ReturnType<typeof setTimeout>> = new Map()
 
@@ -283,7 +287,9 @@ export default class SpyhuntServer implements Party.Server {
         this.state.phase = 'reveal'
         this.state.selectedCategory = category
         this.state.impostorCount = impostorCount
-        this.state.secretWord = pickWord(category)
+        const wordList = WORD_LISTS[category] ?? WORD_LISTS['Food']
+        if (!this.usedWords.has(category)) this.usedWords.set(category, new Set())
+        this.state.secretWord = pickWordFromList(wordList, this.usedWords.get(category)!)
         this.state.startingPlayerId = startingPlayer.id
         this.state.signalOrder = signalOrder
         this.state.interrogationPairs = interrogationPairs

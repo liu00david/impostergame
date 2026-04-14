@@ -33,9 +33,19 @@ export function assignRoles(players: Player[], impostorCount: 1 | 2 | 3): Player
   return shuffled.map((player, index) => ({ ...player, isImpostor: index < impostorCount, hasSeenRole: false }))
 }
 
+// Track used words per category for this browser session to avoid repeats
+const usedWords: Partial<Record<Category, Set<string>>> = {}
+
 export function pickWord(category: Category): string {
   const words = WORD_LISTS[category]
-  return words[Math.floor(Math.random() * words.length)]
+  const used = usedWords[category] ?? new Set<string>()
+  // Reset if all words have been used
+  if (used.size >= words.length) used.clear()
+  const available = words.filter(w => !used.has(w))
+  const word = available[Math.floor(Math.random() * available.length)]
+  used.add(word)
+  usedWords[category] = used
+  return word
 }
 
 export function pickStartingPlayer(playerCount: number): number {
