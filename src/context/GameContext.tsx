@@ -45,11 +45,20 @@ const initialState: GameState = {
   interrogationPairs: [],
 }
 
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
 function makeInterrogationPairs(names: string[]): [string, string][] {
   // Each person asks one question and answers one question.
   // Shuffle names, then pair i → i+1 (with wrap). This ensures every person
   // appears exactly once as asker and once as answerer.
-  const shuffled = [...names].sort(() => Math.random() - 0.5)
+  const shuffled = shuffle(names)
   return shuffled.map((name, i) => [name, shuffled[(i + 1) % shuffled.length]] as [string, string])
 }
 

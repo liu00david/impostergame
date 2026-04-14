@@ -34,7 +34,7 @@ function pickWordFromList(words: string[], used: Set<string>): string {
 }
 
 function makeInterrogationPairs(names: string[]): [string, string][] {
-  const shuffled = [...names].sort(() => rand() - 0.5)
+  const shuffled = shuffle(names)
   return shuffled.map((name, i) => [name, shuffled[(i + 1) % shuffled.length]] as [string, string])
 }
 
